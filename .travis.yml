@@ -3,8 +3,14 @@ node_js:
   - "6"
   - "5"
   - "4"
+  - "4.4"
   - "0.12"
   - "0.10"
 before_script:
   - npm install -g grunt-cli
 script: grunt test
+after_script:
+  - codeclimate-test-reporter < coverage/lcov.info
+addons:
+    code_climate:
+        repo_token: c0bec1f3744fa5764dfb105faa999ebf3b747548d3ed52a04773bf844afefa44
