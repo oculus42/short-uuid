@@ -25,6 +25,7 @@
     "any-base": "^1.0.0"
   },
   "devDependencies": {
+    "codeclimate-test-reporter": "^0.3.1",
     "grunt": "^1.0.1",
     "grunt-mocha-istanbul": "^5.0.1",
     "grunt-simple-mocha": "^0.4.1",
