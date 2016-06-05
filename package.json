@@ -1,0 +1,35 @@
+{
+  "name": "short-uuid",
+  "version": "1.0.0",
+  "description": "Translate standard UUID to shorter formats and back.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test",
+    "cover": "grunt cover"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oculus42/short-uuid.git"
+  },
+  "keywords": [
+    "uuid",
+    "node"
+  ],
+  "author": "Samuel Rouse",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oculus42/short-uuid/issues"
+  },
+  "homepage": "https://github.com/oculus42/short-uuid#readme",
+  "dependencies": {
+    "any-base": "^1.0.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-mocha-istanbul": "^5.0.1",
+    "grunt-simple-mocha": "^0.4.1",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
+    "node-uuid": "^1.4.7"
+  }
+}
