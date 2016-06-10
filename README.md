@@ -3,7 +3,7 @@
 [![Code Climate](https://codeclimate.com/github/oculus42/short-uuid/badges/gpa.svg)](https://codeclimate.com/github/oculus42/short-uuid) 
 [![Test Coverage](https://codeclimate.com/github/oculus42/short-uuid/badges/coverage.svg)](https://codeclimate.com/github/oculus42/short-uuid/coverage) 
 
-Translate standard UUIDs into shorter formats and back.
+Translate standard UUIDs into shorter (or just different) formats and back. This library does not *generate* UUIDs, just convert them. I recommend [node-uuid](https://www.npmjs.com/package/node-uuid) for that. 
 
     var shortUUID = require('short-uuid')
 
