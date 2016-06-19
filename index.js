@@ -65,6 +65,7 @@ function MakeConvertor(toAlphabet) {
         uuid: uuid.v4,
         fromUUID: function(uuid) { return shortenUUID(uuid, fromHex); },
         toUUID: function(shortUuid) { return enlargeUUID(shortUuid, toHex); },
+        alphabet: useAlphabet
     };
 }
 
