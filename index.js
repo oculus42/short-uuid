@@ -27,19 +27,18 @@ function shortenUUID (longId, translator) {
  */
 function enlargeUUID(shortId, translator) {
     var uu1 = translator(shortId);
-    var uuReg = /(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/;
-
     var leftPad = "";
+    var m;
 
     // Pad out UUIDs beginning with zeros (any number shorter than 32 characters of hex)
     for (var i = 0, len = 32-uu1.length; i < len; ++i) {
         leftPad += "0";
     }
 
-    var uuPad = leftPad + uu1;
+    // Join the zero padding and the UUID and then slice it up with match
+    m = (leftPad + uu1).match(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/);
 
-    var m = uuPad.match(uuReg);
-
+    // Accumulate the matches and join them.
     return [m[1], m[2], m[3], m[4], m[5]].join('-');
 }
 
