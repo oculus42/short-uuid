@@ -4,7 +4,6 @@
 
 var assert = require('assert');
 var short = require('../index');
-var uuid = require('node-uuid');
 
 var b90;
 
@@ -45,7 +44,7 @@ describe('short-uuid', function(){
         var uu, f58, f90;
 
         for (var i = 0; i < 10; i++) {
-            uu = uuid.v4();
+            uu = short.uuid();
 
             f58 = b58.fromUUID(uu);
             f90 = b90.fromUUID(uu);
