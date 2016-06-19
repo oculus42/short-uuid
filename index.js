@@ -53,9 +53,13 @@ function enlargeUUID(shortId, translator) {
  */
 function MakeConvertor(toAlphabet) {
 
-    var fromHex = anyBase(anyBase.HEX, toAlphabet);
-    var toHex = anyBase(toAlphabet, anyBase.HEX);
-    
+    // Default to Flickr 58
+    var useAlphabet = toAlphabet || flickrBase58;
+
+    // UUIDs are in hex, so we translate to and from.
+    var fromHex = anyBase(anyBase.HEX, useAlphabet);
+    var toHex = anyBase(useAlphabet, anyBase.HEX);
+
     return {
         fromUUID: function(uuid) { return shortenUUID(uuid, fromHex); },
         toUUID: function(shortUuid) { return enlargeUUID(shortUuid, toHex); },
