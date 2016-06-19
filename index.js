@@ -9,10 +9,22 @@ var uuid = require('node-uuid');
 var flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
 var cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~";
 
+/**
+ * Takes a UUID, strips the dashes, and translates.
+ * @param {string} longId
+ * @param {function(string)} translator
+ * @returns {string}
+ */
 function shortenUUID (longId, translator) {
     return translator(longId.replace(/-/g,''));
 }
 
+/**
+ * Translate back to hex and turn back into UUID format, with dashes
+ * @param {string} shortId
+ * @param {function(string)} translator
+ * @returns {string}
+ */
 function enlargeUUID(shortId, translator) {
     var uu1 = translator(shortId);
     var uuReg = /(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/;
@@ -31,6 +43,15 @@ function enlargeUUID(shortId, translator) {
     return [m[1], m[2], m[3], m[4], m[5]].join('-');
 }
 
+/**
+ * @constructor
+ * @param {string?} toAlphabet - Defaults to flickrBase58 if not provided
+ * @returns {{new: (function()),
+ *  uuid: (function()),
+ *  fromUUID: (function(string)),
+ *  toUUID: (function(string)),
+ *  alphabet: (string)}}
+ */
 function MakeConvertor(toAlphabet) {
 
     var fromHex = anyBase(anyBase.HEX, toAlphabet);
