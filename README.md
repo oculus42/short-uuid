@@ -26,7 +26,7 @@ translator.uuid(); // Each translator provides the uuid.v4() function
 
 // Translate UUIDs
 translator.toUUID(shortId);
-translator.from UUID(regularUUID);
+translator.fromUUID(regularUUID);
 
 // See the alphabet used by a translator
 translator.alphabet
