@@ -61,6 +61,8 @@ function MakeConvertor(toAlphabet) {
     var toHex = anyBase(useAlphabet, anyBase.HEX);
 
     return {
+        new: function() { return shortenUUID(uuid.v4(), fromHex); },
+        uuid: uuid.v4,
         fromUUID: function(uuid) { return shortenUUID(uuid, fromHex); },
         toUUID: function(shortUuid) { return enlargeUUID(shortUuid, toHex); },
     };
