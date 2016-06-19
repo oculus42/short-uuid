@@ -31,7 +31,6 @@
     "grunt-mocha-istanbul": "^5.0.1",
     "grunt-simple-mocha": "^0.4.1",
     "istanbul": "^0.4.3",
-    "mocha": "^2.5.3",
-    "node-uuid": "^1.4.7"
+    "mocha": "^2.5.3"
   }
 }
