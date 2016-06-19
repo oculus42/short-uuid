@@ -1,7 +1,7 @@
 {
   "name": "short-uuid",
-  "version": "1.0.0",
-  "description": "Translate standard UUID to shorter formats and back.",
+  "version": "2.0.0",
+  "description": "Create and translate standard UUIDs with shorter formats.",
   "main": "index.js",
   "scripts": {
     "test": "grunt test",
@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/oculus42/short-uuid#readme",
   "dependencies": {
-    "any-base": "^1.0.0"
+    "any-base": "^1.0.0",
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.3.1",

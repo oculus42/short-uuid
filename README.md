@@ -3,21 +3,39 @@
 [![Code Climate](https://codeclimate.com/github/oculus42/short-uuid/badges/gpa.svg)](https://codeclimate.com/github/oculus42/short-uuid) 
 [![Test Coverage](https://codeclimate.com/github/oculus42/short-uuid/badges/coverage.svg)](https://codeclimate.com/github/oculus42/short-uuid/coverage) 
 
-Translate standard UUIDs into shorter formats and back.
+Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-`require('short-uuid')` returns an object with a "new" function that takes a base as a parameter and returns to/from functions:
+## v2.0.0
 
-    {
-      fromUUID: function(){..},
-      toUUID: function(){..}
-      fromHex: function(){..},
-      toHex: function(){..},
-    }
-    
-The 'UUID' Functions handle the dashes and left-filled zeros needed for proper UUID support. The 'Hex' functions provide the translation functions from `any-base`.
+2.0 is a major rework to make the library more capable and useful. It now provides RFC4122 v4-compliant UUIDs,
+thanks to [`node-uuid`](https://github.com/broofa/node-uuid).
 
-The object also incldues a `constants` object, with base58 and base90 sets. 
-The base58 set `flickrBase58` originates with Flickr and reduces human transcription errors.
-The base90 set `cookieBase90` is the set of allowable characters in a cookie value, and is intended to provide the shortest storage of UUIDs in a browser cookie.
+```javascript
+var short = require('short-uuid');
+var translator = short(); // Defaults to flickrBase58
+var decimalTranslator = short("0123456789"); // Provide a specific alphabet for translation
+var cookieTranslator = short(short.constants.cookieBase90); // Use a constant for translation
 
-Finally, the Base58 translator is automatically generated and included as `b58` for convenience.
+// Generate a shortened v4 UUID
+translator.new();
+
+// Generate plain UUIDs
+short.uuid(); // From the constructor without creating a translator
+translator.uuid(); // Each translator provides the uuid.v4() function
+
+// Translate UUIDs
+translator.toUUID(shortId);
+translator.from UUID(regularUUID);
+
+// See the alphabet used by a translator
+translator.alphabet
+
+// View the constants
+short.constants.flickrBase58;
+short.constants.cookieBase90;
+
+```
+
+v2.0.0 is around 700 bytes when compressed with UglifyJS2 (702) or Closure Compiler (714 on Simple, 642 on Advanced).
+
+Please see [Revisions](revisions.md) for information on previous versions.
