@@ -22,7 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Remove the pre-built `.b58` library so we don't waste resources.
 - Remove `.toHex()` and `.fromHex()` from the translators. Use `any-base` directly if needed.
 
-## [1.0.0] - 2016-06-10
+## 1.0.0 - 2016-06-10
 ### Added
 - Provide `.new()` to create a translator.
 - Provide `.constants` for useful alphabets
@@ -31,3 +31,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Provide `.fromUUID()` and `.toUUID()` from the translators.
 - Provide `.toHex()` and `.fromHex()` from the translators.
 - Provide the flickrBase58 translator by default as `.b58`
+
+[2.0.0]: https://github.com/oculus42/short-uuid/compare/v1.0.0...v2.0.0
