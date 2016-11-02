@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Short UUID in browser</title>
+</head>
+<body>
+  <script src="../dist/short-uuid.js"></script>
+  <script>
+    (function () {
+      var short = window.ShortUUID;
+      var translator = short();
+      var id = translator.uuid();
+      console.log(id);
+
+      var sId = translator.fromUUID(id);
+      console.log(sId);
+
+      var original = translator.toUUID(sId);
+      console.log(original);
+    })();
+  </script>
+</body>
+</html>

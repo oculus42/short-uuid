@@ -1,9 +1,11 @@
 {
   "name": "short-uuid",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Create and translate standard UUIDs with shorter formats.",
   "main": "index.js",
   "scripts": {
+    "start": "watchify . -s ShortUUID -o dist/short-uuid.js -v -d",
+    "build": "browserify . -s ShortUUID | uglifyjs -cm > dist/short-uuid.min.js",
     "test": "grunt test",
     "cover": "grunt cover"
   },
@@ -24,15 +26,18 @@
   },
   "homepage": "https://github.com/oculus42/short-uuid#readme",
   "dependencies": {
-    "any-base": "^1.0.0",
+    "any-base": "voronianski/any-base",
     "node-uuid": "^1.4.7"
   },
   "devDependencies": {
+    "browserify": "^13.1.1",
     "codeclimate-test-reporter": "^0.3.1",
     "grunt": "^1.0.1",
     "grunt-mocha-istanbul": "^5.0.1",
     "grunt-simple-mocha": "^0.4.1",
     "istanbul": "^0.4.3",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "uglify-js": "^2.7.4",
+    "watchify": "^3.7.0"
   }
 }
