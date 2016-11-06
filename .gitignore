@@ -34,3 +34,6 @@ node_modules
 
 # IDE
 .idea
+
+# Dist
+dist

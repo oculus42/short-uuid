@@ -2,6 +2,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.0] - 2016-11-06
+### Added
+- Add browser support with Browserify as proposed by [voronianski](https://github.com/voronianski)
+- Include `grunt-mkdir` to support build process
+- Include `grunt-browserify` to support build process
+- Include `grunt-contrib-uglify` to support build process
+- Add example/index.html for Browserify demo
+- Add various dotfiles for CodeClimate configs
+
+### Changed
+- Add to [gruntfile.js] for new modules
+- Add to [package.json] for build command
+- Add dist folder to [.gitignore]
+- Update [revisions.md]
+- Update [README.md] with Browserify details
+
 ## [2.0.0] - 2016-06-19
 ### Added
 - Include `node-uuid` so we can generate our own UUIDs.

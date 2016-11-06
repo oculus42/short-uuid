@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ShortUUID in the browser</title>
+</head>
+<body>
+    <h1>ShortUUID</h1>
+    <code>translator = ShortUUID();</code>
+
+    <h2>Examples</h2>
+    <code>originalId = translator.uuid();</code>
+    <p id="origUUID"></p>
+    <hr>
+    <code>
+        shortId = translator.fromUUID(id);
+    </code>
+    <p id="shortUUID"></p>
+    <hr>
+    <code>
+        regularId = translator.toUUID(shortId);
+    </code>
+    <p id="plainUUID"></p>
+    <script src="../dist/short-uuid.js"></script>
+    <script>
+        function logger(elId, message) {
+            var markup = document.createElement('p');
+
+            markup.appendChild(document.createTextNode(message));
+
+            document.getElementById(elId).appendChild(markup);
+        }
+
+        (function code() {
+            var translator = window.ShortUUID();
+            var id = translator.uuid();
+            logger('origUUID',id);
+
+            var shortId = translator.fromUUID(id);
+            logger('shortUUID', shortId);
+
+            var regularId = translator.toUUID(shortId);
+            logger('plainUUID', regularId);
+        }());
+    </script>
+</body>
+</html>

@@ -1,11 +1,12 @@
 {
   "name": "short-uuid",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Create and translate standard UUIDs with shorter formats.",
   "main": "index.js",
   "scripts": {
     "test": "grunt test",
-    "cover": "grunt cover"
+    "cover": "grunt cover",
+    "build": "grunt build"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,9 @@
   "devDependencies": {
     "codeclimate-test-reporter": "^0.3.1",
     "grunt": "^1.0.1",
+    "grunt-browserify": "^5.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-mkdir": "^1.0.0",
     "grunt-mocha-istanbul": "^5.0.1",
     "grunt-simple-mocha": "^0.4.1",
     "istanbul": "^0.4.3",

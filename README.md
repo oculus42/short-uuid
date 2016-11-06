@@ -6,9 +6,11 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v2.0.0
+## v2.1.0
 
-2.0 is a major rework to make the library more capable and useful. It now provides RFC4122 v4-compliant UUIDs,
+2.1 adds Browserify config to support client-side use. The library is exposed as `ShortUUID`.
+
+short-uuid provides RFC4122 v4-compliant UUIDs,
 thanks to [`node-uuid`](https://github.com/broofa/node-uuid).
 
 ```javascript
@@ -37,6 +39,6 @@ short.constants.cookieBase90;
 
 ```
 
-v2.0.0 is around 700 bytes when compressed with UglifyJS2 (702) or Closure Compiler (714 on Simple, 642 on Advanced).
+v2.1.0 is under 1K when compressed. Using Browserify, the library and dependencies are less than 5K.
 
 Please see [Revisions](revisions.md) for information on previous versions.
