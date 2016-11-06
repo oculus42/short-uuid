@@ -82,4 +82,3 @@ module.exports = (function(){
     return MakeConvertor;
 
 }());
-
