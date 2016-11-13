@@ -6,9 +6,10 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v2.1.0
+## v2.1.1
 
-2.1 adds Browserify config to support client-side use. The library is exposed as `ShortUUID`.
+2.1.0 adds Browserify config to support client-side use as proposed by [voronianski](https://github.com/voronianski).
+2.1.1 includes compiled browser-ready files in the npm package for convenience. The library is exposed as `ShortUUID`.
 
 short-uuid provides RFC4122 v4-compliant UUIDs,
 thanks to [`node-uuid`](https://github.com/broofa/node-uuid).

@@ -1,5 +1,14 @@
 # Revisions
 
+# v2.1.1
+
+2.1.1 includes the compiled Browserify files in the npm package for convenience.
+
+# v2.1.0
+
+2.1 provides [Browserify](http://browserify.org) support as proposed by [voronianski](https://github.com/voronianski),
+exposing the interface at `ShortUUID`.
+
 # v2.0.0
 
 2.0 is a major rework to make the library more capable and useful. It now provides RFC4122 v4-compliant UUIDs,

@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.1] - 2016-11-13
+### Added
+- Add dist files to npm package
+
+### Changed
+- Add files list to [package.json]
+
 ## [2.1.0] - 2016-11-06
 ### Added
 - Add browser support with Browserify as proposed by [voronianski](https://github.com/voronianski)
