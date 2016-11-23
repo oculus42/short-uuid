@@ -5,7 +5,7 @@
 module.exports = (function(){
 
     var anyBase = require('any-base');
-    var uuid = require('node-uuid');
+    var uuid = require('uuid');
 
     var flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
     var cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~";
