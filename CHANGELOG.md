@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.2.0] - 2016-11-30
+### Added
+- Added Snyk vulnerability monitoring and patching
+
+### Changed
+- Updated devDependencies and added Snyk scripts to [package.json]
+
 ## [2.1.2] - 2016-11-30
 ### Changed
 - Updated from `node-uuid` to `uuid`, per the author

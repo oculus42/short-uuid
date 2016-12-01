@@ -1,5 +1,9 @@
 # Revisions
 
+# v2.2.0
+
+2.2.0 updates dev dependencies and adds Snyk vulnerability monitoring and patching.
+
 # v2.1.2
 
 2.1.2 changes to `uuid` 3.0.0 and uses only the `uuid/v4` module.

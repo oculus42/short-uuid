@@ -1,0 +1,6 @@
+version: v1.5.2
+ignore: {}
+patch:
+  'npm:tough-cookie:20160722':
+    - grunt-browserify > watchify > chokidar > fsevents > node-pre-gyp > request > tough-cookie:
+        patched: '2016-12-01T01:33:22.611Z'
