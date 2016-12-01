@@ -8,7 +8,7 @@ node_js:
   - "0.10"
 before_script:
   - npm install -g grunt-cli
-script: grunt test
+script: grunt test && grunt cover
 after_script:
   - codeclimate-test-reporter < coverage/lcov.info
 addons:
