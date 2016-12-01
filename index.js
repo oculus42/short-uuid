@@ -5,7 +5,7 @@
 module.exports = (function(){
 
     var anyBase = require('any-base');
-    var uuid = require('uuid');
+    var uuidV4 = require('uuid/v4');
 
     var flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
     var cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~";
@@ -62,8 +62,8 @@ module.exports = (function(){
         var toHex = anyBase(useAlphabet, anyBase.HEX);
 
         return {
-            new: function() { return shortenUUID(uuid.v4(), fromHex); },
-            uuid: uuid.v4,
+            new: function() { return shortenUUID(uuidV4(), fromHex); },
+            uuid: uuidV4,
             fromUUID: function(uuid) { return shortenUUID(uuid, fromHex); },
             toUUID: function(shortUuid) { return enlargeUUID(shortUuid, toHex); },
             alphabet: useAlphabet
@@ -77,7 +77,7 @@ module.exports = (function(){
     };
 
     // Expose the generic v4 UUID generator for convenience
-    MakeConvertor.uuid = uuid.v4;
+    MakeConvertor.uuid = uuidV4;
 
     return MakeConvertor;
 

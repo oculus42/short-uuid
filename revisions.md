@@ -1,5 +1,9 @@
 # Revisions
 
+# v2.1.2
+
+2.1.2 changes to `uuid` 3.0.0 and uses only the `uuid/v4` module.
+
 # v2.1.1
 
 2.1.1 includes the compiled Browserify files in the npm package for convenience.

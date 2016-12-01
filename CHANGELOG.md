@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.2] - 2016-11-30
+### Changed
+- Updated from `node-uuid` to `uuid`, per the author
+- Switched to using only `uuid/v4` for a smaller footprint
+
 ## [2.1.1] - 2016-11-13
 ### Added
 - Add dist files to npm package
