@@ -1,5 +1,9 @@
 # Revisions
 
+# v2.3.0
+
+2.3.0 moves Snyk to a dev dependency.
+
 # v2.2.0
 
 2.2.0 updates dev dependencies and adds Snyk vulnerability monitoring and patching.
