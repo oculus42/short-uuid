@@ -6,14 +6,15 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v2.1.3
+## v2.1.4
 
 2.1.0 adds Browserify config to support client-side use as proposed by [voronianski](https://github.com/voronianski).
 2.1.1 includes compiled browser-ready files in the npm package for convenience. The library is exposed as `ShortUUID`.
 2.1.2 switches to the modular `uuid` library.
 2.1.3 fixes a bad npm package for 2.1.1 which included Snyk incorrectly.
+2.1.4 corrects documentation of 2.1.2 from unpublished to deprecated.
 
-### v2.1.2 Unpublished
+### v2.1.2 Deprecated
 
 An incorrect package.json was packaged in v2.1.2, causing Snyk to be listed as a dependency. 
 This was introduced in v2.2.0.

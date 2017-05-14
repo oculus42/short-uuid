@@ -1,10 +1,14 @@
 # Revisions
 
+# v.2.1.4
+
+2.1.4 corrects documentation of 2.1.2 deprecation.
+
 # v2.1.3
 
 2.1.3 corrects a bad package.json in the 2.1.2 npm package.
 
-# v2.1.2 - UNPUBLISHED
+# v2.1.2 - DEPRECATED
 
 2.1.2 changes to `uuid` 3.0.0 and uses only the `uuid/v4` module.
 
