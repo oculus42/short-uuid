@@ -1,6 +1,10 @@
 # Revisions
 
-# v2.1.2
+# v2.1.3
+
+2.1.3 corrects a bad package.json in the 2.1.2 npm package.
+
+# v2.1.2 - UNPUBLISHED
 
 2.1.2 changes to `uuid` 3.0.0 and uses only the `uuid/v4` module.
 

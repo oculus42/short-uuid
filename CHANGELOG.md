@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.3] - 2017-05-14
+### Changed
+- Correction of bad npm publish. No code changes.
+- Updated README, versions.
+
 ## [2.1.2] - 2016-11-30
 ### Changed
 - Updated from `node-uuid` to `uuid`, per the author
