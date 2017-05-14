@@ -8,7 +8,7 @@
     "cover": "grunt cover",
     "build": "grunt build",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublishOnly": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
