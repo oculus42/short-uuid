@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Moved Snyk to devDependencies in [package.json]
 - Updated devDependencies grunt-contrib-uglify
+- Corrected Snyk spelling error in [README.md]
 
 ## [2.2.0] - 2016-11-30
 ### Added
