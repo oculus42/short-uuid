@@ -1,6 +1,6 @@
 {
   "name": "short-uuid",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Create and translate standard UUIDs with shorter formats.",
   "main": "index.js",
   "scripts": {
@@ -28,19 +28,19 @@
   "homepage": "https://github.com/oculus42/short-uuid#readme",
   "dependencies": {
     "any-base": "^1.0.0",
-    "uuid": "^3.0.0",
-    "snyk": "^1.21.2"
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.4.0",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
-    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-uglify": "^3.0.0",
     "grunt-mkdir": "^1.0.0",
     "grunt-mocha-istanbul": "^5.0.1",
     "grunt-simple-mocha": "^0.4.1",
     "istanbul": "^0.4.3",
-    "mocha": "^3.0.0"
+    "mocha": "^3.0.0",
+    "snyk": "^1.21.2"
   },
   "snyk": true
 }

@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.0] - 2017-05-14
+### Changed
+- Moved Snyk to devDependencies in [package.json]
+- Updated devDependencies grunt-contrib-uglify
+
 ## [2.2.0] - 2016-11-30
 ### Added
 - Added Snyk vulnerability monitoring and patching
