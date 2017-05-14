@@ -1,12 +1,37 @@
 # Revisions
 
+# v2.3.1
+
+2.3.1 merges the version history of the 2.1.x branch updates.
+
 # v2.3.0
 
 2.3.0 moves Snyk to a dev dependency.
 
-# v2.2.0
+# v2.2.0 - DEPRECATED
 
 2.2.0 updates dev dependencies and adds Snyk vulnerability monitoring and patching.
+
+# v2.1.4
+
+2.1.0 adds Browserify config to support client-side use as proposed by [voronianski](https://github.com/voronianski).
+2.1.1 includes compiled browser-ready files in the npm package for convenience. The library is exposed as `ShortUUID`.
+2.1.2 switches to the modular `uuid` library.
+2.1.3 fixes a bad npm package for 2.1.1 which included Snyk incorrectly.
+2.1.4 corrects documentation of 2.1.2 from unpublished to deprecated.
+
+## v2.1.2 Deprecated
+
+An incorrect package.json was packaged in v2.1.2, causing Snyk to be listed as a dependency. 
+This was introduced in v2.2.0.
+
+# v2.1.3
+
+2.1.3 corrects a bad package.json in the 2.1.2 npm package.
+
+# v2.1.2 - DEPRECATED
+
+2.1.2 changes to `uuid` 3.0.0 and uses only the `uuid/v4` module.
 
 # v2.1.2
 
