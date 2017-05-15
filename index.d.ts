@@ -1,5 +1,5 @@
 declare module 'short-uuid' {
-  function shortUuid(alphabet?:string): shortUuid.Translator;
+  function shortUuid(alphabet?: string): shortUuid.Translator;
 
   namespace shortUuid {
     export const constants: {
