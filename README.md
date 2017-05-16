@@ -14,9 +14,9 @@ thanks to [`uuid`](https://github.com/kelektiv/node-uuid).
 It includes Browserify support for client-side use as proposed by [voronianski](https://github.com/voronianski),
 with compiled browser-ready files in the npm package for convenience. The library is exposed as `ShortUUID`.
 
-2.3.0 corrects [Snyk](https://snyk.io) vulnerability protection to a dev dependency.
-2.3.1 merges the 2.1.x fixes into version history.
-2.3.2 merges a TypeScript definition from [alexturek](https://github.com/alexturek).
+2.3.0 corrects [Snyk](https://snyk.io) vulnerability protection to a dev dependency.  
+2.3.1 merges the 2.1.x fixes into version history.  
+2.3.2 merges a TypeScript definition from [alexturek](https://github.com/alexturek).  
 
 ### v2.2.0 Deprecated
 2.2.0 incorrectly added Snyk as a production dependency. It has been deprecated.
