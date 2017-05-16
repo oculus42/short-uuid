@@ -1,7 +1,7 @@
 declare module 'short-uuid' {
-  function shortUuid(alphabet?: string): shortUuid.Translator;
+  function shortUUID(alphabet?: string): shortUUID.Translator;
 
-  namespace shortUuid {
+  namespace shortUUID {
     export const constants: {
       flickrBase58: string;
       cookieBase90: string;
@@ -28,5 +28,5 @@ declare module 'short-uuid' {
     }
   }
 
-  export = shortUuid;
+  export = shortUUID;
 }
