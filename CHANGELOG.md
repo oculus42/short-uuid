@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.2] - 2017-05-16
+### Added
+- Added [index.d.ts] TypeScript definitions. No code changes.
+
+### Changed
+- Changed [package.json] to reference TypeScript definitions
+
 ## [2.3.1] - 2017-05-14
 ### Changed
 - Merged 2.1.x revision history in [README.md] and [revisions.md].  No code changes.

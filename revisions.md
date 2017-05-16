@@ -1,5 +1,9 @@
 # Revisions
 
+# v2.3.2
+
+2.3.2 merges a TypeScript definition from [alexturek](https://github.com/alexturek).
+
 # v2.3.1
 
 2.3.1 merges the version history of the 2.1.x branch updates.
