@@ -47,6 +47,6 @@ short.constants.cookieBase90;
 
 ```
 
-v2.3.1 is under 1K when compressed. Using Browserify, the library and dependencies are ~3.2K.
+short-uuid is under 1K when compressed. Using Browserify, the library and dependencies are ~3.2K.
 
 Please see [Revisions](revisions.md) for information on previous versions.
