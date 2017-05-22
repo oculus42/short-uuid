@@ -6,7 +6,7 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v2.3.2
+## v2.3.3
 
 short-uuid provides RFC4122 v4-compliant UUIDs,
 thanks to [`uuid`](https://github.com/kelektiv/node-uuid).
@@ -17,6 +17,7 @@ with compiled browser-ready files in the npm package for convenience. The librar
 2.3.0 corrects [Snyk](https://snyk.io) vulnerability protection to a dev dependency.  
 2.3.1 merges the 2.1.x fixes into version history.  
 2.3.2 merges a TypeScript definition from [alexturek](https://github.com/alexturek).  
+2.3.3 fixes missing /dist folder from the npm module.
 
 ### v2.2.0 Deprecated
 2.2.0 incorrectly added Snyk as a production dependency. It has been deprecated.

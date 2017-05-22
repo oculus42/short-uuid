@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.3] - 2017-05-22
+### Changed
+- Changed [.npmignore] To remove dist, so the built files end up on the package. No code changes.
+
 ## [2.3.2] - 2017-05-16
 ### Added
 - Added [index.d.ts] TypeScript definitions. No code changes.
