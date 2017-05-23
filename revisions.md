@@ -1,5 +1,9 @@
 # Revisions
 
+# v2.3.3
+
+2.3.3 fixes missing /dist folder from the npm module.
+
 # v2.3.2
 
 2.3.2 merges a TypeScript definition from [alexturek](https://github.com/alexturek).
