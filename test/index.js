@@ -54,9 +54,7 @@ describe('short-uuid', function(){
         var b90 = short(short.constants.cookieBase90);
         var b58 = short(short.constants.flickrBase58);
 
-        var uu, f58, f90;
-
-        for (var i = 0; i < 10; i++) {
+        var cycle = function(test) {
             uu = short.uuid();
 
             it('should generate valid UUIDs', function(){
@@ -66,19 +64,48 @@ describe('short-uuid', function(){
             f58 = b58.fromUUID(uu);
             f90 = b90.fromUUID(uu);
 
-            it('should translate back from multiple bases', function(){
+            test();
+        };
 
+        var uu, f58, f90, i, action;
+
+        it('should generate valid UUIDs', function(){
+
+            action = function() {
+                assert.ok(validUUIDRegex.test(uu), 'UUID is valid');
+            };
+
+            for (i = 0; i < 10; i++) {
+                cycle(action);
+            }
+        });
+
+        it('should translate back from multiple bases', function(){
+
+            action = function() {
                 assert.equal(b58.toUUID(f58), uu, 'Translated b58 matches original');
                 assert.ok(validUUIDRegex.test(b58.toUUID(f58)), 'Translated UUID is valid');
 
                 assert.equal(b90.toUUID(f90), uu, 'Translated b90 matches original');
                 assert.ok(validUUIDRegex.test(b90.toUUID(f90)), 'Translated UUID is valid');
-            });
+            };
 
-            it('should return a standard v4 uuid from instance.uuid()', function(){
+            for (i = 0; i < 10; i++) {
+                cycle(action);
+            }
+
+        });
+
+        it('should return a standard v4 uuid from instance.uuid()', function(){
+
+            action = function() {
                 assert.ok(validUUIDRegex.test(b58.uuid()), '.uuid() is a valid UUID');
-            });
-        }
+            };
+
+            for (i = 0; i < 10; i++) {
+                cycle(action);
+            }
+        });
         
         it('should handle UUIDs that begin with zeros', function(){
             var someZeros = '00000000-a70c-4ebd-8f2b-540f7e709092';
