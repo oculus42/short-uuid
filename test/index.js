@@ -93,6 +93,22 @@ describe('short-uuid', function(){
             assert.equal(allZeros, b90.toUUID(b90.fromUUID(allZeros)),'Supports starting zeroes');
         });
 
+        it('should handle UUID with uppercase letters', function(){
+            var uuidWithUpper = '00000013-0000-1000-8000-0026BB765291',
+                uuidAllLower = uuidWithUpper.toLowerCase(),
+
+                upperB58 = b58.fromUUID(uuidWithUpper),
+                lowerB58 = b58.fromUUID(uuidAllLower),
+
+                upperBack = b58.toUUID(upperB58),
+                lowerBack = b58.toUUID(lowerB58);
+
+            assert.equal(upperB58, lowerB58, 'Translates uppercase letters in UUIDs');
+            assert.equal(upperBack, lowerBack, 'Translates back to UUID correctly');
+            assert.equal(upperBack, uuidAllLower, 'From uppercase matches original lowercase');
+            assert.equal(lowerBack, uuidAllLower, 'From lower matches original lowercase');
+        });
+
     });
     
     describe('new', function(){
