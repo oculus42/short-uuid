@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.4] - 2017-08-08
+### Changed
+- Corrected shortenUUID function in [index.js]
+- Added test cases for uppercase in [test/index.js]
+- Added 2.3.4 fix notes in [README.md]
+- Refactored "random" test cases so only the assertions loop in [test/index.js]
+- Updated devDependencies for codeclimate-test-reporter in [package.json]
+- Included Node 8.x support in [.travis.yml]
+
 ## [2.3.3] - 2017-05-22
 ### Changed
 - Changed [.npmignore] To remove dist, so the built files end up on the package. No code changes.

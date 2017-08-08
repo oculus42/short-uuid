@@ -1,6 +1,6 @@
 {
   "name": "short-uuid",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "Create and translate standard UUIDs with shorter formats.",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -32,7 +32,7 @@
     "uuid": "^3.0.0"
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "^0.4.0",
+    "codeclimate-test-reporter": "^0.5.0",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-uglify": "^3.0.0",

@@ -17,7 +17,7 @@ module.exports = (function(){
      * @returns {string}
      */
     function shortenUUID (longId, translator) {
-        return translator(longId.replace(/-/g,''));
+        return translator(longId.toLowerCase().replace(/-/g,''));
     }
 
     /**
