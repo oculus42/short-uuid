@@ -1,11 +1,11 @@
 # short-uuid
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/oculus42/short-uuid.svg)](https://greenkeeper.io/)
 [![npm](https://img.shields.io/npm/v/short-uuid.svg)](https://www.npmjs.com/package/short-uuid) 
 [![Build Status](https://travis-ci.org/oculus42/short-uuid.svg?branch=master)](https://travis-ci.org/oculus42/short-uuid) 
 [![Code Climate](https://codeclimate.com/github/oculus42/short-uuid/badges/gpa.svg)](https://codeclimate.com/github/oculus42/short-uuid) 
 [![Test Coverage](https://codeclimate.com/github/oculus42/short-uuid/badges/coverage.svg)](https://codeclimate.com/github/oculus42/short-uuid/coverage) 
-[![Dependencies](https://david-dm.org/oculus42/short-uuid.svg)](https://david-dm.org/oculus42/short-uuid)
+[![Dependencies](https://david-dm.org/oculus42/short-uuid.svg)](https://david-dm.org/oculus42/short-uuid) 
+[![Greenkeeper badge](https://badges.greenkeeper.io/oculus42/short-uuid.svg)](https://greenkeeper.io/) 
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
