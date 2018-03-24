@@ -40,7 +40,7 @@
     "grunt-mocha-istanbul": "^5.0.1",
     "grunt-simple-mocha": "^0.4.1",
     "istanbul": "^0.4.3",
-    "mocha": "^3.0.0",
+    "mocha": "^5.0.5",
     "snyk": "^1.21.2"
   },
   "snyk": true
