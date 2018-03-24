@@ -1,5 +1,9 @@
 # Revisions
 
+# v2.3.5
+
+2.3.5 updates dependencies and includes a refactor for CodeClimate.
+
 # v2.3.4
 
 2.3.4 corrects the behavior for UUIDs with uppercase letters.

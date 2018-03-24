@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.5] - 2018-23-24
+### Changed
+- Refactored export in [gruntfile.js] for CodeClimate
+- Refactored export in [index.js] for CodeClimate
+- Updated dependencies - all patch or minor
+- Updated Mocha devDependency - Major version update
+- Updated other devDependencies - all patch or minor
+
 ## [2.3.4] - 2017-08-08
 ### Changed
 - Corrected shortenUUID function in [index.js]
