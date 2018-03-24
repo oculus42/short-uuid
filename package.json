@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/oculus42/short-uuid#readme",
   "dependencies": {
-    "any-base": "^1.0.0",
-    "uuid": "^3.0.0"
+    "any-base": "^1.1.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.5.0",
