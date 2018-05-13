@@ -52,7 +52,7 @@ short-uuid is under 1K when compressed. Using Browserify, the library and depend
 ## Recent Release Notes
 
 2.3.3 fixes missing /dist folder from the npm module.  
-2.3.4 corrects the behavior for UUIDs with uppercase letters.
+2.3.4 corrects the behavior for UUIDs with uppercase letters.  
 3.0.0 updates dependencies, includes a refactor for CodeClimate, and drops Node 0.x support.
 
 **Prior to 2.3.4, passing a UUID with capital letters would cause an incorrect conversion.**  
