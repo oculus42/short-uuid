@@ -14,6 +14,3 @@ script:
   - grunt test && grunt cover
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-addons:
-    code_climate:
-        repo_token: c0bec1f3744fa5764dfb105faa999ebf3b747548d3ed52a04773bf844afefa44
