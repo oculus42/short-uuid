@@ -63,9 +63,9 @@ short-uuid is under 1.2K when compressed. Using Browserify, the library and depe
 
 ## Recent Release Notes
 
-3.1.0 adds `generate()` for ease of use.
-3.0.0 updates dependencies, includes a refactor for CodeClimate, and drops Node 0.x support. 
-2.3.4 corrects the behavior for UUIDs with uppercase letters. Last version to build on Node 0.x.
+3.1.0 adds `generate()` for ease of use.  
+3.0.0 updates dependencies, includes a refactor for CodeClimate, and drops Node 0.x support.  
+2.3.4 corrects the behavior for UUIDs with uppercase letters. Last version to build on Node 0.x.  
 
 
 # v3.0.0
