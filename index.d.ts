@@ -5,10 +5,13 @@ declare module 'short-uuid' {
     export const constants: {
       flickrBase58: string;
       cookieBase90: string;
-    }
+    };
 
     /** Generate a new regular UUID. */
     export function uuid(): string;
+
+    /** Generate a base 58 short uuid */
+    export function generate(): string;
 
     export interface Translator {
       /** The alphabet used for encoding UUIDs. */
