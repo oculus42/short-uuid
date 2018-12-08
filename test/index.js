@@ -154,4 +154,25 @@ describe('short-uuid', function(){
 
     });
 
+    describe('generate', function(){
+        it('should generate an ID with the Flickr set', function(){
+            var val = short.generate();
+
+            var b58 = short(short.constants.flickrBase58);
+
+            var expanded = b58.toUUID(val);
+            var shortened = b58.fromUUID(expanded);
+
+            assert.equal(val, shortened, 'Generated Short ID is the same as re-shortened ID');
+
+            assert.ok(validUUIDRegex.test(expanded), 'UUID is valid');
+        });
+
+        it('should reuse the translator', function() {
+            var val = short.generate();
+            // No complex test, this is validating the second-time code path
+            assert.ok(val);
+        })
+    });
+
 });

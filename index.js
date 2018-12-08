@@ -9,6 +9,8 @@ var uuidV4 = require('uuid/v4');
 var flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
 var cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~";
 
+var toFlickr;
+
 /**
  * Takes a UUID, strips the dashes, and translates.
  * @param {string} longId
@@ -61,9 +63,11 @@ module.exports = (function(){
         // UUIDs are in hex, so we translate to and from.
         var fromHex = anyBase(anyBase.HEX, useAlphabet);
         var toHex = anyBase(useAlphabet, anyBase.HEX);
+        var generate = function() { return shortenUUID(uuidV4(), fromHex); };
 
         return {
-            new: function() { return shortenUUID(uuidV4(), fromHex); },
+            new: generate,
+            generate: generate,
             uuid: uuidV4,
             fromUUID: function(uuid) { return shortenUUID(uuid, fromHex); },
             toUUID: function(shortUuid) { return enlargeUUID(shortUuid, toHex); },
@@ -79,6 +83,15 @@ module.exports = (function(){
 
     // Expose the generic v4 UUID generator for convenience
     MakeConvertor.uuid = uuidV4;
+
+    // Provide a generic generator
+    MakeConvertor.generate = function() {
+        if (!toFlickr) {
+            // Generate on first use;
+            toFlickr = anyBase(anyBase.HEX, flickrBase58);
+        }
+        return shortenUUID(uuidV4(), toFlickr);
+    };
 
     return MakeConvertor;
 }());
