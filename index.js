@@ -63,9 +63,11 @@ module.exports = (function(){
         // UUIDs are in hex, so we translate to and from.
         var fromHex = anyBase(anyBase.HEX, useAlphabet);
         var toHex = anyBase(useAlphabet, anyBase.HEX);
+        var generate = function() { return shortenUUID(uuidV4(), fromHex); };
 
         return {
-            new: function() { return shortenUUID(uuidV4(), fromHex); },
+            new: generate,
+            generate: generate,
             uuid: uuidV4,
             fromUUID: function(uuid) { return shortenUUID(uuid, fromHex); },
             toUUID: function(shortUuid) { return enlargeUUID(shortUuid, toHex); },

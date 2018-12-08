@@ -2,7 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.0.0] - 2018-23-24
+## [3.1.0] - 2018-12-08
+### Changed
+- Updated dev packages for vulnerability fixes
+- Added top-level `generate` in [index.js]
+- Added `generate` alias on translators in [index.js]
+- Added tests for `generate`
+- Updated [index.d.ts] definitions
+- Update [README.md] to help clarify the functionality
+
+## [3.0.1] - 2018-10-18
+### Changed
+- Build dependencies update
+
+## [3.0.0] - 2018-03-24
 ### Changed
 - Refactored export in [gruntfile.js] for CodeClimate
 - Refactored export in [index.js] for CodeClimate

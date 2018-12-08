@@ -20,6 +20,9 @@ declare module 'short-uuid' {
       /** Generate a new short UUID using this translator's alphabet. */
       new: () => string;
 
+      /** Generate a new short UUID using this translator's alphabet. */
+      generate: () => string;
+
       /** Generate a new regular UUID. */
       uuid(): string;
 
