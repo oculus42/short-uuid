@@ -4,7 +4,7 @@
 
 function loadTasks(grunt) {
     grunt.loadNpmTasks('grunt-simple-mocha');
-    grunt.loadNpmTasks('grunt-mocha-istanbul');
+    grunt.loadNpmTasks('grunt-mocha-nyc');
     grunt.loadNpmTasks('grunt-mkdir');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -13,13 +13,13 @@ function loadTasks(grunt) {
 function registerTasks(grunt) {
 
     grunt.registerTask('default',
-        ['mocha_istanbul']);
+        ['mocha_nyc']);
 
     grunt.registerTask('test',
         ['simplemocha']);
 
     grunt.registerTask('cover',
-        ['mocha_istanbul']);
+        ['mocha_nyc']);
 
     grunt.registerTask('build',
         ['mkdir','browserify','uglify']);
@@ -50,7 +50,7 @@ function getBrowserifyData() {
     };
 }
 
-function getMochaIstanbulData() {
+function getCoverageData() {
     return {
         coverage: {
             src: 'test', // a folder works nicely
@@ -95,7 +95,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         browserify: getBrowserifyData(),
         mkdir: getMkdirData(),
-        mocha_istanbul: getMochaIstanbulData(),
+        mocha_nyc: getCoverageData(),
         simplemocha: getSimpleMochaData(),
         uglify: getUglifyData()
     });

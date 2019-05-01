@@ -9,7 +9,7 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v3.1.0
+## v3.1.1
 
 ### Quick Start
 
@@ -55,6 +55,11 @@ short.constants.flickrBase58; // Avoids similar characters (0/O, 1/I/l, etc.)
 short.constants.cookieBase90; // Safe for HTTP cookies values for smaller IDs. 
 ```
 
+## Support
+
+short-uuid has been tested to work on Node 0.10.x and later. 
+Builds run on Node 6.x and later.
+
 ## Notes
 
 short-uuid provides RFC4122 v4-compliant UUIDs,
@@ -72,8 +77,8 @@ short-uuid is under 1.2K when compressed. Using Browserify, the library and depe
 
 ## Recent Release Notes
 
-3.1.0 adds `generate()` for ease of use.  
-3.0.0 updates dependencies, includes a refactor for CodeClimate, and drops Node 0.x support.  
+3.1.0 adds `generate()` for ease of use. Last version to build on Node 4.x.
+3.0.0 updates dependencies, includes a refactor for CodeClimate, and drops Node 0.x builds.  
 2.3.4 corrects the behavior for UUIDs with uppercase letters. Last version to build on Node 0.x.  
 
 Please see [Revisions](revisions.md) for information on previous versions.
