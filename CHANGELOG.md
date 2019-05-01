@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.1.1] - 2019-05-01
+### Changed
+- Updated dev packages to replace istanbul with nyc
+- Updated [gruntfile.js] for nyc
+- Updated [.gitignore] for nyc
+- Removed Node 4.x build in [.travis.yml]
+- Included Node 12.x build in [.travis.yml]
+- Dropped Node 4.x build due to nested build dependencies
+
 ## [3.1.0] - 2018-12-08
 ### Changed
 - Updated dev packages for vulnerability fixes
@@ -22,7 +31,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Updated dependencies - all patch or minor
 - Updated Mocha devDependency - Major version update
 - Updated other devDependencies - all patch or minor
-- Dropped support for Node 0.10 and 0.12 due to nested build dependencies
+- Dropped build support for Node 0.10 and 0.12 due to nested build dependencies
 
 ## [2.3.4] - 2017-08-08
 ### Changed
