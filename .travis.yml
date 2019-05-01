@@ -1,10 +1,9 @@
 language: node_js
 node_js:
-  - "11"
+  - "12"
   - "10"
   - "8"
   - "6"
-  - "4"
 before_script:
   - npm install -g grunt-cli
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
