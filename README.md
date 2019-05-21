@@ -38,7 +38,7 @@ translator.new(); // mhvXdrZT4jP5T8vBxuvm75
 translator.generate(); // An alias for new.
 
 // Translate UUIDs to and from the shortened format
-translator.toUUID(shortId);// a44521d0-0fb8-4ade-8002-3385545c3318
+translator.toUUID(shortId); // a44521d0-0fb8-4ade-8002-3385545c3318
 translator.fromUUID(regularUUID); // mhvXdrZT4jP5T8vBxuvm75
 
 // Generate plain UUIDs
@@ -77,7 +77,8 @@ short-uuid is under 1.2K when compressed. Using Browserify, the library and depe
 
 ## Recent Release Notes
 
-3.1.0 adds `generate()` for ease of use. Last version to build on Node 4.x.
+3.1.1 updated dev dependencies which required dropping Node 4.x build test.  
+3.1.0 adds `generate()` for ease of use. Last version to build on Node 4.x.  
 3.0.0 updates dependencies, includes a refactor for CodeClimate, and drops Node 0.x builds.  
 2.3.4 corrects the behavior for UUIDs with uppercase letters. Last version to build on Node 0.x.  
 
