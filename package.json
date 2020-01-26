@@ -38,7 +38,7 @@
     "grunt-mkdir": "^1.0.0",
     "grunt-mocha-nyc": "^1.0.3",
     "grunt-simple-mocha": "^0.4.1",
-    "mocha": "^6.1.4",
+    "mocha": "^7.0.1",
     "nyc": "^14.0.0",
     "snyk": "^1.161.2"
   },
