@@ -4,7 +4,7 @@
  */
 
 var anyBase = require('any-base');
-var uuidV4 = require('uuid/v4');
+var { v4: uuidV4 } = require('uuid');
 
 var flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
 var cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~";
