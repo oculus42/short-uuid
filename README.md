@@ -24,7 +24,7 @@ short.generate(); // 73WakrfVbNJBaAmhQtEeDv
 
 short-uuid starts with RFC4122 v4-compliant UUIDs and translates them
 into other, usually shorter formats. It also provides translators
-to convert back and forth from RFC complaint UUIDs to the shorter formats.
+to convert back and forth from RFC compliant UUIDs to the shorter formats.
 
 ```javascript
 var short = require('short-uuid');
