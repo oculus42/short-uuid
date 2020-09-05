@@ -137,6 +137,45 @@ describe('short-uuid', function(){
         });
 
     });
+
+    describe('options', function(){
+        it("should return consistent length shortened ids when flagged", function () {
+            var b58 = short(short.constants.flickrBase58, {
+              consistentLength: true,
+            });
+
+            var uuidA = "01542709-aa56-ae25-5ad3-09237c6c3318",
+              uuidB = "21b8b506-8cb2-79f1-89b3-d45c72ec3318",
+              short58A = b58.fromUUID(uuidA),
+              short58B = b58.fromUUID(uuidB),
+              back58A = b58.toUUID(short58A),
+              back58B = b58.toUUID(short58B);
+
+            assert.equal(
+              short58A.length,
+              short58B.length,
+              "Translates to equal length string"
+            );
+            assert.equal(back58A, uuidA, "Translates back to uuid");
+            assert.equal(back58B, uuidB, "Translates back to uuid");
+        });
+
+        it("should prevent repeating alphabets when flagged", function () {
+            var sampleUUID = '21b8b506-8cb2-79f1-89b3-d45c72ec3318',
+                alphabetRepeat = '00112233445566778899aabbccddeeff',
+                alphabetNoRepeat = '0123456789abcdef',
+
+                b58Repeat = short(alphabetRepeat, { preventRepeat: true }),
+                b58NoRepeat = short(alphabetNoRepeat, { preventRepeat: true }),
+
+                shorterRepeat = b58Repeat.fromUUID(sampleUUID),
+                shorterNoRepeat = b58NoRepeat.fromUUID(sampleUUID);
+
+            assert.equal(shorterRepeat, shorterNoRepeat, "Remove repeated characters");
+        });
+
+
+    });
     
     describe('new', function(){
         it('should create a shortened UUID', function(){
