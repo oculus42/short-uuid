@@ -136,6 +136,25 @@ describe('short-uuid', function(){
             assert.equal(lowerBack, uuidAllLower, 'From lower matches original lowercase');
         });
 
+        it('should return same length shortened ids when using same alphabet',
+            function(){
+                var b58 = short(short.constants.flickrBase58),
+
+                    uuidA = '01542709-aa56-ae25-5ad3-09237c6c3318',
+                    uuidB = '21b8b506-8cb2-79f1-89b3-d45c72ec3318',
+
+                    short58A = b58.fromUUID(uuidA),
+                    short58B = b58.fromUUID(uuidB),
+
+                    back58A = b58.toUUID(short58A),
+                    back58B = b58.toUUID(short58B);
+
+                assert.equal(short58A.length, short58B.length, 'Translates to equal length string');
+                assert.equal(back58A, uuidA, 'Translates back to uuid');
+                assert.equal(back58B, uuidB, 'Translates back to uuid');
+            }
+        );
+
     });
     
     describe('new', function(){

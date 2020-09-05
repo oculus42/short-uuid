@@ -17,8 +17,9 @@ var toFlickr;
  * @param {function(string)} translator
  * @returns {string}
  */
-function shortenUUID (longId, translator) {
-    return translator(longId.toLowerCase().replace(/-/g,''));
+function shortenUUID (longId, translator, shortIdLength, paddingChar) {
+    return translator(longId.toLowerCase().replace(/-/g,'')).
+        padStart(shortIdLength, paddingChar);
 }
 
 /**
@@ -44,6 +45,11 @@ function enlargeUUID(shortId, translator) {
     return [m[1], m[2], m[3], m[4], m[5]].join('-');
 }
 
+// Calculate length for the shortened ID
+function getShortIdLength(alphabetLength) {
+    return Math.ceil(Math.log(2**128) / Math.log(alphabetLength));
+}
+
 module.exports = (function(){
 
     /**
@@ -60,16 +66,24 @@ module.exports = (function(){
         // Default to Flickr 58
         var useAlphabet = toAlphabet || flickrBase58;
 
+        // Data for padding if necessary
+        var shortIdLength = getShortIdLength(useAlphabet.length);
+        var paddingChar = useAlphabet[0];
+
         // UUIDs are in hex, so we translate to and from.
         var fromHex = anyBase(anyBase.HEX, useAlphabet);
         var toHex = anyBase(useAlphabet, anyBase.HEX);
-        var generate = function() { return shortenUUID(uuidV4(), fromHex); };
+        var generate = function() {
+            return shortenUUID(uuidV4(), fromHex, shortIdLength, paddingChar);
+        };
 
         return {
             new: generate,
             generate: generate,
             uuid: uuidV4,
-            fromUUID: function(uuid) { return shortenUUID(uuid, fromHex); },
+            fromUUID: function(uuid) {
+                return shortenUUID(uuid, fromHex, shortIdLength, paddingChar);
+            },
             toUUID: function(shortUuid) { return enlargeUUID(shortUuid, toHex); },
             alphabet: useAlphabet
         };
@@ -90,7 +104,8 @@ module.exports = (function(){
             // Generate on first use;
             toFlickr = anyBase(anyBase.HEX, flickrBase58);
         }
-        return shortenUUID(uuidV4(), toFlickr);
+        // Base 58 Short ID should have length 22, if not, leftpad with '1';
+        return shortenUUID(uuidV4(), toFlickr, 22, '1');
     };
 
     return MakeConvertor;
