@@ -40,12 +40,11 @@ test('constants', (t) => {
 });
 
 // Operations
+const b90 = short(short.constants.cookieBase90);
+const b58 = short(short.constants.flickrBase58);
 
 test('should generate valid UUIDs', (t) => {
   t.plan(10);
-
-  const b90 = short(short.constants.cookieBase90);
-  const b58 = short(short.constants.flickrBase58);
 
   const cycle = (testcb) => {
     const uu = short.uuid();
@@ -66,9 +65,6 @@ test('should generate valid UUIDs', (t) => {
 
 test('should translate back from multiple bases', (t) => {
   t.plan(40);
-
-  const b90 = short(short.constants.cookieBase90);
-  const b58 = short(short.constants.flickrBase58);
 
   const cycle = (testcb) => {
     const uu = short.uuid();
@@ -93,9 +89,6 @@ test('should translate back from multiple bases', (t) => {
 test('should return a standard v4 uuid from instance.uuid()', (t) => {
   t.plan(10);
 
-  const b90 = short(short.constants.cookieBase90);
-  const b58 = short(short.constants.flickrBase58);
-
   const cycle = (testcb) => {
     const uu = short.uuid();
     const f58 = b58.fromUUID(uu);
@@ -116,9 +109,6 @@ test('should return a standard v4 uuid from instance.uuid()', (t) => {
 test('Handle UUIDs that begin with zeros', (t) => {
   t.plan(2);
 
-  const b90 = short(short.constants.cookieBase90);
-  const b58 = short(short.constants.flickrBase58);
-
   const someZeros = '00000000-a70c-4ebd-8f2b-540f7e709092';
 
   t.equal(someZeros, b58.toUUID(b58.fromUUID(someZeros)), 'Supports starting zeroes');
@@ -128,8 +118,6 @@ test('Handle UUIDs that begin with zeros', (t) => {
 test('Handle UUIDs with all zeros', (t) => {
   t.plan(2);
 
-  const b90 = short(short.constants.cookieBase90);
-  const b58 = short(short.constants.flickrBase58);
   // Support even invalid UUIDs, for completeness
   const allZeros = '00000000-0000-0000-0000-000000000000';
 
@@ -139,8 +127,6 @@ test('Handle UUIDs with all zeros', (t) => {
 
 test('should handle UUID with uppercase letters', (t) => {
   t.plan(4);
-
-  const b58 = short(short.constants.flickrBase58);
 
   const uuidWithUpper = '00000013-0000-1000-8000-0026BB765291';
   const uuidAllLower = uuidWithUpper.toLowerCase();
@@ -167,8 +153,6 @@ test('should not be able to use an Alphabet containing duplicated values', (t) =
 test('should return consistent length shortened ids by default', (t) => {
   t.plan(3);
 
-  const b58 = short(short.constants.flickrBase58);
-
   const uuidA = '01542709-aa56-ae25-5ad3-09237c6c3318';
   const uuidB = '21b8b506-8cb2-79f1-89b3-d45c72ec3318';
   const short58A = b58.fromUUID(uuidA);
@@ -188,16 +172,16 @@ test('should return consistent length shortened ids by default', (t) => {
 test('should return consistent length shortened ids when flagged', (t) => {
   t.plan(3);
 
-  const b58 = short(short.constants.flickrBase58, {
+  const b58a = short(short.constants.flickrBase58, {
     consistentLength: true,
   });
 
   const uuidA = '01542709-aa56-ae25-5ad3-09237c6c3318';
   const uuidB = '21b8b506-8cb2-79f1-89b3-d45c72ec3318';
-  const short58A = b58.fromUUID(uuidA);
-  const short58B = b58.fromUUID(uuidB);
-  const back58A = b58.toUUID(short58A);
-  const back58B = b58.toUUID(short58B);
+  const short58A = b58a.fromUUID(uuidA);
+  const short58B = b58a.fromUUID(uuidB);
+  const back58A = b58a.toUUID(short58A);
+  const back58B = b58a.toUUID(short58B);
 
   t.equal(
     short58A.length,
@@ -211,16 +195,16 @@ test('should return consistent length shortened ids when flagged', (t) => {
 test('should return inconsistent length shortened ids when flagged', (t) => {
   t.plan(3);
 
-  const b58 = short(short.constants.flickrBase58, {
+  const b58b = short(short.constants.flickrBase58, {
     consistentLength: false,
   });
 
   const uuidA = '01542709-aa56-ae25-5ad3-09237c6c3318';
   const uuidB = '21b8b506-8cb2-79f1-89b3-d45c72ec3318';
-  const short58A = b58.fromUUID(uuidA);
-  const short58B = b58.fromUUID(uuidB);
-  const back58A = b58.toUUID(short58A);
-  const back58B = b58.toUUID(short58B);
+  const short58A = b58b.fromUUID(uuidA);
+  const short58B = b58b.fromUUID(uuidB);
+  const back58A = b58b.toUUID(short58A);
+  const back58B = b58b.toUUID(short58B);
 
   t.notEqual(
     short58A.length,
@@ -254,7 +238,6 @@ test('padded and unpadded values should translate back consistently', (t) => {
 test('new should create a shortened UUID', (t) => {
   t.plan(2);
 
-  const b58 = short(short.constants.flickrBase58);
   const shorter = b58.new();
   const expanded = b58.toUUID(shorter);
   const shortened = b58.fromUUID(expanded);
@@ -267,7 +250,6 @@ test('generate should generate an ID with the Flickr set', (t) => {
   t.plan(3);
 
   const val = short.generate();
-  const b58 = short(short.constants.flickrBase58);
   const expanded = b58.toUUID(val);
   const shortened = b58.fromUUID(expanded);
 
