@@ -231,6 +231,26 @@ test("should return inconsistent length shortened ids when flagged", (t) => {
   t.equal(back58B, uuidB, "Translates back to uuid");
 });
 
+test('padded and unpadded values should translate back consistently', (t) => {
+  t.plan(4);
+
+  const paddedShort = '12J9PLDMEfCf6da2LyAce5';
+  const unpaddedShort = '12J9PLDMEfCf6da2LyAce5';
+
+  const b58Padded = short(short.constants.flickrBase58, {
+    consistentLength: true,
+  });
+
+  const b58Vary = short(short.constants.flickrBase58, {
+    consistentLength: false,
+  });
+
+  t.equal(b58Padded.toUUID(paddedShort), b58Padded.toUUID(unpaddedShort), 'padded and unpadded provide the same uuid on a padded translator');
+  t.equal(b58Vary.toUUID(paddedShort), b58Vary.toUUID(unpaddedShort), 'padded and unpadded provide the same uuid on an unpadded translator');
+  t.equal(b58Padded.toUUID(paddedShort), b58Vary.toUUID(paddedShort), 'padded provides the same uuid on both translators');
+  t.equal(b58Padded.toUUID(unpaddedShort), b58Vary.toUUID(unpaddedShort), 'unpadded provides the same uuid on both translators');
+});
+
 test('new should create a shortened UUID', (t) => {
   t.plan(2);
 

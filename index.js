@@ -115,7 +115,7 @@ module.exports = (() => {
   makeConvertor.generate = () => {
     if (!toFlickr) {
       // Generate on first use;
-      toFlickr = anyBase(anyBase.HEX, flickrBase58);
+      toFlickr = makeConvertor(flickrBase58).generate;
     }
     return shortenUUID(uuidV4(), toFlickr);
   };
