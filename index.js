@@ -9,6 +9,10 @@ var uuidV4 = require('uuid').v4;
 var flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
 var cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~";
 
+var baseOptions = {
+    consistentLength: false,
+};
+
 var toFlickr;
 
 /**
@@ -17,8 +21,15 @@ var toFlickr;
  * @param {function(string)} translator
  * @returns {string}
  */
-function shortenUUID (longId, translator) {
-    return translator(longId.toLowerCase().replace(/-/g,''));
+function shortenUUID (longId, translator, paddingParams) {
+    var translated = translator(longId.toLowerCase().replace(/-/g, ""));
+
+    if (!paddingParams || !paddingParams.consistentLength) return translated;
+
+    return translated.padStart(
+        paddingParams.shortIdLength,
+        paddingParams.paddingChar
+    );
 }
 
 /**
@@ -44,32 +55,56 @@ function enlargeUUID(shortId, translator) {
     return [m[1], m[2], m[3], m[4], m[5]].join('-');
 }
 
+// Calculate length for the shortened ID
+function getShortIdLength(alphabetLength) {
+    return Math.ceil(Math.log(2**128) / Math.log(alphabetLength));
+}
+
 module.exports = (function(){
 
     /**
      * @constructor
-     * @param {string?} toAlphabet - Defaults to flickrBase58 if not provided
+     * @param {string?, object?} toAlphabet - Defaults to flickrBase58 if not provided
      * @returns {{new: (function()),
      *  uuid: (function()),
      *  fromUUID: (function(string)),
      *  toUUID: (function(string)),
      *  alphabet: (string)}}
      */
-    function MakeConvertor(toAlphabet) {
+    function MakeConvertor(toAlphabet, options) {
 
         // Default to Flickr 58
         var useAlphabet = toAlphabet || flickrBase58;
 
+        // Default to baseOptions
+        var selectedOptions = {...baseOptions, ...options};
+
+        // Check alphabet for duplicate entries
+        if ([...new Set(Array.from(useAlphabet))].length !== useAlphabet.length) {
+            throw new Error('The provided Alphabet has duplicate characters resulting in unreliable results');
+        }
+                  
+        // Padding Params
+        var paddingParams = {
+            consistentLength: selectedOptions.consistentLength,
+            shortIdLength: getShortIdLength(useAlphabet.length),
+            paddingChar: useAlphabet[0],
+        };
+
         // UUIDs are in hex, so we translate to and from.
         var fromHex = anyBase(anyBase.HEX, useAlphabet);
         var toHex = anyBase(useAlphabet, anyBase.HEX);
-        var generate = function() { return shortenUUID(uuidV4(), fromHex); };
+        var generate = function() {
+            return shortenUUID(uuidV4(), fromHex, paddingParams);
+        };
 
         return {
             new: generate,
             generate: generate,
             uuid: uuidV4,
-            fromUUID: function(uuid) { return shortenUUID(uuid, fromHex); },
+            fromUUID: function(uuid) {
+                return shortenUUID(uuid, fromHex, paddingParams);
+            },
             toUUID: function(shortUuid) { return enlargeUUID(shortUuid, toHex); },
             alphabet: useAlphabet
         };

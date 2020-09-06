@@ -1,5 +1,10 @@
 declare module 'short-uuid' {
-  function shortUUID(alphabet?: string): shortUUID.Translator;
+  interface Options{
+    consistentLength?: boolean;
+    preventRepeat?: boolean;
+  }
+
+  function shortUUID(alphabet?: string, options?:Options): shortUUID.Translator;
 
   namespace shortUUID {
     export const constants: {
