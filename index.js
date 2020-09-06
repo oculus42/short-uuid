@@ -24,15 +24,15 @@ let toFlickr;
  * @returns {string}
  */
 const shortenUUID = (longId, translator, paddingParams) => {
-  const translated = translator(longId.toLowerCase().replace(/-/g, ""));
+  const translated = translator(longId.toLowerCase().replace(/-/g, ''));
 
   if (!paddingParams || !paddingParams.consistentLength) return translated;
 
   return translated.padStart(
     paddingParams.shortIdLength,
-    paddingParams.paddingChar
+    paddingParams.paddingChar,
   );
-}
+};
 
 /**
  * Translate back to hex and turn back into UUID format, with dashes
@@ -48,15 +48,13 @@ const enlargeUUID = (shortId, translator) => {
 
   // Accumulate the matches and join them.
   return [m[1], m[2], m[3], m[4], m[5]].join('-');
-}
+};
 
 // Calculate length for the shortened ID
-const getShortIdLength = (alphabetLength) => {
-  return Math.ceil(Math.log(2 ** 128) / Math.log(alphabetLength));
-}
+const getShortIdLength = (alphabetLength) => (
+  Math.ceil(Math.log(2 ** 128) / Math.log(alphabetLength)));
 
 module.exports = (() => {
-
   /**
    * @param {string} toAlphabet - Defaults to flickrBase58 if not provided
    * @param {Object} [options]
@@ -68,12 +66,11 @@ module.exports = (() => {
    *  alphabet: (string)}}
    */
   const makeConvertor = (toAlphabet, options) => {
-
     // Default to Flickr 58
     const useAlphabet = toAlphabet || flickrBase58;
 
     // Default to baseOptions
-    const selectedOptions = {...baseOptions, ...options};
+    const selectedOptions = { ...baseOptions, ...options };
 
     // Check alphabet for duplicate entries
     if ([...new Set(Array.from(useAlphabet))].length !== useAlphabet.length) {
@@ -94,18 +91,18 @@ module.exports = (() => {
 
     return {
       new: generate,
-      generate: generate,
+      generate,
       uuid: uuidV4,
       fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
       toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
-      alphabet: useAlphabet
+      alphabet: useAlphabet,
     };
-  }
+  };
 
   // Expose the constants for other purposes.
   makeConvertor.constants = {
-    flickrBase58: flickrBase58,
-    cookieBase90: cookieBase90
+    flickrBase58,
+    cookieBase90,
   };
 
   // Expose the generic v4 UUID generator for convenience
