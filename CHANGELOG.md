@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.0.0] - 2020-09-06
+## [4.0.1] - 2020-09-06
+### Changed
+- Fixed default `.generate()` to use padStart correctly.
+
+## [4.0.0] - 2020-09-06 (Unreleased)
 ### MAJOR CHANGES
 - 🛑 short-uuid will now throw an error when provided an alphabet with duplicate characters. Duplicate characters will cause translation errors.
 - ℹ️ 4.0.0 is written in modern ECMAScript. It uses features through ES9/ES2018.
