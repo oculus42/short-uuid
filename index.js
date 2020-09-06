@@ -13,6 +13,7 @@ const baseOptions = {
   consistentLength: true,
 };
 
+// A default generator, instantiated only if used.
 let toFlickr;
 
 /**
@@ -22,8 +23,8 @@ let toFlickr;
  * @param {Object} [paddingParams]
  * @returns {string}
  */
-function shortenUUID(longId, translator, paddingParams) {
-  var translated = translator(longId.toLowerCase().replace(/-/g, ""));
+const shortenUUID = (longId, translator, paddingParams) => {
+  const translated = translator(longId.toLowerCase().replace(/-/g, ""));
 
   if (!paddingParams || !paddingParams.consistentLength) return translated;
 
@@ -39,29 +40,22 @@ function shortenUUID(longId, translator, paddingParams) {
  * @param {function(string)} translator
  * @returns {string}
  */
-function enlargeUUID(shortId, translator) {
-  var uu1 = translator(shortId);
-  var leftPad = "";
-  var m;
-
-  // Pad out UUIDs beginning with zeros (any number shorter than 32 characters of hex)
-  for (var i = 0, len = 32 - uu1.length; i < len; ++i) {
-    leftPad += "0";
-  }
+const enlargeUUID = (shortId, translator) => {
+  const uu1 = translator(shortId).padStart(32, '0');
 
   // Join the zero padding and the UUID and then slice it up with match
-  m = (leftPad + uu1).match(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/);
+  const m = uu1.match(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/);
 
   // Accumulate the matches and join them.
   return [m[1], m[2], m[3], m[4], m[5]].join('-');
 }
 
 // Calculate length for the shortened ID
-function getShortIdLength(alphabetLength) {
+const getShortIdLength = (alphabetLength) => {
   return Math.ceil(Math.log(2 ** 128) / Math.log(alphabetLength));
 }
 
-module.exports = (function () {
+module.exports = (() => {
 
   /**
    * @constructor
@@ -74,7 +68,7 @@ module.exports = (function () {
    *  toUUID: (function(string)),
    *  alphabet: (string)}}
    */
-  function MakeConvertor(toAlphabet, options) {
+  const MakeConvertor = (toAlphabet, options) => {
 
     // Default to Flickr 58
     const useAlphabet = toAlphabet || flickrBase58;
@@ -97,7 +91,7 @@ module.exports = (function () {
     // UUIDs are in hex, so we translate to and from.
     const fromHex = anyBase(anyBase.HEX, useAlphabet);
     const toHex = anyBase(useAlphabet, anyBase.HEX);
-    const generate = function () {
+    const generate = () => {
       return shortenUUID(uuidV4(), fromHex, paddingParams);
     };
 
@@ -105,10 +99,10 @@ module.exports = (function () {
       new: generate,
       generate: generate,
       uuid: uuidV4,
-      fromUUID: function (uuid) {
+      fromUUID: (uuid) => {
         return shortenUUID(uuid, fromHex, paddingParams);
       },
-      toUUID: function (shortUuid) {
+      toUUID: (shortUuid) => {
         return enlargeUUID(shortUuid, toHex);
       },
       alphabet: useAlphabet
@@ -125,7 +119,7 @@ module.exports = (function () {
   MakeConvertor.uuid = uuidV4;
 
   // Provide a generic generator
-  MakeConvertor.generate = function () {
+  MakeConvertor.generate = () => {
     if (!toFlickr) {
       // Generate on first use;
       toFlickr = anyBase(anyBase.HEX, flickrBase58);
@@ -134,4 +128,4 @@ module.exports = (function () {
   };
 
   return MakeConvertor;
-}());
+})();
