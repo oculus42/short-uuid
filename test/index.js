@@ -4,8 +4,7 @@
 
 const test = require('tape');
 const short = require('../index');
-
-const validUUIDRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const uuid = require('uuid');
 
 test('short-uuid setup', (t) => {
   t.plan(6);
@@ -30,7 +29,7 @@ test('short-uuid setup', (t) => {
   const new58short = b58default.new();
   const new58long = b58default.toUUID(new58short);
 
-  t.ok(validUUIDRegex.test(new58long), 'default produces valid output');
+  t.ok(uuid.validate(new58long), 'default produces valid output');
 });
 
 test('constants', (t) => {
@@ -57,7 +56,7 @@ test('should generate valid UUIDs', (t) => {
   };
 
   const action = (uu) => {
-    t.ok(validUUIDRegex.test(uu), 'UUID is valid');
+    t.ok(uuid.validate(uu), 'UUID is valid');
   };
 
   for (let i = 0; i < 10; i += 1) {
@@ -80,10 +79,10 @@ test('should translate back from multiple bases', (t) => {
   };
   const action = function (uu, f58, f90) {
     t.equal(b58.toUUID(f58), uu, 'Translated b58 matches original');
-    t.ok(validUUIDRegex.test(b58.toUUID(f58)), 'Translated UUID is valid');
+    t.ok(uuid.validate(b58.toUUID(f58)), 'Translated UUID is valid');
 
     t.equal(b90.toUUID(f90), uu, 'Translated b90 matches original');
-    t.ok(validUUIDRegex.test(b90.toUUID(f90)), 'Translated UUID is valid');
+    t.ok(uuid.validate(b90.toUUID(f90)), 'Translated UUID is valid');
   };
 
   for (let i = 0; i < 10; i += 1) {
@@ -106,7 +105,7 @@ test('should return a standard v4 uuid from instance.uuid()', (t) => {
   };
 
   const action = function () {
-    t.ok(validUUIDRegex.test(b58.uuid()), '.uuid() is a valid UUID');
+    t.ok(uuid.validate(b58.uuid()), '.uuid() is a valid UUID');
   };
 
   for (let i = 0; i < 10; i += 1) {
@@ -241,7 +240,7 @@ test('new should create a shortened UUID', (t) => {
   const shortened = b58.fromUUID(expanded);
 
   t.equal(shorter, shortened, 'Generated Short ID is the same as re-shortened ID');
-  t.ok(validUUIDRegex.test(expanded), 'UUID is valid');
+  t.ok(uuid.validate(expanded), 'UUID is valid');
 });
 
 test('generate should generate an ID with the Flickr set', (t) => {
@@ -253,7 +252,7 @@ test('generate should generate an ID with the Flickr set', (t) => {
   const shortened = b58.fromUUID(expanded);
 
   t.equal(val, shortened, 'Generated Short ID is the same as re-shortened ID');
-  t.ok(validUUIDRegex.test(expanded), 'UUID is valid');
+  t.ok(uuid.validate(expanded), 'UUID is valid');
 
   const val2 = short.generate();
   t.ok(val, 'Generate should reuse the default translator successfully');
