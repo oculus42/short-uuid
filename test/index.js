@@ -6,6 +6,14 @@ const test = require('tape');
 const uuid = require('uuid');
 const short = require('../index');
 
+const cycle = (testcb) => {
+  const uu = short.uuid();
+  const f58 = b58.fromUUID(uu);
+  const f90 = b90.fromUUID(uu);
+
+  testcb(uu, f58, f90);
+};
+
 test('short-uuid setup', (t) => {
   t.plan(6);
   let b90;
@@ -46,13 +54,7 @@ const b58 = short(short.constants.flickrBase58);
 test('should generate valid UUIDs', (t) => {
   t.plan(10);
 
-  const cycle = (testcb) => {
-    const uu = short.uuid();
-    const f58 = b58.fromUUID(uu);
-    const f90 = b90.fromUUID(uu);
 
-    testcb(uu, f58, f90);
-  };
 
   const action = (uu) => {
     t.ok(uuid.validate(uu), 'UUID is valid');
@@ -66,13 +68,6 @@ test('should generate valid UUIDs', (t) => {
 test('should translate back from multiple bases', (t) => {
   t.plan(40);
 
-  const cycle = (testcb) => {
-    const uu = short.uuid();
-    const f58 = b58.fromUUID(uu);
-    const f90 = b90.fromUUID(uu);
-
-    testcb(uu, f58, f90);
-  };
   const action = (uu, f58, f90) => {
     t.equal(b58.toUUID(f58), uu, 'Translated b58 matches original');
     t.ok(uuid.validate(b58.toUUID(f58)), 'Translated UUID is valid');
@@ -88,14 +83,6 @@ test('should translate back from multiple bases', (t) => {
 
 test('should return a standard v4 uuid from instance.uuid()', (t) => {
   t.plan(10);
-
-  const cycle = (testcb) => {
-    const uu = short.uuid();
-    const f58 = b58.fromUUID(uu);
-    const f90 = b90.fromUUID(uu);
-
-    testcb(uu, f58, f90);
-  };
 
   const action = () => {
     t.ok(uuid.validate(b58.uuid()), '.uuid() is a valid UUID');
