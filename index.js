@@ -58,7 +58,6 @@ const getShortIdLength = (alphabetLength) => {
 module.exports = (() => {
 
   /**
-   * @constructor
    * @param {string} toAlphabet - Defaults to flickrBase58 if not provided
    * @param {Object} [options]
    *
@@ -68,7 +67,7 @@ module.exports = (() => {
    *  toUUID: (function(string)),
    *  alphabet: (string)}}
    */
-  const MakeConvertor = (toAlphabet, options) => {
+  const makeConvertor = (toAlphabet, options) => {
 
     // Default to Flickr 58
     const useAlphabet = toAlphabet || flickrBase58;
@@ -104,16 +103,16 @@ module.exports = (() => {
   }
 
   // Expose the constants for other purposes.
-  MakeConvertor.constants = {
+  makeConvertor.constants = {
     flickrBase58: flickrBase58,
     cookieBase90: cookieBase90
   };
 
   // Expose the generic v4 UUID generator for convenience
-  MakeConvertor.uuid = uuidV4;
+  makeConvertor.uuid = uuidV4;
 
   // Provide a generic generator
-  MakeConvertor.generate = () => {
+  makeConvertor.generate = () => {
     if (!toFlickr) {
       // Generate on first use;
       toFlickr = anyBase(anyBase.HEX, flickrBase58);
@@ -121,5 +120,5 @@ module.exports = (() => {
     return shortenUUID(uuidV4(), toFlickr);
   };
 
-  return MakeConvertor;
+  return makeConvertor;
 })();

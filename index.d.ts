@@ -1,7 +1,6 @@
 declare module 'short-uuid' {
   interface Options{
     consistentLength?: boolean;
-    preventRepeat?: boolean;
   }
 
   function shortUUID(alphabet?: string, options?:Options): shortUUID.Translator;
