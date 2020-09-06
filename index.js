@@ -91,20 +91,14 @@ module.exports = (() => {
     // UUIDs are in hex, so we translate to and from.
     const fromHex = anyBase(anyBase.HEX, useAlphabet);
     const toHex = anyBase(useAlphabet, anyBase.HEX);
-    const generate = () => {
-      return shortenUUID(uuidV4(), fromHex, paddingParams);
-    };
+    const generate = () => shortenUUID(uuidV4(), fromHex, paddingParams);
 
     return {
       new: generate,
       generate: generate,
       uuid: uuidV4,
-      fromUUID: (uuid) => {
-        return shortenUUID(uuid, fromHex, paddingParams);
-      },
-      toUUID: (shortUuid) => {
-        return enlargeUUID(shortUuid, toHex);
-      },
+      fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
+      toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
       alphabet: useAlphabet
     };
   }
