@@ -5,9 +5,7 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "test": "snyk test && grunt test",
-    "cover": "grunt cover",
-    "build": "grunt build",
+    "test": "snyk test && npx tape test/**/*.js",
     "snyk-protect": "snyk protect",
     "prepublishOnly": "npm run snyk-protect"
   },
@@ -32,6 +30,11 @@
     "uuid": "^8.1.0"
   },
   "devDependencies": {
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
     "nyc": "^15.0.1",
     "snyk": "^1.330.2",
     "tape": "^5.0.1"
