@@ -32,15 +32,9 @@
     "uuid": "^8.1.0"
   },
   "devDependencies": {
-    "grunt": "^1.0.4",
-    "grunt-browserify": "^5.3.0",
-    "grunt-contrib-uglify": "^4.0.1",
-    "grunt-mkdir": "^1.0.0",
-    "grunt-mocha-nyc": "^1.0.3",
-    "grunt-simple-mocha": "^0.4.1",
-    "mocha": "^6.1.4",
-    "nyc": "^14.0.0",
-    "snyk": "^1.313.1"
+    "nyc": "^15.0.1",
+    "snyk": "^1.330.2",
+    "tape": "^5.0.1"
   },
   "snyk": true
 }

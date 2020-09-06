@@ -2,77 +2,62 @@
  * Created by Samuel on 6/4/2016.
  */
 
-var assert = require('assert');
+var test = require('tape');
 var short = require('../index');
 
 var validUUIDRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-describe('short-uuid', function(){
+test('short-uuid setup', function(t) {
+    t.plan(6);
+    let b90;
 
-    it('should be a constructor function', function(){
+    t.ok(typeof short === 'function', 'should be a constructor function');
 
-        var b90;
-        assert.ok(typeof short === 'function');
+    t.doesNotThrow(function () {
+        b90 = short(short.constants.cookieBase90);
+    }, "Calling does not throw an error");
 
-        assert.doesNotThrow(function(){
-            b90 = short(short.constants.cookieBase90);
-        }, "Calling does not throw an error");
+    t.equal(typeof b90, 'object', "constructor returns an object");
 
-        assert.equal(typeof b90, 'object', "constructor returns an object");
-    });
+    let b58default;
 
-    it('should use the b58 argument as default', function(){
+    t.doesNotThrow(function () {
+        b58default = short();
+    }, 'does not throw error with no options');
 
-        var b58default;
+    t.equal(b58default.alphabet, short.constants.flickrBase58, 'Default provides the flickrBase58 alphabet');
 
-        assert.doesNotThrow(function(){
-            b58default = short();
-        });
+    const new58short = b58default.new();
+    const new58long = b58default.toUUID(new58short);
 
-        assert.equal(b58default.alphabet, short.constants.flickrBase58, 'Default provides the flickrBase58 alphabet');
+    t.ok(validUUIDRegex.test(new58long), 'default produces valid output');
+});
+test('constants', function(t) {
+    t.plan(3);
+    t.ok(short.hasOwnProperty('constants') && typeof short.constants === 'object', 'should contain a "constants" object');
+    t.equal(short.constants.flickrBase58, '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 'should contain flicker58 constant');
+    t.equal(short.constants.cookieBase90, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~", 'should contain cookie90 constant');
+});
 
-        var new58short = b58default.new();
-        var new58long = b58default.toUUID(new58short);
+    test('operation', function(t){
 
-        assert.ok(validUUIDRegex.test(new58long), 'default produces valid output');
-    });
+        let b90 = short(short.constants.cookieBase90);
+        let b58 = short(short.constants.flickrBase58);
 
-    describe('constants', function(){
-
-        it('should contain a "constants" object', function(){
-            assert.ok(short.hasOwnProperty('constants') && typeof short.constants === 'object');
-        });
-
-        it('should contain constant values', function(){
-            assert.equal(short.constants.flickrBase58, '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ');
-            assert.equal(short.constants.cookieBase90, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~");
-        });
-    });
-
-    describe('operation', function(){
-
-        var b90 = short(short.constants.cookieBase90);
-        var b58 = short(short.constants.flickrBase58);
-
-        var cycle = function(test) {
+        const cycle = function(testcb) {
             uu = short.uuid();
-
-            it('should generate valid UUIDs', function(){
-                assert.ok(validUUIDRegex.test(uu), 'UUID is valid');
-            });
-
             f58 = b58.fromUUID(uu);
             f90 = b90.fromUUID(uu);
 
-            test();
+            testcb(uu, f58, f90);
         };
 
         var uu, f58, f90, i, action;
 
         it('should generate valid UUIDs', function(){
 
-            action = function() {
-                assert.ok(validUUIDRegex.test(uu), 'UUID is valid');
+            action = function(uu) {
+                t.ok(validUUIDRegex.test(uu), 'UUID is valid');
             };
 
             for (i = 0; i < 10; i++) {
@@ -82,12 +67,12 @@ describe('short-uuid', function(){
 
         it('should translate back from multiple bases', function(){
 
-            action = function() {
-                assert.equal(b58.toUUID(f58), uu, 'Translated b58 matches original');
-                assert.ok(validUUIDRegex.test(b58.toUUID(f58)), 'Translated UUID is valid');
+            action = function(uu, f58, f90) {
+                t.equal(b58.toUUID(f58), uu, 'Translated b58 matches original');
+                t.ok(validUUIDRegex.test(b58.toUUID(f58)), 'Translated UUID is valid');
 
-                assert.equal(b90.toUUID(f90), uu, 'Translated b90 matches original');
-                assert.ok(validUUIDRegex.test(b90.toUUID(f90)), 'Translated UUID is valid');
+                t.equal(b90.toUUID(f90), uu, 'Translated b90 matches original');
+                t.ok(validUUIDRegex.test(b90.toUUID(f90)), 'Translated UUID is valid');
             };
 
             for (i = 0; i < 10; i++) {
@@ -106,7 +91,7 @@ describe('short-uuid', function(){
                 cycle(action);
             }
         });
-        
+
         it('should handle UUIDs that begin with zeros', function(){
             var someZeros = '00000000-a70c-4ebd-8f2b-540f7e709092';
 
@@ -165,7 +150,7 @@ describe('short-uuid', function(){
             assert.equal(back58B, uuidB, "Translates back to uuid");
         });
     });
-    
+
     describe('new', function(){
         it('should create a shortened UUID', function(){
             var b58 = short(short.constants.flickrBase58);
@@ -202,5 +187,4 @@ describe('short-uuid', function(){
             assert.ok(val);
         })
     });
-
 });
