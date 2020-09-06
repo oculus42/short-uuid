@@ -106,7 +106,7 @@ TypeScript definitions are included, thanks to
 ## Recent Release Notes
 
 4.0.0 adds consistent length translation and throws an error if provided an invalid alphabet.
-3.1.1 updated dev dependencies which required dropping Node 4.x build test. Browserify distribution version
+3.1.1 updated dev dependencies which required dropping Node 4.x build test. Last Browserify distribution version temporarily.
 3.1.0 adds `generate()` for ease of use. Last version to build on Node 4.x.
 3.0.0 updates dependencies, includes a refactor for CodeClimate, and drops Node 0.x builds.
 2.3.4 corrects the behavior for UUIDs with uppercase letters. Last version to build on Node 0.x.
