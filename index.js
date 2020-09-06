@@ -11,7 +11,6 @@ var cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX
 
 var baseOptions = {
     consistentLength: false,
-    preventRepeat: false,
 };
 
 var toFlickr;
@@ -75,16 +74,16 @@ module.exports = (function(){
     function MakeConvertor(toAlphabet, options) {
 
         // Default to Flickr 58
-        var enteredAlphabet = toAlphabet || flickrBase58;
+        var useAlphabet = toAlphabet || flickrBase58;
 
         // Default to baseOptions
         var selectedOptions = {...baseOptions, ...options};
 
-        // If preventRepeat |> remove duplicates from alphabet
-        var useAlphabet = selectedOptions.preventRepeat
-            ? [...new Set(Array.from(enteredAlphabet))].join("")
-            : enteredAlphabet;
-        
+        // Check alphabet for duplicate entries
+        if ([...new Set(Array.from(useAlphabet))].length !== useAlphabet.length) {
+            throw new Error('The provided Alphabet has duplicate characters resulting in unreliable results');
+        }
+                  
         // Padding Params
         var paddingParams = {
             consistentLength: selectedOptions.consistentLength,

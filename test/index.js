@@ -136,6 +136,11 @@ describe('short-uuid', function(){
             assert.equal(lowerBack, uuidAllLower, 'From lower matches original lowercase');
         });
 
+        it('should not be able to use an Alphabet containing duplicated values', function(){
+            // Check if invalid alphabet throws error
+            assert.throws(() => short('001234567899aabcdef'), Error);
+        });
+
     });
 
     describe('options', function(){
@@ -159,22 +164,6 @@ describe('short-uuid', function(){
             assert.equal(back58A, uuidA, "Translates back to uuid");
             assert.equal(back58B, uuidB, "Translates back to uuid");
         });
-
-        it("should prevent repeating alphabets when flagged", function () {
-            var sampleUUID = '21b8b506-8cb2-79f1-89b3-d45c72ec3318',
-                alphabetRepeat = '00112233445566778899aabbccddeeff',
-                alphabetNoRepeat = '0123456789abcdef',
-
-                b58Repeat = short(alphabetRepeat, { preventRepeat: true }),
-                b58NoRepeat = short(alphabetNoRepeat, { preventRepeat: true }),
-
-                shorterRepeat = b58Repeat.fromUUID(sampleUUID),
-                shorterNoRepeat = b58NoRepeat.fromUUID(sampleUUID);
-
-            assert.equal(shorterRepeat, shorterNoRepeat, "Remove repeated characters");
-        });
-
-
     });
     
     describe('new', function(){
