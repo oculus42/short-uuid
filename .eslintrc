@@ -1,9 +1,0 @@
-ecmaFeatures:
-  modules: true
-
-env:
-  amd: true
-  browser: true
-  es6: true
-  jquery: true
-  node: true
