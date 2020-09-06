@@ -2,6 +2,32 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0] - 2020-09-06
+### MAJOR CHANGES
+- 🛑 short-uuid will now throw an error when provided an alphabet with duplicate characters. Duplicate characters will cause translation errors.
+- ℹ️ 4.0.0 is written in modern ECMAScript. It uses features through ES9/ES2018.
+- ℹ️ 4.x does not yet include the pre-built version for browsers. If needed, continue to use 3.1.1 in the meantime.
+- ℹ️ By default, short-uuid will pad shortened IDs to a consistent length.
+  - Padding does not affect translation, and the values are compatible with previous releases.
+  - Padding can be disabled with the option `consistentLength: false` when instantiating a translator. This is consistent with previous versions.
+
+### Added
+- eslint rules
+- tape testing library
+
+### Changed
+- Merged PR #44 from [qgerome](https://github.com/qgerome) to fix uuid version deprecation.
+- Merged PR #47 from [thadeucity](https://github.com/thadeucity) to resolve #39 for consistent length.
+- Switched tests to tape
+- Updated to ES6
+- Switched from Greenkeeper to Snyk.io
+- Dropped support for Node prior to 8.x
+- Updated link to uuid repo in Notes in [README.md]
+
+### Removed
+- Removed browserify, grunt, & mocha
+- Removed built version for browser
+
 ## [3.1.1] - 2019-05-01
 ### Changed
 - Updated dev packages to replace istanbul with nyc
