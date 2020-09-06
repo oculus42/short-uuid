@@ -6,7 +6,8 @@
   "typings": "index.d.ts",
   "scripts": {
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
-    "test": "snyk test && npx tape test/**/*.js",
+    "test": "npx tape test/**/*.js",
+    "snyk-test": "snyk test",
     "snyk-protect": "snyk protect",
     "prepublishOnly": "npm run snyk-protect"
   },
