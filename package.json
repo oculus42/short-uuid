@@ -11,6 +11,9 @@
     "snyk-protect": "snyk protect",
     "prepublishOnly": "npm run snyk-protect"
   },
+  "engines": {
+    "node": ">=8"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oculus42/short-uuid.git"
