@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.3] - 2020.-9-07
+### Changed
+- Fixed default generate length inconsistency identified by [thadeucity](https://github.com/thadeucity)
+- Added additional test.
+
 ## [4.0.2] - 2020-09-07
 ### Changed
 - No code changes

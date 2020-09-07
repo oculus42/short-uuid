@@ -9,7 +9,7 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v4.0.2
+## v4.0.3
 
 ### Major Changes in 4.0.0
 
