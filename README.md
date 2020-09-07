@@ -5,7 +5,7 @@
 [![Code Climate](https://codeclimate.com/github/oculus42/short-uuid/badges/gpa.svg)](https://codeclimate.com/github/oculus42/short-uuid)
 [![Test Coverage](https://codeclimate.com/github/oculus42/short-uuid/badges/coverage.svg)](https://codeclimate.com/github/oculus42/short-uuid/coverage)
 [![Dependencies](https://david-dm.org/oculus42/short-uuid.svg)](https://david-dm.org/oculus42/short-uuid)
-[![Known Vulnerabilities](https://snyk.io/test/oculus42/short-uuid/{repo}/badge.svg)](https://snyk.io/test/github/oculus42/short-uuid)
+[![Known Vulnerabilities](https://snyk.io/test/oculus42/short-uuid/badge.svg)](https://snyk.io/test/github/oculus42/short-uuid)
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
