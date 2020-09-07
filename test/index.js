@@ -250,3 +250,16 @@ test('generate should generate an ID with the Flickr set', (t) => {
   const val2 = short.generate();
   t.ok(val2, 'Generate should reuse the default translator successfully');
 });
+
+test('quantity tests', (t) => {
+  t.plan(1);
+  let underLength = 0;
+  for (let i = 0; i < 10000; i += 1) {
+    const defaultGen = short.generate();
+    if (defaultGen.length !== 22) {
+      underLength += 1;
+    }
+  }
+
+  t.equal(underLength, 0, 'ensure default is padded to');
+});
