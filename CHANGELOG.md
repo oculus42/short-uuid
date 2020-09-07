@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.2] - 2020-09-07
+### Changed
+- No code changes
+- Eslint cleanup
+- Test cleanup based on CodeClimate
+- Updated bad links and formatting in [README.md]
+
 ## [4.0.1] - 2020-09-06
 ### Changed
 - Fixed default `.generate()` to use padStart correctly.
@@ -20,8 +27,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - tape testing library
 
 ### Changed
-- Merged PR #44 from [qgerome](https://github.com/qgerome) to fix uuid version deprecation.
-- Merged PR #47 from [thadeucity](https://github.com/thadeucity) to resolve #39 for consistent length.
+- Merged PR #44 from [qgerome](https://github.com/qgerome) to fix uuid version deprecation
+- Merged PR #47 from [thadeucity](https://github.com/thadeucity) to resolve #39 for consistent length
 - Switched tests to tape
 - Updated to ES6
 - Switched from Greenkeeper to Snyk.io
