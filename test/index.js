@@ -18,7 +18,7 @@ const cycle = (testcb) => {
 };
 
 test('short-uuid setup', (t) => {
-  t.plan(6);
+  t.plan(7);
   let b90test;
 
   t.ok(typeof short === 'function', 'should be a constructor function');
@@ -36,6 +36,7 @@ test('short-uuid setup', (t) => {
   }, 'does not throw error with no options');
 
   t.equal(b58default.alphabet, short.constants.flickrBase58, 'Default provides the flickrBase58 alphabet');
+  t.equal(b58default.maxLength, 22, 'Translators provide maxLength');
 
   const new58short = b58default.new();
   const new58long = b58default.toUUID(new58short);
@@ -251,7 +252,7 @@ test('generate should generate an ID with the Flickr set', (t) => {
   t.ok(val2, 'Generate should reuse the default translator successfully');
 });
 
-test('quantity tests', (t) => {
+test('Default generate quantity tests', (t) => {
   t.plan(1);
   let underLength = 0;
   for (let i = 0; i < 10000; i += 1) {
@@ -261,5 +262,5 @@ test('quantity tests', (t) => {
     }
   }
 
-  t.equal(underLength, 0, 'ensure default is padded to');
+  t.equal(underLength, 0, 'Ensure default is padded');
 });

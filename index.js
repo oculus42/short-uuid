@@ -77,10 +77,12 @@ module.exports = (() => {
       throw new Error('The provided Alphabet has duplicate characters resulting in unreliable results');
     }
 
+    const shortIdLength = getShortIdLength(useAlphabet.length);
+
     // Padding Params
     const paddingParams = {
+      shortIdLength,
       consistentLength: selectedOptions.consistentLength,
-      shortIdLength: getShortIdLength(useAlphabet.length),
       paddingChar: useAlphabet[0],
     };
 
@@ -89,14 +91,19 @@ module.exports = (() => {
     const toHex = anyBase(useAlphabet, anyBase.HEX);
     const generate = () => shortenUUID(uuidV4(), fromHex, paddingParams);
 
-    return {
+    const translator = {
       new: generate,
       generate,
       uuid: uuidV4,
       fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
       toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
       alphabet: useAlphabet,
+      maxLength: shortIdLength,
     };
+
+    Object.freeze(translator);
+
+    return translator;
   };
 
   // Expose the constants for other purposes.
