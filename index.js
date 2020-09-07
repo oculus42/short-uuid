@@ -23,7 +23,11 @@ let toFlickr;
  * @param {Object} [paddingParams]
  * @returns {string}
  */
-const shortenUUID = (longId, translator, paddingParams) => {
+const shortenUUID = (longId, translator, paddingParams = {
+  consistentLength: true,
+  shortIdLength: 22,
+  paddingChar: '1',
+}) => {
   const translated = translator(longId.toLowerCase().replace(/-/g, ""));
 
   if (!paddingParams || !paddingParams.consistentLength) return translated;
