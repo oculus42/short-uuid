@@ -2,10 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.0.3] - 2020.-9-07
+## [4.1.0] - 2020-09-07
+### Added
+- maxLength property to translators
+
+### Changed
+- Translator objects are now frozen
+
+## [4.0.3] - 2020-09-07
 ### Changed
 - Fixed default generate length inconsistency identified by [thadeucity](https://github.com/thadeucity)
-- Added additional test.
+- Added additional test
 
 ## [4.0.2] - 2020-09-07
 ### Changed

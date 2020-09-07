@@ -9,7 +9,7 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v4.0.3
+## v4.1.0
 
 ### Major Changes in 4.0.0
 
@@ -63,6 +63,9 @@ translator.uuid(); // 3023b0f5-ec55-4e75-9cd8-104700698052
 // See the alphabet used by a translator
 translator.alphabet;
 
+// The maximum length a translated uuid will be with its alphabet.
+translator.maxLength;
+
 // View the constants
 short.constants.flickrBase58; // Avoids similar characters (0/O, 1/I/l, etc.)
 short.constants.cookieBase90; // Safe for HTTP cookies values for smaller IDs.
@@ -70,7 +73,7 @@ short.constants.cookieBase90; // Safe for HTTP cookies values for smaller IDs.
 
 ### Options
 
-short-uuid 4.0.0 adds support for an options object when creating a translator.
+short-uuid 4.0.0 adds support for options when creating a translator.
 This will support additional configuration in the future.
 
 ```javascript
@@ -92,8 +95,10 @@ translator.new(); // mhvXdrZT4jP5T8vBxuvm75
 short-uuid 4.0.0 and later is confirmed to work on Node 8.x and later.
 - Pre-compiled browser version is planned for future release.
 
-short-uuid 3.1.1 and lower is confirmed to work on Node 0.10.x and later,
-and browsers.
+short-uuid [3.1.1](https://github.com/oculus42/short-uuid/blob/v3.1.1/README.md)
+and lower is confirmed to work on Node 0.10.x and later,
+and browsers with a precompiled library proposed
+by [voronianski](https://github.com/voronianski).
 
 ## Notes
 
@@ -104,11 +109,10 @@ TypeScript definitions are included, thanks to
 [alexturek](https://github.com/alexturek).
 
 ## Recent Release Notes
-
-4.0.0 adds consistent length translation and throws an error if provided an invalid alphabet.
+4.1.0 adds a maxLength value to translators for reference
+4.0.3 fixes default generate
+4.0.1 adds consistent length translation and throws an error if provided an invalid alphabet.
 3.1.1 updated dev dependencies which required dropping Node 4.x build test. Last Browserify distribution version temporarily.
-3.1.0 adds `generate()` for ease of use. Last version to build on Node 4.x.
-3.0.0 updates dependencies, includes a refactor for CodeClimate, and drops Node 0.x builds.
 2.3.4 corrects the behavior for UUIDs with uppercase letters. Last version to build on Node 0.x.
 
 Please see [Revisions](revisions.md) for information on previous versions.
