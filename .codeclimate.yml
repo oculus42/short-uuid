@@ -8,7 +8,8 @@ engines:
       languages:
       - javascript
   eslint:
-    enabled: false
+    enabled: true
+    channel: "eslint-7"
   fixme:
     enabled: true
 ratings:
