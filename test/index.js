@@ -6,6 +6,9 @@ const test = require('tape');
 const uuid = require('uuid');
 const short = require('../index');
 
+const b90 = short(short.constants.cookieBase90);
+const b58 = short(short.constants.flickrBase58);
+
 const cycle = (testcb) => {
   const uu = short.uuid();
   const f58 = b58.fromUUID(uu);
@@ -16,15 +19,15 @@ const cycle = (testcb) => {
 
 test('short-uuid setup', (t) => {
   t.plan(6);
-  let b90;
+  let b90test;
 
   t.ok(typeof short === 'function', 'should be a constructor function');
 
   t.doesNotThrow(() => {
-    b90 = short(short.constants.cookieBase90);
+    b90test = short(short.constants.cookieBase90);
   }, 'Calling does not throw an error');
 
-  t.equal(typeof b90, 'object', 'constructor returns an object');
+  t.equal(typeof b90test, 'object', 'constructor returns an object');
 
   let b58default;
 
@@ -48,13 +51,8 @@ test('constants', (t) => {
 });
 
 // Operations
-const b90 = short(short.constants.cookieBase90);
-const b58 = short(short.constants.flickrBase58);
-
 test('should generate valid UUIDs', (t) => {
   t.plan(10);
-
-
 
   const action = (uu) => {
     t.ok(uuid.validate(uu), 'UUID is valid');
@@ -155,7 +153,7 @@ const paddingSetup = (translator) => {
     back58A,
     back58B,
   };
-}
+};
 
 test('should return consistent length shortened ids by default', (t) => {
   t.plan(3);
@@ -178,7 +176,7 @@ test('should return consistent length shortened ids with option', (t) => {
     consistentLength: true,
   });
 
-  const result = paddingSetup(paddedTranslator)
+  const result = paddingSetup(paddedTranslator);
 
   t.equal(
     result.short58A.length,
