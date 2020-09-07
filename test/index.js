@@ -137,76 +137,82 @@ test('should not be able to use an Alphabet containing duplicated values', (t) =
 });
 
 // Options
+
+// Length
+const paddingSetup = (translator) => {
+  const uuidA = '01542709-aa56-ae25-5ad3-09237c6c3318';
+  const uuidB = '21b8b506-8cb2-79f1-89b3-d45c72ec3318';
+  const short58A = translator.fromUUID(uuidA);
+  const short58B = translator.fromUUID(uuidB);
+  const back58A = translator.toUUID(short58A);
+  const back58B = translator.toUUID(short58B);
+
+  return {
+    uuidA,
+    uuidB,
+    short58A,
+    short58B,
+    back58A,
+    back58B,
+  };
+}
+
 test('should return consistent length shortened ids by default', (t) => {
   t.plan(3);
 
-  const uuidA = '01542709-aa56-ae25-5ad3-09237c6c3318';
-  const uuidB = '21b8b506-8cb2-79f1-89b3-d45c72ec3318';
-  const short58A = b58.fromUUID(uuidA);
-  const short58B = b58.fromUUID(uuidB);
-  const back58A = b58.toUUID(short58A);
-  const back58B = b58.toUUID(short58B);
+  const result = paddingSetup(b58);
 
   t.equal(
-    short58A.length,
-    short58B.length,
+    result.short58A.length,
+    result.short58B.length,
     'Translates to equal length string',
   );
-  t.equal(back58A, uuidA, 'Translates back to uuid');
-  t.equal(back58B, uuidB, 'Translates back to uuid');
+  t.equal(result.back58A, result.uuidA, 'Padded matches original uuid');
+  t.equal(result.back58B, result.uuidB, 'Unpadded matches original uuid');
 });
 
-test('should return consistent length shortened ids when flagged', (t) => {
+test('should return consistent length shortened ids with option', (t) => {
   t.plan(3);
 
-  const b58a = short(short.constants.flickrBase58, {
+  const paddedTranslator = short(short.constants.flickrBase58, {
     consistentLength: true,
   });
 
-  const uuidA = '01542709-aa56-ae25-5ad3-09237c6c3318';
-  const uuidB = '21b8b506-8cb2-79f1-89b3-d45c72ec3318';
-  const short58A = b58a.fromUUID(uuidA);
-  const short58B = b58a.fromUUID(uuidB);
-  const back58A = b58a.toUUID(short58A);
-  const back58B = b58a.toUUID(short58B);
+  const result = paddingSetup(paddedTranslator)
 
   t.equal(
-    short58A.length,
-    short58B.length,
+    result.short58A.length,
+    result.short58B.length,
     'Translates to equal length string',
   );
-  t.equal(back58A, uuidA, 'Translates back to uuid');
-  t.equal(back58B, uuidB, 'Translates back to uuid');
+
+  t.equal(result.back58A, result.uuidA, 'Padded matches original uuid');
+  t.equal(result.back58B, result.uuidB, 'Unpadded matches original uuid');
 });
 
 test('should return inconsistent length shortened ids when flagged', (t) => {
   t.plan(3);
 
-  const b58b = short(short.constants.flickrBase58, {
+  const unpaddedTranslator = short(short.constants.flickrBase58, {
     consistentLength: false,
   });
 
-  const uuidA = '01542709-aa56-ae25-5ad3-09237c6c3318';
-  const uuidB = '21b8b506-8cb2-79f1-89b3-d45c72ec3318';
-  const short58A = b58b.fromUUID(uuidA);
-  const short58B = b58b.fromUUID(uuidB);
-  const back58A = b58b.toUUID(short58A);
-  const back58B = b58b.toUUID(short58B);
+  const result = paddingSetup(unpaddedTranslator);
 
   t.notEqual(
-    short58A.length,
-    short58B.length,
-    'Translates to equal length string',
+    result.short58A.length,
+    result.short58B.length,
+    'Does not produce equal length strings',
   );
-  t.equal(back58A, uuidA, 'Translates back to uuid');
-  t.equal(back58B, uuidB, 'Translates back to uuid');
+  t.equal(result.back58A, result.uuidA, 'Padded matches original uuid');
+  t.equal(result.back58B, result.uuidB, 'Unpadded matches original uuid');
 });
 
 test('padded and unpadded values should translate back consistently', (t) => {
   t.plan(4);
 
   const paddedShort = '12J9PLDMEfCf6da2LyAce5';
-  const unpaddedShort = '12J9PLDMEfCf6da2LyAce5';
+  const unpaddedShort = '2J9PLDMEfCf6da2LyAce5';
 
   const b58Padded = short(short.constants.flickrBase58, {
     consistentLength: true,
