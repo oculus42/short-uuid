@@ -21,6 +21,9 @@ declare module 'short-uuid' {
       /** The alphabet used for encoding UUIDs. */
       alphabet: string;
 
+      /** The short UUID maximum length. */
+      maxLength: number;
+
       /** Generate a new short UUID using this translator's alphabet. */
       new: () => string;
 
