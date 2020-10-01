@@ -11,30 +11,32 @@ declare module 'short-uuid' {
       cookieBase90: string;
     };
 
+    export type UUID = string & { _guidBrand: 'short-uuid' };
+
     /** Generate a new regular UUID. */
-    export function uuid(): string;
+    export function uuid(): UUID;
 
     /** Generate a base 58 short uuid */
-    export function generate(): string;
+    export function generate(): UUID;
 
     export interface Translator {
       /** The alphabet used for encoding UUIDs. */
       alphabet: string;
 
       /** Generate a new short UUID using this translator's alphabet. */
-      new: () => string;
+      new: () => UUID;
 
       /** Generate a new short UUID using this translator's alphabet. */
-      generate: () => string;
+      generate: () => UUID;
 
       /** Generate a new regular UUID. */
-      uuid(): string;
+      uuid(): UUID;
 
       /** short -> long */
-      toUUID(shortId: string): string;
+      toUUID(shortId: string): UUID;
 
       /** long -> short */
-      fromUUID(regularUUID: string): string;
+      fromUUID(regularUUID: string): UUID;
     }
   }
 
