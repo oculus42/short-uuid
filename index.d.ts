@@ -33,10 +33,10 @@ declare module 'short-uuid' {
       uuid(): UUID;
 
       /** short -> long */
-      toUUID(shortId: string): UUID;
+      toUUID(shortId: string | UUID): UUID;
 
       /** long -> short */
-      fromUUID(regularUUID: string): UUID;
+      fromUUID(regularUUID: string | UUID): UUID;
     }
   }
 
