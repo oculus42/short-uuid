@@ -12,31 +12,32 @@ declare module 'short-uuid' {
     };
 
     export type UUID = string & { _guidBrand: 'short-uuid' };
+    export type SUUID = string & { _guidBrand: 'uuid' };
 
     /** Generate a new regular UUID. */
     export function uuid(): UUID;
 
     /** Generate a base 58 short uuid */
-    export function generate(): UUID;
+    export function generate(): SUUID;
 
     export interface Translator {
       /** The alphabet used for encoding UUIDs. */
       alphabet: string;
 
       /** Generate a new short UUID using this translator's alphabet. */
-      new: () => UUID;
+      new: () => SUUID;
 
       /** Generate a new short UUID using this translator's alphabet. */
-      generate: () => UUID;
+      generate: () => SUUID;
 
       /** Generate a new regular UUID. */
       uuid(): UUID;
 
       /** short -> long */
-      toUUID(shortId: string | UUID): UUID;
+      toUUID(shortId: string | SUUID): UUID;
 
       /** long -> short */
-      fromUUID(regularUUID: string | UUID): UUID;
+      fromUUID(regularUUID: string | UUID): SUUID;
     }
   }
 
