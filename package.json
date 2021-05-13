@@ -1,6 +1,6 @@
 {
   "name": "short-uuid",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Create and translate standard UUIDs with shorter formats.",
   "main": "index.js",
   "typings": "index.d.ts",
