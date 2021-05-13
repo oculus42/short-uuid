@@ -32,7 +32,7 @@
   "homepage": "https://github.com/oculus42/short-uuid#readme",
   "dependencies": {
     "any-base": "^1.1.0",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "bl": ">=4.0.3",
@@ -40,7 +40,7 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "nyc": "^15.0.1",
-    "snyk": "^1.330.2",
+    "snyk": "^1.595.0",
     "tape": "^5.0.1"
   },
   "snyk": true
