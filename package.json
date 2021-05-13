@@ -1,6 +1,6 @@
 {
   "name": "short-uuid",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Create and translate standard UUIDs with shorter formats.",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -32,16 +32,15 @@
   "homepage": "https://github.com/oculus42/short-uuid#readme",
   "dependencies": {
     "any-base": "^1.1.0",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "bl": ">=4.0.3",
-    "eslint": "^7.8.1",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "nyc": "^15.0.1",
-    "snyk": "^1.330.2",
-    "tape": "^5.0.1"
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nyc": "^15.1.0",
+    "snyk": "^1.595.0",
+    "tape": "^5.2.2"
   },
   "snyk": true
 }
