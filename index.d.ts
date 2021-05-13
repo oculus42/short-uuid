@@ -20,6 +20,8 @@ declare module 'short-uuid' {
     export interface Translator {
       /** The alphabet used for encoding UUIDs. */
       alphabet: string;
+      /** Maximum length in characters of a short ID using this Translator */
+      maxLength: number;
 
       /** Generate a new short UUID using this translator's alphabet. */
       new: () => string;
