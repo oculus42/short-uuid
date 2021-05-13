@@ -9,16 +9,17 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v4.1.0
+## v4.2.0
 
 ### Major Changes in 4.0.0
 
 - 🛑 short-uuid will now throw an error when provided an alphabet with duplicate characters. Duplicate characters will cause translation errors.
 - ℹ️ 4.0.0 is written in modern ECMAScript. It uses features through ES9/ES2018.
-- ℹ️ 4.x does not yet include the pre-built version for browsers. If needed, continue to use 3.1.1 in the meantime.
 - ℹ️ By default, short-uuid will pad shortened IDs to a consistent length.
   - Padding does not affect translation, and the values are compatible with previous releases.
   - Padding can be disabled with the option `consistentLength: false` when instantiating a translator. This is consistent with previous versions.
+- ℹ️ 4.x does not include a pre-built version for browsers. If needed, 3.1.1 is compatible, but does not pad to a consistent length.
+
 
 ### Quick Start
 
