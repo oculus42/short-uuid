@@ -39,7 +39,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "nyc": "^15.1.0",
-    "snyk": "^1.595.0",
+    "snyk": "^1.1034.0",
     "tape": "^5.2.2"
   },
   "snyk": true
