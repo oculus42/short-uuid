@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.1] - 2022-10-18
+### Added
+- GitHub Actions
+- Testing to Node 16.x and 18.x
+
+### Changed
+- npm audit updated dependencies
+
+### Removed
+- Travis-CI integration
+- Snyk.io integration
+
 ## [4.2.0] - 2021-05-13
 ### Added
 - maxLength property to TypeScript definitions
