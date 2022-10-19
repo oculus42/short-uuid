@@ -6,10 +6,7 @@
   "typings": "index.d.ts",
   "scripts": {
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
-    "test": "npx tape test/**/*.js",
-    "snyk-test": "snyk test",
-    "snyk-protect": "snyk protect",
-    "prepublishOnly": "npm run snyk-protect"
+    "test": "npx tape test/**/*.js"
   },
   "engines": {
     "node": ">=8"
@@ -39,8 +36,6 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "nyc": "^15.1.0",
-    "snyk": "^1.1034.0",
     "tape": "^5.2.2"
-  },
-  "snyk": true
+  }
 }
