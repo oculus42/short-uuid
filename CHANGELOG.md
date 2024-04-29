@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.0] - 2024-04-29
 ### MAJOR CHANGES
-- 🛑 5.0.0 drops support for Node 10 and Node 12
+- 🛑 5.0.0 drops support for Node 10 and 12
 - ℹ️ 5.x will be quickly succeeded by 6.0 which will drop Node 14.x and 16.x support
 
 ### Changed

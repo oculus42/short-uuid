@@ -6,17 +6,10 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v4.2.2
+## v5.0.0
 
-### Major Changes in 4.0.0
-
-- 🛑 short-uuid will now throw an error when provided an alphabet with duplicate characters. Duplicate characters will cause translation errors.
-- ℹ️ 4.0.0 is written in modern ECMAScript. It uses features through ES9/ES2018.
-- ℹ️ By default, short-uuid will pad shortened IDs to a consistent length.
-  - Padding does not affect translation, and the values are compatible with previous releases.
-  - Padding can be disabled with the option `consistentLength: false` when instantiating a translator. This is consistent with previous versions.
-- ℹ️ 4.x does not include a pre-built version for browsers. If needed, 3.1.1 is compatible, but does not pad to a consistent length.
-
+### Major Changes in 5.0.0
+- 🛑 5.0.0 drops support for Node 10 and 12.
 
 ### Quick Start
 
@@ -62,6 +55,7 @@ translator.uuid(); // 3023b0f5-ec55-4e75-9cd8-104700698052
 translator.alphabet;
 
 // The maximum length a translated uuid will be with its alphabet.
+// if consistentLength is set (on by default), so ids will be this length.
 translator.maxLength;
 
 // View the constants
@@ -71,8 +65,8 @@ short.constants.cookieBase90; // Safe for HTTP cookies values for smaller IDs.
 
 ### Options
 
-short-uuid 4.0.0 adds support for options when creating a translator.
-This will support additional configuration in the future.
+short-uuid 4.0.0 added support for options when creating a translator.
+This may support additional configuration in the future.
 
 ```javascript
 const short = require('short-uuid');
@@ -90,12 +84,15 @@ translator.new(); // mhvXdrZT4jP5T8vBxuvm75
 
 ## Support
 
-short-uuid 4.0.0 and later is confirmed to work on Node 8.x and later.
-- Pre-compiled browser version is planned for future release.
+short-uuid [5.0.0](https://github.com/oculus42/short-uuid/blob/v5.0.0/README.md)
+and later is tested on Node 14.x and later.
 
-short-uuid [3.1.1](https://github.com/oculus42/short-uuid/blob/v3.1.1/README.md)
-and lower is confirmed to work on Node 0.10.x and later,
-and browsers with a precompiled library proposed
+short-uuid [4.x](https://github.com/oculus42/short-uuid/blob/v3.2.2/README.md)
+was tested on Node 8.x to 18.x
+
+short-uuid [3.x](https://github.com/oculus42/short-uuid/blob/v3.1.1/README.md)
+and lower was confirmed to work on Node 6.x to 12.x,
+and offered a precompiled browser library proposed
 by [voronianski](https://github.com/voronianski).
 
 ## Notes
@@ -106,11 +103,10 @@ thanks to [`uuid`](https://github.com/uuidjs/uuid).
 TypeScript definitions are included, thanks to
 [alexturek](https://github.com/alexturek).
 
-## Recent Release Notes
+## Previous Release Note Highlights
 4.1.0 adds a maxLength value to translators for reference
-4.0.3 fixes default generate
 4.0.1 adds consistent length translation and throws an error if provided an invalid alphabet.
-3.1.1 updated dev dependencies which required dropping Node 4.x build test. Last Browserify distribution version temporarily.
+3.1.1 removed Node 4.x tests. Last included Browserify distribution.
 2.3.4 corrects the behavior for UUIDs with uppercase letters. Last version to build on Node 0.x.
 
 Please see [Revisions](revisions.md) for information on previous versions.
