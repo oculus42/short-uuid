@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.0] - 2024-04-29
+### MAJOR CHANGES
+- 🛑 5.0.0 drops support for Node 10 and Node 12
+- ℹ️ 5.x will be quickly succeeded by 6.0 which will drop Node 14.x and 16.x support
+
+### Changed
+- UUID version to 9.0.1
+- Dropped support for Node prior to 14.x
+- Updated GitHub Actions to test Node 14.x-22.x
+
 ## [4.2.2] - 2022-10-18
 ### Changed
 - Updated README
