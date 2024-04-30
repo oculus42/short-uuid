@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.1] - 2024-04-30
+### Changed
+- Updated `engines` in `package.json` to reflect correct support (Node >=14)
+
 ## [5.0.0] - 2024-04-29
 ### MAJOR CHANGES
 - 🛑 5.0.0 drops support for Node 10 and 12

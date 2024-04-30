@@ -9,7 +9,7 @@
     "test": "npx tape test/**/*.js"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=14"
   },
   "repository": {
     "type": "git",
