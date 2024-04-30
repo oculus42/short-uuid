@@ -6,7 +6,9 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v5.0.0
+
+## v5.0.1
+5.0.1 corrects node support in the `engine` section of `package.json`.
 
 ### Major Changes in 5.0.0
 - 🛑 5.0.0 drops support for Node 10 and 12.
