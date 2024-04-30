@@ -3,11 +3,12 @@
  * Simple wrapper functions to produce shorter UUIDs for cookies, maybe everything?
  */
 
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidV4 } = require('uuid');
 const anyBase = require('any-base');
 
-const flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
 const cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~";
+const flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+const uuid25Base36 = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 const baseOptions = {
   consistentLength: true,
@@ -89,12 +90,12 @@ module.exports = (() => {
     // UUIDs are in hex, so we translate to and from.
     const fromHex = anyBase(anyBase.HEX, useAlphabet);
     const toHex = anyBase(useAlphabet, anyBase.HEX);
-    const generate = () => shortenUUID(uuidv4(), fromHex, paddingParams);
+    const generate = () => shortenUUID(uuidV4(), fromHex, paddingParams);
 
     const translator = {
       new: generate,
       generate,
-      uuid: uuidv4,
+      uuid: uuidV4,
       fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
       toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
       alphabet: useAlphabet,
@@ -108,12 +109,13 @@ module.exports = (() => {
 
   // Expose the constants for other purposes.
   makeConvertor.constants = {
-    flickrBase58,
     cookieBase90,
+    flickrBase58,
+    uuid25Base36,
   };
 
   // Expose the generic v4 UUID generator for convenience
-  makeConvertor.uuid = uuidv4;
+  makeConvertor.uuid = uuidV4;
 
   // Provide a generic generator
   makeConvertor.generate = () => {

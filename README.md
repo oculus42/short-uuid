@@ -6,9 +6,9 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-
-## v5.0.1
-5.0.1 corrects node support in the `engine` section of `package.json`.
+## v5.1.0
+5.1.0 adds translation support for the [uuid25](https://github.com/uuid25/javascript) (Base36) format
+with the `uuid25Base36` constant.
 
 ### Major Changes in 5.0.0
 - 🛑 5.0.0 drops support for Node 10 and 12.
@@ -61,8 +61,9 @@ translator.alphabet;
 translator.maxLength;
 
 // View the constants
-short.constants.flickrBase58; // Avoids similar characters (0/O, 1/I/l, etc.)
 short.constants.cookieBase90; // Safe for HTTP cookies values for smaller IDs.
+short.constants.flickrBase58; // Avoids similar characters (0/O, 1/I/l, etc.)
+short.constants.uuid25Base36; // The uuid25 (string length 25) format
 ```
 
 ### Options
@@ -86,7 +87,7 @@ translator.new(); // mhvXdrZT4jP5T8vBxuvm75
 
 ## Support
 
-short-uuid [5.0.0](https://github.com/oculus42/short-uuid/blob/v5.0.0/README.md)
+short-uuid [5.x](https://github.com/oculus42/short-uuid/blob/v5.1.0/README.md)
 and later is tested on Node 14.x and later.
 
 short-uuid [4.x](https://github.com/oculus42/short-uuid/blob/v3.2.2/README.md)
@@ -106,6 +107,7 @@ TypeScript definitions are included, thanks to
 [alexturek](https://github.com/alexturek).
 
 ## Previous Release Note Highlights
+5.0.0 drops support for Node 12 and below.
 4.1.0 adds a maxLength value to translators for reference
 4.0.1 adds consistent length translation and throws an error if provided an invalid alphabet.
 3.1.1 removed Node 4.x tests. Last included Browserify distribution.

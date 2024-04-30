@@ -6,15 +6,19 @@ const test = require('tape');
 const uuid = require('uuid');
 const short = require('../index');
 
+const uuid25Tests = require('./uuid25examples');
+
 const b90 = short(short.constants.cookieBase90);
 const b58 = short(short.constants.flickrBase58);
+const b36 = short(short.constants.uuid25Base36);
 
-const cycle = (testcb) => {
+const cycle = (testCallback) => {
   const uu = short.uuid();
   const f58 = b58.fromUUID(uu);
   const f90 = b90.fromUUID(uu);
+  const f36 = b36.fromUUID(uu);
 
-  testcb(uu, f58, f90);
+  testCallback(uu, f58, f90, f36);
 };
 
 test('short-uuid setup', (t) => {
@@ -45,10 +49,11 @@ test('short-uuid setup', (t) => {
 });
 
 test('constants', (t) => {
-  t.plan(3);
+  t.plan(4);
   t.ok(Object.prototype.hasOwnProperty.call(short, 'constants') && typeof short.constants === 'object', 'should contain a "constants" object');
   t.equal(short.constants.flickrBase58, '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 'should contain flicker58 constant');
   t.equal(short.constants.cookieBase90, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~", 'should contain cookie90 constant');
+  t.equal(short.constants.uuid25Base36, '0123456789abcdefghijklmnopqrstuvwxyz', 'should contain uuid25 constant');
 });
 
 // Operations
@@ -65,14 +70,17 @@ test('should generate valid UUIDs', (t) => {
 });
 
 test('should translate back from multiple bases', (t) => {
-  t.plan(40);
+  t.plan(60);
 
-  const action = (uu, f58, f90) => {
+  const action = (uu, f58, f90, f36) => {
     t.equal(b58.toUUID(f58), uu, 'Translated b58 matches original');
     t.ok(uuid.validate(b58.toUUID(f58)), 'Translated UUID is valid');
 
     t.equal(b90.toUUID(f90), uu, 'Translated b90 matches original');
     t.ok(uuid.validate(b90.toUUID(f90)), 'Translated UUID is valid');
+
+    t.equal(b36.toUUID(f36), uu, 'Translated b36 matches original');
+    t.ok(uuid.validate(b36.toUUID(f36)), 'Translated UUID is valid');
   };
 
   for (let i = 0; i < 10; i += 1) {
@@ -250,6 +258,15 @@ test('generate should generate an ID with the Flickr set', (t) => {
 
   const val2 = short.generate();
   t.ok(val2, 'Generate should reuse the default translator successfully');
+});
+
+// Test examples from https://github.com/uuid25/test_cases/blob/main/examples
+test('uuid25 should be compatible with uuid25 examples', (t) => {
+  t.plan(uuid25Tests.length * 2);
+  uuid25Tests.forEach(({ uuid25, hyphenated }) => {
+    t.equal(b36.toUUID(uuid25), hyphenated);
+    t.equal(b36.fromUUID(hyphenated), uuid25);
+  });
 });
 
 test('Default generate quantity tests', (t) => {
