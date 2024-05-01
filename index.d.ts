@@ -7,12 +7,13 @@ declare module 'short-uuid' {
 
   namespace shortUUID {
     export const constants: {
-      flickrBase58: string;
       cookieBase90: string;
+      flickrBase58: string;
+      uuid25Base36: string;
     };
 
-    export type UUID = string & { _guidBrand: 'short-uuid' };
-    export type SUUID = string & { _guidBrand: 'uuid' };
+    export type UUID = string & { _guidBrand: 'uuid' };
+    export type SUUID = string & { _guidBrand: 'short-uuid' };
 
     /** Generate a new regular UUID. */
     export function uuid(): UUID;
