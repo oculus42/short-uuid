@@ -3,7 +3,7 @@
  * Simple wrapper functions to produce shorter UUIDs for cookies, maybe everything?
  */
 
-const { v4: uuidV4 } = require('uuid');
+const { v4: uuidV4, validate: uuidValidate } = require('uuid');
 const anyBase = require('any-base');
 
 const constants = {
@@ -94,14 +94,25 @@ module.exports = (() => {
     const toHex = anyBase(useAlphabet, anyBase.HEX);
     const generate = () => shortenUUID(uuidV4(), fromHex, paddingParams);
 
+    const validate = (shortId, checkUuid = false) => {
+      if (!shortId || typeof shortId !== 'string') return false;
+      const isCorrectLength = selectedOptions.consistentLength
+        ? shortId.length === shortIdLength
+        : shortId.length <= shortIdLength;
+      const onlyAlphabet = shortId?.split('').every((letter) => useAlphabet.includes(letter));
+      if (checkUuid === false) return isCorrectLength && onlyAlphabet;
+      return isCorrectLength && onlyAlphabet && uuidValidate(enlargeUUID(shortId, toHex));
+    };
+
     const translator = {
-      new: generate,
-      generate,
-      uuid: uuidV4,
-      fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
-      toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
       alphabet: useAlphabet,
+      fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
       maxLength: shortIdLength,
+      generate,
+      new: generate,
+      toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
+      uuid: uuidV4,
+      validate,
     };
 
     Object.freeze(translator);

@@ -269,9 +269,11 @@ test('uuid25 should be compatible with uuid25 examples', (t) => {
   });
 });
 
-test('uuid25 translator should provide maxLength 25', (t) => {
-  t.plan(1);
-  t.equal(b36.maxLength, 25);
+test('Translator should provide correct maxLength', (t) => {
+  t.plan(3);
+  t.equal(b36.maxLength, 25, 'uuid25 is 25');
+  t.equal(b58.maxLength, 22, 'flickr is 22');
+  t.equal(b90.maxLength, 20, 'cookie is 20');
 });
 
 test('Default generate quantity tests', (t) => {
@@ -285,4 +287,42 @@ test('Default generate quantity tests', (t) => {
   }
 
   t.equal(underLength, 0, 'Ensure default is padded');
+});
+
+test('Validate', (t) => {
+  t.plan(21);
+
+  // Too short
+  t.equal(b36.validate('123'), false, 'uuid25 too short');
+  t.equal(b58.validate('123'), false, 'flickr too short');
+  t.equal(b90.validate('123'), false, 'cookie too short');
+
+  // Too long
+  t.equal(b36.validate('123456789012345678901234567890'), false, 'uuid25 too long');
+  t.equal(b58.validate('123456789012345678901234567890'), false, 'flickr too long');
+  t.equal(b90.validate('123456789012345678901234567890'), false, 'cookie too long');
+
+  // Bad alphabet
+  t.equal(b36.validate('123456789012345678901234"'), false, 'uuid25 validates alphabet');
+  t.equal(b58.validate('123456789012345678901"'), false, 'flickr validates alphabet');
+  t.equal(b90.validate('1234567890123456789"'), false, 'cookie validates alphabet');
+
+  // Generated value passes
+  t.equal(b36.validate(b36.generate()), true, 'uuid25 validates');
+  t.equal(b58.validate(b58.generate()), true, 'flickr validates');
+  t.equal(b90.validate(b90.generate()), true, 'cookie validates');
+
+  // "empty" value passes without uuid check
+  t.equal(b36.validate('0'), false, 'uuid25 passes bad uuid without check');
+  t.equal(b58.validate('0'), false, 'flickr fails bad uuid without check');
+  t.equal(b90.validate('0'), false, 'cookie fails bad uuid without check');
+
+  // With uuid check
+  t.equal(b36.validate(b36.generate(), true), true, 'uuid25 validates uuid');
+  t.equal(b58.validate(b58.generate(), true), true, 'flickr validates uuid');
+  t.equal(b90.validate(b90.generate(), true), true, 'cookie validates uuid');
+
+  t.equal(b36.validate('0', true), false, 'uuid25 fails bad uuid');
+  t.equal(b58.validate('0', true), false, 'flickr fails bad uuid');
+  t.equal(b90.validate('0', true), false, 'cookie fails bad uuid');
 });
