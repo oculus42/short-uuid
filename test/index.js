@@ -269,6 +269,11 @@ test('uuid25 should be compatible with uuid25 examples', (t) => {
   });
 });
 
+test('uuid25 translator should provide maxLength 25', (t) => {
+  t.plan(1);
+  t.equal(b36.maxLength, 25);
+});
+
 test('Default generate quantity tests', (t) => {
   t.plan(1);
   let underLength = 0;
