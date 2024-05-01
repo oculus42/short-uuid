@@ -6,9 +6,11 @@
 const { v4: uuidV4 } = require('uuid');
 const anyBase = require('any-base');
 
-const cookieBase90 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~";
-const flickrBase58 = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
-const uuid25Base36 = '0123456789abcdefghijklmnopqrstuvwxyz';
+const constants = {
+  cookieBase90: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~",
+  flickrBase58: '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
+  uuid25Base36: '0123456789abcdefghijklmnopqrstuvwxyz',
+};
 
 const baseOptions = {
   consistentLength: true,
@@ -68,7 +70,7 @@ module.exports = (() => {
    */
   const makeConvertor = (toAlphabet, options) => {
     // Default to Flickr 58
-    const useAlphabet = toAlphabet || flickrBase58;
+    const useAlphabet = toAlphabet || constants.flickrBase58;
 
     // Default to baseOptions
     const selectedOptions = { ...baseOptions, ...options };
@@ -108,11 +110,7 @@ module.exports = (() => {
   };
 
   // Expose the constants for other purposes.
-  makeConvertor.constants = {
-    cookieBase90,
-    flickrBase58,
-    uuid25Base36,
-  };
+  makeConvertor.constants = constants;
 
   // Expose the generic v4 UUID generator for convenience
   makeConvertor.uuid = uuidV4;
@@ -121,7 +119,7 @@ module.exports = (() => {
   makeConvertor.generate = () => {
     if (!toFlickr) {
       // Generate on first use;
-      toFlickr = makeConvertor(flickrBase58).generate;
+      toFlickr = makeConvertor(constants.flickrBase58).generate;
     }
     return toFlickr();
   };
