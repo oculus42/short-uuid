@@ -102,7 +102,7 @@ translator.new(); // mhvXdrZT4jP5T8vBxuvm75
 short-uuid [5.x](https://github.com/oculus42/short-uuid/blob/v5.2.0/README.md)
 and later is tested on Node 14.x and later.
 
-short-uuid [4.x](https://github.com/oculus42/short-uuid/blob/v3.2.2/README.md)
+short-uuid [4.x](https://github.com/oculus42/short-uuid/blob/v4.2.2/README.md)
 was tested on Node 8.x to 18.x
 
 short-uuid [3.x](https://github.com/oculus42/short-uuid/blob/v3.1.1/README.md)

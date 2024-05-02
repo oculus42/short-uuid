@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.0] - 2024-05-01
 ### Added
-- `validate` method to check shortIds for simple or "complete" validity
+- `validate` method to check shortIds for simple or "rigorous" validity
 
 ## [5.1.0] - 2024-04-30
 ### Added
