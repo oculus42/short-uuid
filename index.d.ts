@@ -41,6 +41,9 @@ declare module 'short-uuid' {
 
       /** long -> short */
       fromUUID(regularUUID: string | UUID): SUUID;
+
+      /** validate short */
+      validate(shortId: string | SUUID, rigorous?: boolean): boolean;
     }
   }
 

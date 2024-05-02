@@ -6,7 +6,8 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
-## v5.1.0
+## v5.2.0
+5.2.0 adds `validate` method to check short IDs. Requested by [@U-4-E-A](https://github.com/U-4-E-A)
 5.1.0 adds translation support for the [uuid25](https://github.com/uuid25/javascript) (Base36) format
 with the `uuid25Base36` constant.
 
@@ -19,14 +20,15 @@ with the `uuid25Base36` constant.
 const short = require('short-uuid');
 
 // Quick start with flickrBase58 format
-short.generate(); // 73WakrfVbNJBaAmhQtEeDv
+short.generate(); // '73WakrfVbNJBaAmhQtEeDv'
 ```
 
 ### Details
 
 short-uuid starts with RFC4122 v4-compliant UUIDs and translates them
 into other, usually shorter formats. It also provides translators
-to convert back and forth from RFC compliant UUIDs to the shorter formats.
+to convert back and forth from RFC compliant UUIDs to the shorter formats,
+and validate the IDs.
 
 As of 4.0.0, formats return consistent-length values unless specifically requested.
 This is done by padding the start with the first (`[0]`) character in the alphabet.
@@ -34,6 +36,9 @@ Previous versions can translate padded formats back to UUID.
 
 ```javascript
 const short = require('short-uuid');
+
+// Generate a flickrBase58 short ID from without creating a translator
+const shortId = short.generate();
 
 const translator = short(); // Defaults to flickrBase58
 const decimalTranslator = short("0123456789"); // Provide a specific alphabet for translation
@@ -47,11 +52,12 @@ translator.generate(); // An alias for new.
 translator.toUUID(shortId); // a44521d0-0fb8-4ade-8002-3385545c3318
 translator.fromUUID(regularUUID); // mhvXdrZT4jP5T8vBxuvm75
 
-// Generate plain UUIDs
-// - From the library without creating a translator
-short.uuid(); // fd5c084c-ff7c-4651-9a52-37096242d81c
-// - Each translator provides the uuid.v4() function, too
-translator.uuid(); // 3023b0f5-ec55-4e75-9cd8-104700698052
+// Check if a string is a valid ID (length and alphabet)
+translator.validate(shortId); // true
+
+// Check if a string is valid *AND* translates to a valid UUID
+translator.validate(shortId, true); // true
+translator.validate('0000000000000000000000', true) // false
 
 // See the alphabet used by a translator
 translator.alphabet;
@@ -64,6 +70,12 @@ translator.maxLength;
 short.constants.cookieBase90; // Safe for HTTP cookies values for smaller IDs.
 short.constants.flickrBase58; // Avoids similar characters (0/O, 1/I/l, etc.)
 short.constants.uuid25Base36; // The uuid25 (string length 25) format
+
+// Generate plain UUIDs
+// - From the library without creating a translator
+short.uuid(); // fd5c084c-ff7c-4651-9a52-37096242d81c
+// - Each translator provides the uuid.v4() function, too
+translator.uuid(); // 3023b0f5-ec55-4e75-9cd8-104700698052
 ```
 
 ### Options
@@ -87,7 +99,7 @@ translator.new(); // mhvXdrZT4jP5T8vBxuvm75
 
 ## Support
 
-short-uuid [5.x](https://github.com/oculus42/short-uuid/blob/v5.1.0/README.md)
+short-uuid [5.x](https://github.com/oculus42/short-uuid/blob/v5.2.0/README.md)
 and later is tested on Node 14.x and later.
 
 short-uuid [4.x](https://github.com/oculus42/short-uuid/blob/v3.2.2/README.md)
