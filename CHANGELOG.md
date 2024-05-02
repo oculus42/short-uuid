@@ -2,9 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0] - 2024-05-01
+### Added
+- `validate` method to check shortIds for simple or "complete" validity
+
 ## [5.1.0] - 2024-04-30
 ### Added
-- Added `uuid25Base36` constant to support uuid25 style
+- `uuid25Base36` constant to support uuid25 style
 
 ## [5.0.1] - 2024-04-30
 ### Changed

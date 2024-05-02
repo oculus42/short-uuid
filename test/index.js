@@ -269,9 +269,11 @@ test('uuid25 should be compatible with uuid25 examples', (t) => {
   });
 });
 
-test('uuid25 translator should provide maxLength 25', (t) => {
-  t.plan(1);
-  t.equal(b36.maxLength, 25);
+test('Translator should provide correct maxLength', (t) => {
+  t.plan(3);
+  t.equal(b36.maxLength, 25, 'uuid25 is 25');
+  t.equal(b58.maxLength, 22, 'flickr is 22');
+  t.equal(b90.maxLength, 20, 'cookie is 20');
 });
 
 test('Default generate quantity tests', (t) => {
@@ -285,4 +287,53 @@ test('Default generate quantity tests', (t) => {
   }
 
   t.equal(underLength, 0, 'Ensure default is padded');
+});
+
+test('Validate', (t) => {
+  t.plan(25);
+
+  // Bad type
+  t.notOk(b36.validate(100), 'only strings');
+
+  // Too short
+  t.notOk(b36.validate('123'), 'uuid25 too short');
+  t.notOk(b58.validate('123'), 'flickr too short');
+  t.notOk(b90.validate('123'), 'cookie too short');
+
+  // Short is valid without consistentLength
+  const s36 = short(short.constants.uuid25Base36, { consistentLength: false });
+  const s58 = short(short.constants.flickrBase58, { consistentLength: false });
+  const s90 = short(short.constants.cookieBase90, { consistentLength: false });
+  t.ok(s36.validate('111'));
+  t.ok(s58.validate('111'));
+  t.ok(s90.validate('111'));
+
+  // Too long
+  t.notOk(b36.validate('123456789012345678901234567890'), 'uuid25 too long');
+  t.notOk(b58.validate('123456789012345678901234567890'), 'flickr too long');
+  t.notOk(b90.validate('123456789012345678901234567890'), 'cookie too long');
+
+  // Bad alphabet
+  t.notOk(b36.validate('123456789012345678901234"'), 'uuid25 validates alphabet');
+  t.notOk(b58.validate('123456789012345678901"'), 'flickr validates alphabet');
+  t.notOk(b90.validate('1234567890123456789"'), 'cookie validates alphabet');
+
+  // Generated value passes
+  t.ok(b36.validate(b36.generate()), 'uuid25 validates');
+  t.ok(b58.validate(b58.generate()), 'flickr validates');
+  t.ok(b90.validate(b90.generate()), 'cookie validates');
+
+  // "empty" value passes without uuid check
+  t.notOk(b36.validate('0'), 'uuid25 passes bad uuid without check');
+  t.notOk(b58.validate('0'), 'flickr fails bad uuid without check');
+  t.notOk(b90.validate('0'), 'cookie fails bad uuid without check');
+
+  // With uuid check
+  t.ok(b36.validate(b36.generate(), true), 'uuid25 validates uuid');
+  t.ok(b58.validate(b58.generate(), true), 'flickr validates uuid');
+  t.ok(b90.validate(b90.generate(), true), 'cookie validates uuid');
+
+  t.notOk(b36.validate('0', true), 'uuid25 fails bad uuid');
+  t.notOk(b58.validate('0', true), 'flickr fails bad uuid');
+  t.notOk(b90.validate('0', true), 'cookie fails bad uuid');
 });

@@ -3,7 +3,7 @@
  * Simple wrapper functions to produce shorter UUIDs for cookies, maybe everything?
  */
 
-const { v4: uuidV4 } = require('uuid');
+const { v4: uuidV4, validate: uuidValidate } = require('uuid');
 const anyBase = require('any-base');
 
 const constants = {
@@ -22,7 +22,7 @@ let toFlickr;
 /**
  * Takes a UUID, strips the dashes, and translates.
  * @param {string} longId
- * @param {function(string)} translator
+ * @param {function(string):string} translator
  * @param {Object} [paddingParams]
  * @returns {string}
  */
@@ -53,20 +53,27 @@ const enlargeUUID = (shortId, translator) => {
   return [m[1], m[2], m[3], m[4], m[5]].join('-');
 };
 
-// Calculate length for the shortened ID
+/**
+ * Calculate length for the shortened ID
+ * @param {number} alphabetLength
+ * @returns {number}
+ */
 const getShortIdLength = (alphabetLength) => (
   Math.ceil(Math.log(2 ** 128) / Math.log(alphabetLength)));
 
 module.exports = (() => {
   /**
-   * @param {string} toAlphabet - Defaults to flickrBase58 if not provided
-   * @param {Object} [options]
-   *
-   * @returns {{new: (function()),
-   *  uuid: (function()),
-   *  fromUUID: (function(string)),
-   *  toUUID: (function(string)),
-   *  alphabet: (string)}}
+   * @param {string} toAlphabet
+   * @param {{ consistentLength: boolean }} [options]
+   * @returns {{
+   *  alphabet: string,
+   *  fromUUID: (function(*): string),
+   *  generate: (function(): string),
+   *  maxLength: number,
+   *  new: (function(): string),
+   *  toUUID: (function(*): string),
+   *  uuid: ((function(*, *, *): (*))|*),
+   *  validate: ((function(*, boolean=false): (boolean))|*)}}
    */
   const makeConvertor = (toAlphabet, options) => {
     // Default to Flickr 58
@@ -92,16 +99,38 @@ module.exports = (() => {
     // UUIDs are in hex, so we translate to and from.
     const fromHex = anyBase(anyBase.HEX, useAlphabet);
     const toHex = anyBase(useAlphabet, anyBase.HEX);
+    /**
+     * @returns {string} - short id
+     */
     const generate = () => shortenUUID(uuidV4(), fromHex, paddingParams);
 
+    /**
+     * Confirm if string is a valid id. Checks length and alphabet.
+     * If the second parameter is true it will translate to standard UUID
+     *  and check the result for UUID validity.
+     * @param {string} shortId - The string to check for validity
+     * @param {boolean} [rigorous=false] - If true, also check for a valid UUID
+     * @returns {boolean}
+     */
+    const validate = (shortId, rigorous = false) => {
+      if (!shortId || typeof shortId !== 'string') return false;
+      const isCorrectLength = selectedOptions.consistentLength
+        ? shortId.length === shortIdLength
+        : shortId.length <= shortIdLength;
+      const onlyAlphabet = shortId.split('').every((letter) => useAlphabet.includes(letter));
+      if (rigorous === false) return isCorrectLength && onlyAlphabet;
+      return isCorrectLength && onlyAlphabet && uuidValidate(enlargeUUID(shortId, toHex));
+    };
+
     const translator = {
-      new: generate,
-      generate,
-      uuid: uuidV4,
-      fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
-      toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
       alphabet: useAlphabet,
+      fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
       maxLength: shortIdLength,
+      generate,
+      new: generate,
+      toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
+      uuid: uuidV4,
+      validate,
     };
 
     Object.freeze(translator);
