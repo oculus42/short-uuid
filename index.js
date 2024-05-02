@@ -61,97 +61,95 @@ const enlargeUUID = (shortId, translator) => {
 const getShortIdLength = (alphabetLength) => (
   Math.ceil(Math.log(2 ** 128) / Math.log(alphabetLength)));
 
-module.exports = (() => {
+/**
+ * @param {string} toAlphabet
+ * @param {{ consistentLength: boolean }} [options]
+ * @returns {{
+ *  alphabet: string,
+ *  fromUUID: (function(*): string),
+ *  generate: (function(): string),
+ *  maxLength: number,
+ *  new: (function(): string),
+ *  toUUID: (function(*): string),
+ *  uuid: ((function(*, *, *): (*))|*),
+ *  validate: ((function(*, boolean=false): (boolean))|*)}}
+ */
+const makeConvertor = (toAlphabet, options) => {
+  // Default to Flickr 58
+  const useAlphabet = toAlphabet || constants.flickrBase58;
+
+  // Default to baseOptions
+  const selectedOptions = { ...baseOptions, ...options };
+
+  // Check alphabet for duplicate entries
+  if ([...new Set(Array.from(useAlphabet))].length !== useAlphabet.length) {
+    throw new Error('The provided Alphabet has duplicate characters resulting in unreliable results');
+  }
+
+  const shortIdLength = getShortIdLength(useAlphabet.length);
+
+  // Padding Params
+  const paddingParams = {
+    shortIdLength,
+    consistentLength: selectedOptions.consistentLength,
+    paddingChar: useAlphabet[0],
+  };
+
+  // UUIDs are in hex, so we translate to and from.
+  const fromHex = anyBase(anyBase.HEX, useAlphabet);
+  const toHex = anyBase(useAlphabet, anyBase.HEX);
   /**
-   * @param {string} toAlphabet
-   * @param {{ consistentLength: boolean }} [options]
-   * @returns {{
-   *  alphabet: string,
-   *  fromUUID: (function(*): string),
-   *  generate: (function(): string),
-   *  maxLength: number,
-   *  new: (function(): string),
-   *  toUUID: (function(*): string),
-   *  uuid: ((function(*, *, *): (*))|*),
-   *  validate: ((function(*, boolean=false): (boolean))|*)}}
+   * @returns {string} - short id
    */
-  const makeConvertor = (toAlphabet, options) => {
-    // Default to Flickr 58
-    const useAlphabet = toAlphabet || constants.flickrBase58;
+  const generate = () => shortenUUID(uuidV4(), fromHex, paddingParams);
 
-    // Default to baseOptions
-    const selectedOptions = { ...baseOptions, ...options };
-
-    // Check alphabet for duplicate entries
-    if ([...new Set(Array.from(useAlphabet))].length !== useAlphabet.length) {
-      throw new Error('The provided Alphabet has duplicate characters resulting in unreliable results');
-    }
-
-    const shortIdLength = getShortIdLength(useAlphabet.length);
-
-    // Padding Params
-    const paddingParams = {
-      shortIdLength,
-      consistentLength: selectedOptions.consistentLength,
-      paddingChar: useAlphabet[0],
-    };
-
-    // UUIDs are in hex, so we translate to and from.
-    const fromHex = anyBase(anyBase.HEX, useAlphabet);
-    const toHex = anyBase(useAlphabet, anyBase.HEX);
-    /**
-     * @returns {string} - short id
-     */
-    const generate = () => shortenUUID(uuidV4(), fromHex, paddingParams);
-
-    /**
-     * Confirm if string is a valid id. Checks length and alphabet.
-     * If the second parameter is true it will translate to standard UUID
-     *  and check the result for UUID validity.
-     * @param {string} shortId - The string to check for validity
-     * @param {boolean} [rigorous=false] - If true, also check for a valid UUID
-     * @returns {boolean}
-     */
-    const validate = (shortId, rigorous = false) => {
-      if (!shortId || typeof shortId !== 'string') return false;
-      const isCorrectLength = selectedOptions.consistentLength
-        ? shortId.length === shortIdLength
-        : shortId.length <= shortIdLength;
-      const onlyAlphabet = shortId.split('').every((letter) => useAlphabet.includes(letter));
-      if (rigorous === false) return isCorrectLength && onlyAlphabet;
-      return isCorrectLength && onlyAlphabet && uuidValidate(enlargeUUID(shortId, toHex));
-    };
-
-    const translator = {
-      alphabet: useAlphabet,
-      fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
-      maxLength: shortIdLength,
-      generate,
-      new: generate,
-      toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
-      uuid: uuidV4,
-      validate,
-    };
-
-    Object.freeze(translator);
-
-    return translator;
+  /**
+   * Confirm if string is a valid id. Checks length and alphabet.
+   * If the second parameter is true it will translate to standard UUID
+   *  and check the result for UUID validity.
+   * @param {string} shortId - The string to check for validity
+   * @param {boolean} [rigorous=false] - If true, also check for a valid UUID
+   * @returns {boolean}
+   */
+  const validate = (shortId, rigorous = false) => {
+    if (!shortId || typeof shortId !== 'string') return false;
+    const isCorrectLength = selectedOptions.consistentLength
+      ? shortId.length === shortIdLength
+      : shortId.length <= shortIdLength;
+    const onlyAlphabet = shortId.split('').every((letter) => useAlphabet.includes(letter));
+    if (rigorous === false) return isCorrectLength && onlyAlphabet;
+    return isCorrectLength && onlyAlphabet && uuidValidate(enlargeUUID(shortId, toHex));
   };
 
-  // Expose the constants for other purposes.
-  makeConvertor.constants = constants;
-
-  // Expose the generic v4 UUID generator for convenience
-  makeConvertor.uuid = uuidV4;
-
-  // Provide a generic generator
-  makeConvertor.generate = () => {
-    if (!toFlickr) {
-      // Generate on first use;
-      toFlickr = makeConvertor(constants.flickrBase58).generate;
-    }
-    return toFlickr();
+  const translator = {
+    alphabet: useAlphabet,
+    fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
+    maxLength: shortIdLength,
+    generate,
+    new: generate,
+    toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
+    uuid: uuidV4,
+    validate,
   };
 
-  return makeConvertor;
-})();
+  Object.freeze(translator);
+
+  return translator;
+};
+
+// Expose the constants for other purposes.
+makeConvertor.constants = constants;
+
+// Expose the generic v4 UUID generator for convenience
+makeConvertor.uuid = uuidV4;
+
+// Provide a generic generator
+makeConvertor.generate = () => {
+  if (!toFlickr) {
+    // Generate on first use;
+    toFlickr = makeConvertor(constants.flickrBase58).generate;
+  }
+  return toFlickr();
+};
+
+module.exports = makeConvertor;
