@@ -10,30 +10,73 @@ const constants = {
   cookieBase90: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~",
   flickrBase58: '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
   uuid25Base36: '0123456789abcdefghijklmnopqrstuvwxyz',
+  emojiBase41: [
+    '🍎', '🍋', '🍊', '🍍', '🍉', '🍌', '🍓', '🍒', '🥝', '🥥', '🍇', '🥑', '🥦', '🥕', '🥒', '🌽', '🍅', '🧅', '🥔', '🌶', '🫑', '🥬', '🍆', '🥩', '🍔', '🌭', '🌮', '🌯', '🥪', '🍕', '🍟', '🥓', '🍿', '🍪', '🍩', '🎂', '🥧', '🍦', '🍫', '🍭', '🍬',
+  ],
 };
 
+/**
+ *
+ * @type {{consistentLength: boolean, outputString: boolean, rigorousValidation: boolean}}
+ */
 const baseOptions = {
   consistentLength: true,
+  outputString: true,
+  rigorousValidation: true,
 };
 
 // A default generator, instantiated only if used.
-let toFlickr;
+let defaultTranslator;
+
+/**
+ * Switch to interim ASCII alphabet for processing or validation
+ * @param {string|array} shortId
+ * @param {object} config
+ * @returns {*}
+ */
+const getInterim = (shortId, config) => (Array.isArray(shortId)
+  ? shortId.map((char) => config.interim[config.alphabet.indexOf(char)])
+  : config.alphabet.reduce((acc, char, index) => acc
+    .replaceAll(char, config.interim[index]), shortId));
 
 /**
  * Takes a UUID, strips the dashes, and translates.
  * @param {string} longId
  * @param {function(string):string} translator
- * @param {Object} [paddingParams]
+ * @param {Object} [config]
  * @returns {string}
  */
-const shortenUUID = (longId, translator, paddingParams) => {
-  const translated = translator(longId.toLowerCase().replace(/-/g, ''));
+const shortenUUID = (longId, translator, config) => {
+  // Strip hyphens from the UUID
+  let translated = translator(longId.toLowerCase().replace(/-/g, ''));
+  const noPadding = !(config?.consistentLength);
+  const isArray = Array.isArray(translated);
+  // any-base seems to leave empty strings?
+  if (isArray) {
+    translated = translated.filter((v) => v !== undefined && v !== '');
+  }
 
-  if (!paddingParams || !paddingParams.consistentLength) return translated;
+  // Support array alphabets
+  if (config.interim) {
+    let output = translated.map((char) => config.alphabet[config.interim.indexOf(char)]);
+    // resolve empty elements in the translated array
+    if (noPadding) return config.outputString ? output.join('') : output;
+    if ((config.shortIdLength - output.length) > 0) {
+      output = [
+        ...new Array(config.shortIdLength - translated.length)
+          .fill(config.paddingCharacter),
+        ...output,
+      ];
+    }
+    return config.outputString ? output.join('') : output;
+  }
+
+  // End early if no need to
+  if (!config || !config.consistentLength) return translated;
 
   return translated.padStart(
-    paddingParams.shortIdLength,
-    paddingParams.paddingChar,
+    config.shortIdLength,
+    config.paddingCharacter,
   );
 };
 
@@ -41,10 +84,16 @@ const shortenUUID = (longId, translator, paddingParams) => {
  * Translate back to hex and turn back into UUID format, with dashes
  * @param {string} shortId
  * @param {function(string)} translator
+ * @param {object} config
  * @returns {string}
  */
-const enlargeUUID = (shortId, translator) => {
-  const uu1 = translator(shortId).padStart(32, '0');
+const enlargeUUID = (shortId, translator, config) => {
+  // Process for translation
+  const interimId = config.interim
+    ? getInterim(shortId, config)
+    : shortId;
+
+  const uu1 = translator(interimId).padStart(32, '0');
 
   // Join the zero padding and the UUID and then slice it up with match
   const m = uu1.match(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/);
@@ -62,10 +111,19 @@ const getShortIdLength = (alphabetLength) => (
   Math.ceil(Math.log(2 ** 128) / Math.log(alphabetLength)));
 
 /**
- * @param {string} toAlphabet
+ * Make an interim ASCII alphabet for translating emoji
+ *  or any array-based alphabet
+ * @param {number} length
+ * @returns {string[]}
+ */
+const makeInterim = (length) => new Array(length).fill('')
+  .map((v, i) => String.fromCharCode(174 + i));
+
+/**
+ * @param {string|array} toAlphabet
  * @param {{ consistentLength: boolean }} [options]
  * @returns {{
- *  alphabet: string,
+ *  alphabet: string|array,
  *  fromUUID: (function(*): string),
  *  generate: (function(): string),
  *  maxLength: number,
@@ -74,82 +132,93 @@ const getShortIdLength = (alphabetLength) => (
  *  uuid: ((function(*, *, *): (*))|*),
  *  validate: ((function(*, boolean=false): (boolean))|*)}}
  */
-const makeConvertor = (toAlphabet, options) => {
+const makeTranslator = (toAlphabet, options) => {
   // Default to Flickr 58
-  const useAlphabet = toAlphabet || constants.flickrBase58;
+  const alphabet = toAlphabet ?? constants.flickrBase58;
 
-  // Default to baseOptions
-  const selectedOptions = { ...baseOptions, ...options };
-
-  // Check alphabet for duplicate entries
-  if ([...new Set(Array.from(useAlphabet))].length !== useAlphabet.length) {
-    throw new Error('The provided Alphabet has duplicate characters resulting in unreliable results');
+  // Check alphabet for duplicate characters
+  if ([...new Set(Array.from(alphabet))].length !== alphabet.length) {
+    throw new Error('Alphabet has duplicate characters. This would cause unreliable results.');
   }
 
-  const shortIdLength = getShortIdLength(useAlphabet.length);
+  const useInterim = Array.isArray(alphabet);
+  // emoji translation is sketchy, so we use an "interim" alphabet
+  const interim = useInterim ? makeInterim(alphabet.length) : null;
+  const baseAlphabet = interim ?? alphabet;
 
-  // Padding Params
-  const paddingParams = {
-    shortIdLength,
-    consistentLength: selectedOptions.consistentLength,
-    paddingChar: useAlphabet[0],
-  };
+  // Default to baseOptions
+  const config = Object.freeze({
+    ...baseOptions,
+    ...options,
+    alphabet,
+    shortIdLength: getShortIdLength(alphabet.length),
+    useInterim,
+    interim,
+    paddingCharacter: alphabet[0],
+  });
 
   // UUIDs are in hex, so we translate to and from.
-  const fromHex = anyBase(anyBase.HEX, useAlphabet);
-  const toHex = anyBase(useAlphabet, anyBase.HEX);
+  const fromHex = anyBase(anyBase.HEX, baseAlphabet);
+  const toHex = anyBase(baseAlphabet, anyBase.HEX);
   /**
    * @returns {string} - short id
    */
-  const generate = () => shortenUUID(uuidV4(), fromHex, paddingParams);
+  const generate = () => shortenUUID(uuidV4(), fromHex, config);
 
   /**
    * Confirm if string is a valid id. Checks length and alphabet.
    * If the second parameter is true it will translate to standard UUID
    *  and check the result for UUID validity.
-   * @param {string} shortId - The string to check for validity
-   * @param {boolean} [rigorous=false] - If true, also check for a valid UUID
+   * @param {string|array} shortId - The string to check for validity
+   * @param {boolean} [rigorous] - If true, also check for a valid UUID
    * @returns {boolean}
    */
-  const validate = (shortId, rigorous = false) => {
-    if (!shortId || typeof shortId !== 'string') return false;
-    const isCorrectLength = selectedOptions.consistentLength
-      ? shortId.length === shortIdLength
-      : shortId.length <= shortIdLength;
-    const onlyAlphabet = shortId.split('').every((letter) => useAlphabet.includes(letter));
-    if (rigorous === false) return isCorrectLength && onlyAlphabet;
-    return isCorrectLength && onlyAlphabet && uuidValidate(enlargeUUID(shortId, toHex));
+  const validate = (shortId, rigorous) => {
+    if (!shortId) return false;
+    // emoji may create length errors. Switch to interim ASCII for validation.
+    const isArray = Array.isArray(shortId);
+    if (!(typeof shortId === 'string' || isArray)) return false;
+    const workId = config.interim
+      ? getInterim(shortId, config)
+      : shortId;
+    const useRigorous = rigorous ?? config.rigorousValidation ?? false;
+    const isCorrectLength = config.consistentLength
+      ? workId.length === config.shortIdLength
+      : workId.length <= config.shortIdLength;
+
+    const onlyAlphabet = (isArray ? workId : workId.split(''))
+      .every((char) => (config.interim ?? config.alphabet).includes(char));
+
+    if (!useRigorous) return isCorrectLength && onlyAlphabet;
+    return isCorrectLength && onlyAlphabet && uuidValidate(enlargeUUID(shortId, toHex, config));
   };
 
-  const translator = {
-    alphabet: useAlphabet,
-    fromUUID: (uuid) => shortenUUID(uuid, fromHex, paddingParams),
-    maxLength: shortIdLength,
+  return Object.freeze({
+    alphabet,
+    fromUUID: (uuid) => shortenUUID(uuid, fromHex, config),
+    config,
     generate,
+    maxLength: config.shortIdLength,
     new: generate,
-    toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex),
+    toUUID: (shortUuid) => enlargeUUID(shortUuid, toHex, config),
     uuid: uuidV4,
     validate,
-  };
-
-  Object.freeze(translator);
-
-  return translator;
+  });
 };
 
 // Expose the constants for other purposes.
-makeConvertor.constants = constants;
+makeTranslator.constants = constants;
 
 // Expose the generic v4 UUID generator for convenience
-makeConvertor.uuid = uuidV4;
+makeTranslator.uuid = uuidV4;
 
 // Provide a generic generator
-makeConvertor.generate = () => {
-  if (!toFlickr) {
+makeTranslator.generate = () => {
+  if (!defaultTranslator) {
     // Generate on first use;
-    toFlickr = makeConvertor(constants.flickrBase58).generate;
+    defaultTranslator = makeTranslator(constants.flickrBase58).generate;
   }
-  return toFlickr();
+  return defaultTranslator();
 };
 
-module.exports = makeConvertor;
+module.exports = Object.freeze(makeTranslator);

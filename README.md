@@ -6,6 +6,16 @@
 
 Generate and translate standard UUIDs into shorter - or just *different* - formats and back.
 
+## v6.0.0 prerelease
+### Added
+- Support for alphabet arrays
+- Emoji support using arrays. **MAY NOT WORK for all alphabets**
+- `outputString` option for array alphabets. Defaults to true.
+- `rigorousValidation` option for validator. Defaults to true.
+
+### Changed
+`validate` defaults to rigorous
+
 ## v5.2.0
 5.2.0 adds `validate` method to check short IDs. Requested by [@U-4-E-A](https://github.com/U-4-E-A)
 5.1.0 adds translation support for the [uuid25](https://github.com/uuid25/javascript) (Base36) format

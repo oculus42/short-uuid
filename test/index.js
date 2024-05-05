@@ -8,17 +8,19 @@ const short = require('../index');
 
 const uuid25Tests = require('./uuid25examples');
 
-const b90 = short(short.constants.cookieBase90);
-const b58 = short(short.constants.flickrBase58);
 const b36 = short(short.constants.uuid25Base36);
+const b41 = short(short.constants.emojiBase41);
+const b58 = short(short.constants.flickrBase58);
+const b90 = short(short.constants.cookieBase90);
 
 const cycle = (testCallback) => {
   const uu = short.uuid();
+  const f36 = b36.fromUUID(uu);
+  const f41 = b41.fromUUID(uu);
   const f58 = b58.fromUUID(uu);
   const f90 = b90.fromUUID(uu);
-  const f36 = b36.fromUUID(uu);
 
-  testCallback(uu, f58, f90, f36);
+  testCallback(uu, f36, f41, f58, f90);
 };
 
 test('short-uuid setup', (t) => {
@@ -70,17 +72,20 @@ test('should generate valid UUIDs', (t) => {
 });
 
 test('should translate back from multiple bases', (t) => {
-  t.plan(60);
+  t.plan(80);
 
-  const action = (uu, f58, f90, f36) => {
+  const action = (uu, f36, f41, f58, f90) => {
+    t.equal(b36.toUUID(f36), uu, 'Translated b36 matches original');
+    t.ok(uuid.validate(b36.toUUID(f36)), 'Translated UUID is valid');
+
+    t.equal(b41.toUUID(f41), uu, 'Translated b36 matches original');
+    t.ok(uuid.validate(b41.toUUID(f41)), 'Translated UUID is valid');
+
     t.equal(b58.toUUID(f58), uu, 'Translated b58 matches original');
     t.ok(uuid.validate(b58.toUUID(f58)), 'Translated UUID is valid');
 
     t.equal(b90.toUUID(f90), uu, 'Translated b90 matches original');
     t.ok(uuid.validate(b90.toUUID(f90)), 'Translated UUID is valid');
-
-    t.equal(b36.toUUID(f36), uu, 'Translated b36 matches original');
-    t.ok(uuid.validate(b36.toUUID(f36)), 'Translated UUID is valid');
   };
 
   for (let i = 0; i < 10; i += 1) {
@@ -101,22 +106,26 @@ test('should return a standard v4 uuid from instance.uuid()', (t) => {
 });
 
 test('Handle UUIDs that begin with zeros', (t) => {
-  t.plan(2);
+  t.plan(4);
 
   const someZeros = '00000000-a70c-4ebd-8f2b-540f7e709092';
 
-  t.equal(someZeros, b58.toUUID(b58.fromUUID(someZeros)), 'Supports starting zeroes');
-  t.equal(someZeros, b90.toUUID(b90.fromUUID(someZeros)), 'Supports starting zeroes');
+  t.equal(someZeros, b58.toUUID(b58.fromUUID(someZeros)), 'flickr supports starting zeroes');
+  t.equal(someZeros, b90.toUUID(b90.fromUUID(someZeros)), 'cookie supports starting zeroes');
+  t.equal(someZeros, b36.toUUID(b36.fromUUID(someZeros)), 'uuid25 supports starting zeroes');
+  t.equal(someZeros, b41.toUUID(b41.fromUUID(someZeros)), 'emoji supports starting zeroes');
 });
 
 test('Handle UUIDs with all zeros', (t) => {
-  t.plan(2);
+  t.plan(4);
 
   // Support even invalid UUIDs, for completeness
   const allZeros = '00000000-0000-0000-0000-000000000000';
 
-  t.equal(allZeros, b58.toUUID(b58.fromUUID(allZeros)), 'Supports starting zeroes');
-  t.equal(allZeros, b90.toUUID(b90.fromUUID(allZeros)), 'Supports starting zeroes');
+  t.equal(allZeros, b58.toUUID(b58.fromUUID(allZeros)), 'flickr supports invalid starting zeroes');
+  t.equal(allZeros, b90.toUUID(b90.fromUUID(allZeros)), 'cookie supports invalid starting zeroes');
+  t.equal(allZeros, b36.toUUID(b36.fromUUID(allZeros)), 'uuid25 supports invalid starting zeroes');
+  t.equal(allZeros, b41.toUUID(b41.fromUUID(allZeros)), 'emoji supports invalid starting zeroes');
 });
 
 test('should handle UUID with uppercase letters', (t) => {
@@ -270,8 +279,9 @@ test('uuid25 should be compatible with uuid25 examples', (t) => {
 });
 
 test('Translator should provide correct maxLength', (t) => {
-  t.plan(3);
+  t.plan(4);
   t.equal(b36.maxLength, 25, 'uuid25 is 25');
+  t.equal(b41.maxLength, 24, 'emoji is 24');
   t.equal(b58.maxLength, 22, 'flickr is 22');
   t.equal(b90.maxLength, 20, 'cookie is 20');
 });
@@ -290,50 +300,63 @@ test('Default generate quantity tests', (t) => {
 });
 
 test('Validate', (t) => {
-  t.plan(25);
+  t.plan(35);
 
   // Bad type
-  t.notOk(b36.validate(100), 'only strings');
+  t.notOk(b36.validate(100), 'not strings');
+
+  // Good Types
+  t.ok(b36.validate('1234567890123456789012345', false), 'accepts strings');
+  t.ok(b36.validate(new Array(25).fill('0'), false), 'accepts arrays');
 
   // Too short
   t.notOk(b36.validate('123'), 'uuid25 too short');
+  t.notOk(b36.validate('123'), 'uuid25 too short');
   t.notOk(b58.validate('123'), 'flickr too short');
-  t.notOk(b90.validate('123'), 'cookie too short');
+  t.notOk(b90.validate('🍋🍊🍍'), 'cookie too short');
 
   // Short is valid without consistentLength
   const s36 = short(short.constants.uuid25Base36, { consistentLength: false });
+  const s41 = short(short.constants.emojiBase41, { consistentLength: false });
   const s58 = short(short.constants.flickrBase58, { consistentLength: false });
   const s90 = short(short.constants.cookieBase90, { consistentLength: false });
-  t.ok(s36.validate('111'));
-  t.ok(s58.validate('111'));
-  t.ok(s90.validate('111'));
+  t.ok(s36.validate('122', false), 'uuid25 simple validation');
+  t.ok(s41.validate('🍋🍊🍍', false), 'emoji simple validation');
+  t.ok(s58.validate('123', false), 'flickr simple validation');
+  t.ok(s90.validate('111', false), 'cookie simple validation');
 
   // Too long
   t.notOk(b36.validate('123456789012345678901234567890'), 'uuid25 too long');
+  t.notOk(b41.validate('🍋🍊🍍🍉🍌🍓🍒🥝🥥🍎🍋🍊🍍🍉🍌🍓🍒🥝🥥🍎🍋🍊🍍🍉🍌🍓🍒🥝🥥🍎'), 'emoji too long');
   t.notOk(b58.validate('123456789012345678901234567890'), 'flickr too long');
   t.notOk(b90.validate('123456789012345678901234567890'), 'cookie too long');
 
   // Bad alphabet
   t.notOk(b36.validate('123456789012345678901234"'), 'uuid25 validates alphabet');
+  t.notOk(b41.validate('123456789012345678901234"'), 'emoji validates alphabet');
   t.notOk(b58.validate('123456789012345678901"'), 'flickr validates alphabet');
   t.notOk(b90.validate('1234567890123456789"'), 'cookie validates alphabet');
 
   // Generated value passes
   t.ok(b36.validate(b36.generate()), 'uuid25 validates');
+  t.ok(b41.validate(b41.generate()), 'emoji validates');
   t.ok(b58.validate(b58.generate()), 'flickr validates');
   t.ok(b90.validate(b90.generate()), 'cookie validates');
 
   // "empty" value passes without uuid check
-  t.notOk(b36.validate('0'), 'uuid25 passes bad uuid without check');
-  t.notOk(b58.validate('0'), 'flickr fails bad uuid without check');
-  t.notOk(b90.validate('0'), 'cookie fails bad uuid without check');
+  t.notOk(b36.validate('0', false), 'uuid25 passes bad uuid without check');
+  t.notOk(b36.validate('🍎', false), 'emoji passes bad uuid without check');
+  t.notOk(b58.validate('0', false), 'flickr fails bad uuid without check');
+  t.notOk(b90.validate('0', false), 'cookie fails bad uuid without check');
 
   // With uuid check
   t.ok(b36.validate(b36.generate(), true), 'uuid25 validates uuid');
+  t.ok(b41.validate(b41.generate(), true), 'emoji validates uuid');
   t.ok(b58.validate(b58.generate(), true), 'flickr validates uuid');
   t.ok(b90.validate(b90.generate(), true), 'cookie validates uuid');
 
   t.notOk(b36.validate('0', true), 'uuid25 fails bad uuid');
+  t.notOk(b41.validate('🍎', true), 'emoji fails bad uuid');
   t.notOk(b58.validate('0', true), 'flickr fails bad uuid');
   t.notOk(b90.validate('0', true), 'cookie fails bad uuid');
 });
