@@ -4,16 +4,19 @@
 
 const test = require('tape');
 const uuid = require('uuid');
-const short = require('../index');
+const { uuidv7 } = require('uuidv7');
+const { default: short, constants, generate } = require('../dist/index');
 
-const uuid25Tests = require('./uuid25examples');
 
-const b90 = short(short.constants.cookieBase90);
-const b58 = short(short.constants.flickrBase58);
-const b36 = short(short.constants.uuid25Base36);
+const uuid25Examples = require('./uuid25examples');
+
+
+const b90 = short(constants.cookieBase90);
+const b58 = short(constants.flickrBase58);
+const b36 = short(constants.uuid25Base36);
 
 const cycle = (testCallback) => {
-  const uu = short.uuid();
+  const uu = uuid.v4();
   const f58 = b58.fromUUID(uu);
   const f90 = b90.fromUUID(uu);
   const f36 = b36.fromUUID(uu);
@@ -28,7 +31,7 @@ test('short-uuid setup', (t) => {
   t.ok(typeof short === 'function', 'should be a constructor function');
 
   t.doesNotThrow(() => {
-    b90test = short(short.constants.cookieBase90);
+    b90test = short(constants.cookieBase90);
   }, 'Calling does not throw an error');
 
   t.equal(typeof b90test, 'object', 'constructor returns an object');
@@ -39,10 +42,10 @@ test('short-uuid setup', (t) => {
     b58default = short();
   }, 'does not throw error with no options');
 
-  t.equal(b58default.alphabet, short.constants.flickrBase58, 'Default provides the flickrBase58 alphabet');
+  t.equal(b58default.alphabet, constants.flickrBase58, 'Default provides the flickrBase58 alphabet');
   t.equal(b58default.maxLength, 22, 'Translators provide maxLength');
 
-  const new58short = b58default.new();
+  const new58short = b58default.generate();
   const new58long = b58default.toUUID(new58short);
 
   t.ok(uuid.validate(new58long), 'default produces valid output');
@@ -50,10 +53,10 @@ test('short-uuid setup', (t) => {
 
 test('constants', (t) => {
   t.plan(4);
-  t.ok(Object.prototype.hasOwnProperty.call(short, 'constants') && typeof short.constants === 'object', 'should contain a "constants" object');
-  t.equal(short.constants.flickrBase58, '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 'should contain flicker58 constant');
-  t.equal(short.constants.cookieBase90, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~", 'should contain cookie90 constant');
-  t.equal(short.constants.uuid25Base36, '0123456789abcdefghijklmnopqrstuvwxyz', 'should contain uuid25 constant');
+  t.ok(typeof constants === 'object', 'should provide a "constants" object');
+  t.equal(constants.flickrBase58, '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ', 'should contain flicker58 constant');
+  t.equal(constants.cookieBase90, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'()*+-./:<=>?@[]^_`{|}~", 'should contain cookie90 constant');
+  t.equal(constants.uuid25Base36, '0123456789abcdefghijklmnopqrstuvwxyz', 'should contain uuid25 constant');
 });
 
 // Operations
@@ -194,7 +197,7 @@ test('should return consistent length shortened ids by default', (t) => {
 test('should return consistent length shortened ids with option', (t) => {
   t.plan(3);
 
-  const paddedTranslator = short(short.constants.flickrBase58, {
+  const paddedTranslator = short(constants.flickrBase58, {
     consistentLength: true,
   });
 
@@ -213,7 +216,7 @@ test('should return consistent length shortened ids with option', (t) => {
 test('should return inconsistent length shortened ids when flagged', (t) => {
   t.plan(3);
 
-  const unpaddedTranslator = short(short.constants.flickrBase58, {
+  const unpaddedTranslator = short(constants.flickrBase58, {
     consistentLength: false,
   });
 
@@ -234,11 +237,11 @@ test('padded and unpadded values should translate back consistently', (t) => {
   const paddedShort = '12J9PLDMEfCf6da2LyAce5';
   const unpaddedShort = '2J9PLDMEfCf6da2LyAce5';
 
-  const b58Padded = short(short.constants.flickrBase58, {
+  const b58Padded = short(constants.flickrBase58, {
     consistentLength: true,
   });
 
-  const b58Vary = short(short.constants.flickrBase58, {
+  const b58Vary = short(constants.flickrBase58, {
     consistentLength: false,
   });
 
@@ -251,24 +254,42 @@ test('padded and unpadded values should translate back consistently', (t) => {
 test('generate should generate an ID with the Flickr set', (t) => {
   t.plan(3);
 
-  const val = short.generate();
+  const val = generate();
   const expanded = b58.toUUID(val);
   const shortened = b58.fromUUID(expanded);
 
   t.equal(val, shortened, 'Generated Short ID is the same as re-shortened ID');
   t.ok(uuid.validate(expanded), 'UUID is valid');
 
-  const val2 = short.generate();
+  const val2 = generate();
   t.ok(val2, 'Generate should reuse the default translator successfully');
 });
 
 // Test examples from https://github.com/uuid25/test_cases/blob/main/examples
 test('uuid25 should be compatible with uuid25 examples', (t) => {
-  t.plan(uuid25Tests.length * 2);
-  uuid25Tests.forEach(({ uuid25, hyphenated }) => {
+  t.plan(uuid25Examples.length * 2);
+  uuid25Examples.forEach(({ uuid25, hyphenated }) => {
     t.equal(b36.toUUID(uuid25), hyphenated);
     t.equal(b36.fromUUID(hyphenated), uuid25);
   });
+});
+
+test('Different UUID Generators', (t) => {
+  t.plan(4);
+
+  const b36WithUuid4 = short(constants.uuid25Base36, { uuid: uuid.v4 });
+  const b36WithUuid7 = short(constants.uuid25Base36, { uuid: uuidv7 });
+
+  const shortFromV4 = b36WithUuid4.generate();
+  const shortFromV7 = b36WithUuid7.generate();
+
+  // Validate both are valid UUID with the standard b36 translator
+  t.ok(b36.validate(shortFromV4));
+  t.ok(b36.validate(shortFromV7));
+
+  // Validate they translate back to the same UUID
+  t.equal(b36WithUuid4.toUUID(shortFromV4), b36WithUuid7.toUUID(shortFromV4));
+  t.equal(b36WithUuid4.toUUID(shortFromV7), b36WithUuid7.toUUID(shortFromV7));
 });
 
 test('Translator should provide correct maxLength', (t) => {
@@ -282,7 +303,7 @@ test('Default generate quantity tests', (t) => {
   t.plan(1);
   let underLength = 0;
   for (let i = 0; i < 10000; i += 1) {
-    const defaultGen = short.generate();
+    const defaultGen = generate();
     if (defaultGen.length !== 22) {
       underLength += 1;
     }
@@ -303,9 +324,9 @@ test('Validate', (t) => {
   t.notOk(b90.validate('123'), 'cookie too short');
 
   // Short is valid without consistentLength
-  const s36 = short(short.constants.uuid25Base36, { consistentLength: false });
-  const s58 = short(short.constants.flickrBase58, { consistentLength: false });
-  const s90 = short(short.constants.cookieBase90, { consistentLength: false });
+  const s36 = short(constants.uuid25Base36, { consistentLength: false });
+  const s58 = short(constants.flickrBase58, { consistentLength: false });
+  const s90 = short(constants.cookieBase90, { consistentLength: false });
   t.ok(s36.validate('111'));
   t.ok(s58.validate('111'));
   t.ok(s90.validate('111'));

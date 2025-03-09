@@ -11,7 +11,7 @@ export const restoreUUID = (config:config, shortId:SUUID):UUID =>
   config.hexFromAlphabet(shortId)
     .padStart(32, '0')
     .match(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/)
-    ?.slice(1,5)
+    ?.slice(1)
     .join('-') as UUID;
 
 /**
