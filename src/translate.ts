@@ -14,7 +14,6 @@ export const restoreUUID = (config:config, shortId:SUUID):UUID =>
     ?.slice(1,5)
     .join('-') as UUID;
 
-
 /**
  * @param {config} config
  * @param {UUID} longId
