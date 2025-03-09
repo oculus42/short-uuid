@@ -3,11 +3,11 @@
 import { createTranslator } from "./convertor";
 
 import alphabets from "./constants";
-import { translator } from "./types";
+import { Translator } from "./types";
 
 export { createTranslator } from './convertor'
 
-let quickTranslate: translator;
+let quickTranslate: Translator;
 
 export const generate = () => {
   if (quickTranslate === undefined) {

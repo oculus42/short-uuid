@@ -1,13 +1,13 @@
 import anyBase from "any-base";
 
-import type {config, UUID, SUUID, translator} from "./types";
+import type { Config, UUID, SUUID, Translator } from "./types";
 
 import defaultConfig from "./config";
 import {calculateMaxLength, checkForDuplicates } from "./utilities";
 import validate from "./validate";
 import { shortenUUID, restoreUUID } from "./translate";
 
-const createTranslatorFromOptions = (options:object = {}):translator => {
+const createTranslatorFromOptions = (options:object = {}):Translator => {
   const setup = {
     ...defaultConfig,
     ...options,
@@ -25,7 +25,7 @@ const createTranslatorFromOptions = (options:object = {}):translator => {
     paddingCharacter: setup.alphabet[0],
     hexFromAlphabet: anyBase(setup.alphabet, anyBase.HEX),
     hexToAlphabet: anyBase(anyBase.HEX, setup.alphabet),
-  } as config;
+  } as Config;
 
   const translator = {
     alphabet: config.alphabet,
@@ -35,20 +35,20 @@ const createTranslatorFromOptions = (options:object = {}):translator => {
     toUUID: (shortUuid:SUUID):UUID => restoreUUID(config, shortUuid),
     uuid: config.uuid,
     validate: validate(config),
-  } as translator;
+  } as Translator;
 
     Object.freeze(translator);
     return translator;
 }
 
-const createTranslatorFromAlphabet = (alphabet:string, options:object = {}):translator => {
+const createTranslatorFromAlphabet = (alphabet:string, options:object = {}):Translator => {
   return createTranslatorFromOptions({
     ...options,
     alphabet,
   });
 };
 
-export const createTranslator = (arg?:string|object, options:object = {}) : translator => {
+export const createTranslator = (arg?:string|object, options:object = {}) : Translator => {
   return typeof arg === 'string'
     ? createTranslatorFromAlphabet(arg, options)
     : createTranslatorFromOptions(arg);

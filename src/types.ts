@@ -1,17 +1,17 @@
 export type UUID = string & { _guidBrand: 'uuid' };
 export type SUUID = string & { _guidBrand: 'short-uuid' };
 
-export type config = {
+export interface Config {
   alphabet: string;
   consistentLength: boolean;
-  hexFromAlphabet: (string:string) => string;
-  hexToAlphabet: (string:string) => string;
+  hexFromAlphabet: (suuid:string|SUUID) => string;
+    hexToAlphabet: (uuid:string) => string;
   maxLength: number;
   paddingCharacter: string;
   uuid: () => UUID;
-};
+}
 
-export type translator = {
+export interface Translator {
   /** The alphabet used for encoding UUIDs. */
   alphabet: string;
   /** Maximum length in characters of a short ID using this translator */
@@ -31,4 +31,4 @@ export type translator = {
 
   /** validate short */
   validate(shortId: string | SUUID, rigorous?: boolean): boolean;
-};
+}

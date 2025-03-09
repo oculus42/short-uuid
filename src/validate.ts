@@ -1,5 +1,5 @@
 
-import { config, SUUID } from './types';
+import { Config, SUUID } from './types';
 
 import { restoreUUID } from './translate';
 
@@ -26,7 +26,7 @@ export const isSubset = (sourceSet: string, testSet: string):boolean => {
  *  and check the result for UUID validity.
  *  HOF takes a config and returns the validate function.
  */
-const validate = (config:config) => (shortId: SUUID, rigorous = false) => {
+const validate = (config:Config) => (shortId: SUUID, rigorous = false) => {
   if (!shortId || typeof shortId !== 'string') return false;
   const isCorrectLength = config.consistentLength
     ? shortId.length === config.maxLength
