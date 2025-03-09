@@ -2,11 +2,12 @@
   "name": "short-uuid",
   "version": "5.2.0",
   "description": "Create and translate standard UUIDs with shorter formats.",
-  "main": "index.js",
+  "main": "src/index.ts",
   "typings": "index.d.ts",
   "scripts": {
+    "build": "tsc",
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
-    "test": "npx tape test/**/*.js"
+    "test": "tsc && npx tape test/**/*.js"
   },
   "engines": {
     "node": ">=18"
