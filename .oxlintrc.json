@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["import", "typescript", "unicorn"],
+  "env": {
+    "node": true
+  },
+  "globals": {
+  },
+  "settings": {
+    "quotes": "single"
+  }
+}
