@@ -101,22 +101,35 @@ test('should return a standard v4 uuid from instance.uuid()', (t) => {
 });
 
 test('Handle UUIDs that begin with zeros', (t) => {
-  t.plan(2);
+  t.plan(3);
 
   const someZeros = '00000000-a70c-4ebd-8f2b-540f7e709092';
 
   t.equal(someZeros, b58.toUUID(b58.fromUUID(someZeros)), 'Supports starting zeroes');
   t.equal(someZeros, b90.toUUID(b90.fromUUID(someZeros)), 'Supports starting zeroes');
+  t.equal(someZeros, b36.toUUID(b36.fromUUID(someZeros)), 'Supports starting zeroes');
 });
 
 test('Handle UUIDs with all zeros', (t) => {
-  t.plan(2);
+  t.plan(3);
 
   // Support even invalid UUIDs, for completeness
   const allZeros = '00000000-0000-0000-0000-000000000000';
 
   t.equal(allZeros, b58.toUUID(b58.fromUUID(allZeros)), 'Supports starting zeroes');
   t.equal(allZeros, b90.toUUID(b90.fromUUID(allZeros)), 'Supports starting zeroes');
+  t.equal(allZeros, b36.toUUID(b36.fromUUID(allZeros)), 'Supports starting zeroes');
+});
+
+test('Handle UUIDs with all "f"s', (t) => {
+  t.plan(3);
+
+  // Support even invalid UUIDs, for completeness
+  const allFs = 'ffffffff-ffff-ffff-ffff-ffffffffffff';
+
+  t.equal(allFs, b58.toUUID(b58.fromUUID(allFs)), 'Supports all "f"s');
+  t.equal(allFs, b90.toUUID(b90.fromUUID(allFs)), 'Supports all "f"s');
+  t.equal(allFs, b36.toUUID(b36.fromUUID(allFs)), 'Supports all "f"s');
 });
 
 test('should handle UUID with uppercase letters', (t) => {
