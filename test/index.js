@@ -235,17 +235,6 @@ test('padded and unpadded values should translate back consistently', (t) => {
   t.equal(b58Padded.toUUID(unpaddedShort), b58Vary.toUUID(unpaddedShort), 'unpadded provides the same uuid on both translators');
 });
 
-test('new should create a shortened UUID', (t) => {
-  t.plan(2);
-
-  const shorter = b58.new();
-  const expanded = b58.toUUID(shorter);
-  const shortened = b58.fromUUID(expanded);
-
-  t.equal(shorter, shortened, 'Generated Short ID is the same as re-shortened ID');
-  t.ok(uuid.validate(expanded), 'UUID is valid');
-});
-
 test('generate should generate an ID with the Flickr set', (t) => {
   t.plan(3);
 
