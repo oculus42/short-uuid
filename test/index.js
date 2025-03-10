@@ -7,6 +7,10 @@ const uuid = require('uuid');
 const { uuidv7 } = require('uuidv7');
 const { default: short, constants, generate } = require('../dist/index');
 
+// Node 18 workaround?
+if (globalThis.crypto === undefined) {
+  globalThis.crypto = require('node:crypto');
+}
 
 const uuid25Examples = require('./uuid25examples');
 
