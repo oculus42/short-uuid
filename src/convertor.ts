@@ -48,7 +48,7 @@ const createTranslatorFromAlphabet = (alphabet:string, options:object = {}):Tran
   });
 };
 
-export const createTranslator = (arg?:string|object, options:object = {}) : Translator => {
+export const createTranslator = (arg?:string|object, options?:object) : Translator => {
   return typeof arg === 'string'
     ? createTranslatorFromAlphabet(arg, options)
     : createTranslatorFromOptions(arg);
