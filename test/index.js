@@ -5,7 +5,7 @@
 const test = require('tape');
 const uuid = require('uuid');
 const { uuidv7 } = require('uuidv7');
-const { default: short, constants, generate } = require('../dist/index');
+const { default: short, constants, generate, createTranslator } = require('../dist/index');
 
 // Node 18 workaround?
 if (globalThis.crypto === undefined) {
@@ -363,4 +363,19 @@ test('Validate', (t) => {
   t.notOk(b36.validate('0', true), 'uuid25 fails bad uuid');
   t.notOk(b58.validate('0', true), 'flickr fails bad uuid');
   t.notOk(b90.validate('0', true), 'cookie fails bad uuid');
+});
+
+test('Create Translator', (t) => {
+  t.plan(3);
+  let id;
+
+  const tDefault = createTranslator();
+  const tV7 = createTranslator({ uuid: uuidv7 });
+  t.ok(tDefault.uuid !== tV7.uuid, 'Different UUID generators');
+
+  id = tDefault.generate();
+  t.ok(tDefault.validate(id, true), 'Generated ID is valid');
+
+  id = tV7.generate();
+  t.ok(tV7.validate(id, true), 'Generated ID is valid');
 });
