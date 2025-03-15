@@ -4,7 +4,8 @@
  * @returns {number}
  */
 export const calculateMaxLength = (alphabetLength:number):number => (
-  Math.ceil(Math.log(2 ** 128) / Math.log(alphabetLength)));
+  Math.ceil(128 / Math.log2(alphabetLength))
+);
 
 export const checkForDuplicates = (alphabet:string):boolean => {
   const alphabetSet = new Set(alphabet);
