@@ -3,9 +3,11 @@
  */
 
 const test = require('tape');
-const uuid = require('uuid');
+// Dropping uuid to maintain Node 14 testing compatibility
+// const uuid = require('uuid');
 const { uuidv7 } = require('uuidv7');
 const { default: short, constants, generate, createTranslator } = require('../dist/index');
+const { validateUUID } = require('../dist/validate');
 
 // Node 18 workaround?
 if (globalThis.crypto === undefined) {
@@ -20,7 +22,8 @@ const b58 = short(constants.flickrBase58);
 const b36 = short(constants.uuid25Base36);
 
 const cycle = (testCallback) => {
-  const uu = uuid.v4();
+  // const uu = uuid.v4();
+  const uu = crypto.randomUUID();
   const f58 = b58.fromUUID(uu);
   const f90 = b90.fromUUID(uu);
   const f36 = b36.fromUUID(uu);
@@ -52,7 +55,7 @@ test('short-uuid setup', (t) => {
   const new58short = b58default.generate();
   const new58long = b58default.toUUID(new58short);
 
-  t.ok(uuid.validate(new58long), 'default produces valid output');
+  t.ok(validateUUID(new58long), 'default produces valid output');
 });
 
 test('constants', (t) => {
@@ -68,7 +71,7 @@ test('should generate valid UUIDs', (t) => {
   t.plan(10);
 
   const action = (uu) => {
-    t.ok(uuid.validate(uu), 'UUID is valid');
+    t.ok(validateUUID(uu), 'UUID is valid');
   };
 
   for (let i = 0; i < 10; i += 1) {
@@ -81,13 +84,13 @@ test('should translate back from multiple bases', (t) => {
 
   const action = (uu, f58, f90, f36) => {
     t.equal(b58.toUUID(f58), uu, 'Translated b58 matches original');
-    t.ok(uuid.validate(b58.toUUID(f58)), 'Translated UUID is valid');
+    t.ok(validateUUID(b58.toUUID(f58)), 'Translated UUID is valid');
 
     t.equal(b90.toUUID(f90), uu, 'Translated b90 matches original');
-    t.ok(uuid.validate(b90.toUUID(f90)), 'Translated UUID is valid');
+    t.ok(validateUUID(b90.toUUID(f90)), 'Translated UUID is valid');
 
     t.equal(b36.toUUID(f36), uu, 'Translated b36 matches original');
-    t.ok(uuid.validate(b36.toUUID(f36)), 'Translated UUID is valid');
+    t.ok(validateUUID(b36.toUUID(f36)), 'Translated UUID is valid');
   };
 
   for (let i = 0; i < 10; i += 1) {
@@ -99,7 +102,7 @@ test('should return a standard v4 uuid from instance.uuid()', (t) => {
   t.plan(10);
 
   const action = () => {
-    t.ok(uuid.validate(b58.uuid()), '.uuid() is a valid UUID');
+    t.ok(validateUUID(b58.uuid()), '.uuid() is a valid UUID');
   };
 
   for (let i = 0; i < 10; i += 1) {
@@ -263,7 +266,7 @@ test('generate should generate an ID with the Flickr set', (t) => {
   const shortened = b58.fromUUID(expanded);
 
   t.equal(val, shortened, 'Generated Short ID is the same as re-shortened ID');
-  t.ok(uuid.validate(expanded), 'UUID is valid');
+  t.ok(validateUUID(expanded), 'UUID is valid');
 
   const val2 = generate();
   t.ok(val2, 'Generate should reuse the default translator successfully');
@@ -281,7 +284,8 @@ test('uuid25 should be compatible with uuid25 examples', (t) => {
 test('Different UUID Generators', (t) => {
   t.plan(4);
 
-  const b36WithUuid4 = short(constants.uuid25Base36, { uuid: uuid.v4 });
+  // const b36WithUuid4 = short(constants.uuid25Base36, { uuid: uuid.v4 });
+  const b36WithUuid4 = short(constants.uuid25Base36);
   const b36WithUuid7 = short(constants.uuid25Base36, { uuid: uuidv7 });
 
   const shortFromV4 = b36WithUuid4.generate();
