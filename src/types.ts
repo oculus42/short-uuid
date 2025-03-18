@@ -5,7 +5,7 @@ export interface Config {
   alphabet: string;
   consistentLength: boolean;
   hexFromAlphabet: (suuid:string|SUUID) => string;
-    hexToAlphabet: (uuid:string) => string;
+  hexToAlphabet: (uuid:string) => string;
   maxLength: number;
   paddingCharacter: string;
   uuid: () => UUID;

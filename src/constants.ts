@@ -13,6 +13,6 @@ export const rfcBase32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 export default {
   cookieBase90,
   flickrBase58,
-  uuid25Base36,
   rfcBase32,
+  uuid25Base36,
 };
