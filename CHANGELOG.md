@@ -2,13 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.0.0] - 2025-03-17
+### MAJOR CHANGES
+- TypeScript re-write
+- 🛑 Removes the uuid library as a dependency.
+- 🛑 Removes the `new` method in favor of `generate`.
+- 🛑 Removes the `uuid` method on the default export.
+- 🛑 Removes createTranslator as default export.
+- ⚠️ Node 18 and lower may require passing a `uuid` generator to the translator.
+- 🛑 The default `generate` method assumes crypto.randomUUID is available and may error prior to Node 18.
+- Uses [`crypto.randomUUID`](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID) by default.
+- Accepts alternative UUID generators such as [uuidv7](https://www.npmjs.com/package/uuidv7)
+
 ## [5.2.0] - 2024-05-01
 ### Added
 - `validate` method to check shortIds for simple or "complete" validity
 
 ## [5.1.0] - 2024-04-30
 ### Added
-- `uuid25Base36` constant to support uuid25 style
+- `uuid25Base36` constant to support  [uuid25](https://github.com/uuid25/javascript) (Base36) style
 
 ## [5.0.1] - 2024-04-30
 ### Changed
