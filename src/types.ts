@@ -1,6 +1,12 @@
 export type UUID = string & { _guidBrand: 'uuid' };
 export type SUUID = string & { _guidBrand: 'short-uuid' };
 
+export interface TranslatorOptions {
+  alphabet?: string;
+  consistentLength?: boolean;
+  uuid?: () => UUID;
+}
+
 export interface Config {
   alphabet: string;
   consistentLength: boolean;

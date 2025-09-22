@@ -22,19 +22,13 @@ translator.generate(); // '896a47d3c11843c59022f357af899801'
 ```javascript
 const short = require('short-uuid');
 
-// Quick start with flickrBase58 format
-short.generate(); // '73WakrfVbNJBaAmhQtEeDv'
+// Generate a short, Base58-encoded UUID immediately:
+short.generate(); // 73WakrfVbNJBaAmhQtEeDv
 
-// Provide a different alphabet for translation
-const translator = short.createTranslator('0123456789abcdef');
-translator.generate(); // '2b82f84eb5704ccfb6165f367e6a253f'
+// Or create a translator and generate using its method:
 
-// Provide an alternative uuid generator and alphabet
-const translator2 = short.createTranslator({
-  alphabet: short.constants.rfcBase32,
-  uuid: uuidv7,
-});
-translator2.generate(); 'ABSWTKE25PPJT2W3E6OF4J375N'
+const translator = short(); // Default is flickrBase58
+translator.generate(); // mhvXdrZT4jP5T8vBxuvm75
 ```
 
 ## v6.0.0
@@ -45,11 +39,12 @@ translator2.generate(); 'ABSWTKE25PPJT2W3E6OF4J375N'
 ## Major Changes in v6.0.0
 - 🛑 Removes the uuid library as a dependency.
 - 🛑 Removes the `new` method in favor of existing `generate`.
-- 🛑 Removes the `uuid` method export  (from uuid.v4).
+- 🛑 Removes the `uuid` method on the default export (from uuid v4).
+- 🛑 Removes createTranslator as default export.
 - ⚠️ Node 18 and lower may require passing a `uuid` generator to the translator.
 - 🛑 The default `generate` method assumes crypto.randomUUID is available and may error prior to Node 18.
 
-### Details
+### Usage Details
 
 short-uuid starts with RFC4122 v4-compliant UUIDs and translates them
 into other, usually shorter formats. It also provides translators
@@ -62,47 +57,58 @@ As of 6.0.0, short-uuid uses the native `crypto.randomUUID` method to generate U
 It can also accept alternative UUID generators, such as [uuidv7](https://www.npmjs.com/package/uuidv7).
 Node 14.17.0 and later support `crypto.randomUUID`, but may require passing the UUID generator to the translator.
 
-```javascript
+#### Creating Translators
+```js
 // Calling with require does not expose the default export
 const short = require('short-uuid');
+const uuidv7 = require('uuidv7');
 
-// Generate a flickrBase58 short ID from without creating a translator
-// This may not work prior to Node 18
-const shortId = short.generate();
+// Use the default 'flickrBase58' alphabet
+const defaultTranslator = short();
 
-const translator = short.createTranslator(); // Defaults to flickrBase58
-const decimalTranslator = short.createTranslator("0123456789"); // Provide a specific alphabet for translation
-const cookieTranslator = short.createTranslator(short.constants.cookieBase90); // Use a constant for translation
+// Provide a custom alphabet (string with unique characters)
+const decimalTranslator = short('0123456789');
 
-// Generate a shortened UUID with the built-in translator
-translator.generate(); // mhvXdrZT4jP5T8vBxuvm75
+// Use built-in constants for common alphabets
+const cookieTranslator = short(short.constants.cookieBase90);
 
-// Translate UUIDs to and from the shortened format
-const regularUUID = translator.toUUID(shortId); // a44521d0-0fb8-4ade-8002-3385545c3318
-translator.fromUUID(regularUUID); // mhvXdrZT4jP5T8vBxuvm75
+// Use an alternative UUID generator
+const v7translator = short('0123456789', { uuid: uuidv7 });
+```
 
-// Check if a string is a valid short ID (length and alphabet)
-translator.validate(shortId); // true
+#### Encoding and Decoding
+```js
+// Create a translator
+const translator = short();
 
-// Check if a string is valid *AND* translates to a valid UUID
-translator.validate(shortId, true); // true
-translator.validate('0000000000000000000000', true) // false
+// Generate a short-encoded UUID (aliases: .new() or .generate())
+const shortId = translator.generate(); // mhvXdrZT4jP5T8vBxuvm75
 
-// See the alphabet used by a translator
-translator.alphabet;
+// Convert from short-encoded to standard UUID
+const fullUUID = translator.toUUID(shortId); // a44521d0-0fb8-4ade-8002-3385545c3318
 
-// The maximum length a translated uuid will be with its alphabet.
-// if consistentLength is set (on by default), so ids will be this length.
-translator.maxLength;
+// Convert from standard UUID to short-encoded format
+const shortAgain = translator.fromUUID(fullUUID); // mhvXdrZT4jP5T8vBxuvm75
+```
 
-// View the constants
-short.constants.cookieBase90; // Safe for HTTP cookies values for smaller IDs.
-short.constants.flickrBase58; // Avoids similar characters (0/O, 1/I/l, etc.)
-short.constants.uuid25Base36; // The uuid25 (string length 25) format
-short.constants.rfcBase32;    // The RFC 4648 Base32 format
+#### Validation
+```js
+// Check if a string has the correct length and alphabet
+translator.validate(shortId); // true or false
 
-// Generate plain UUID - Each translator provides its uuid function.
-translator.uuid(); // 3023b0f5-ec55-4e75-9cd8-104700698052
+// Check if it also translates to a valid RFC4122 UUID
+translator.validate(shortId, true);  // true if valid
+translator.validate('0000000000000000000000', true); // false
+```
+
+#### Plain UUIDs
+```js
+// Generate a plain RFC4122 v4 UUID without creating a translator
+const uuid = short.uuid(); // fd5c084c-ff7c-4651-9a52-37096242d81c
+
+// Each translator also exposes the uuid function they use to generate UUIDs
+const uuidFromTranslator = defaultTranslator.uuid();
+
 ```
 
 ### Options

@@ -1,13 +1,13 @@
 import anyBase from "any-base";
 
-import type { Config, UUID, SUUID, Translator } from "./types";
+import type { Config, UUID, SUUID, Translator, TranslatorOptions } from "./types";
 
 import defaultConfig from "./config";
 import {calculateMaxLength, checkForDuplicates } from "./utilities";
 import validate from "./validate";
 import { shortenUUID, restoreUUID } from "./translate";
 
-const createTranslatorFromOptions = (options:object = {}):Translator => {
+const createTranslatorFromOptions = (options:TranslatorOptions = {}):Translator => {
   const setup = {
     ...defaultConfig,
     ...options,
@@ -41,14 +41,20 @@ const createTranslatorFromOptions = (options:object = {}):Translator => {
     return translator;
 }
 
-const createTranslatorFromAlphabet = (alphabet:string, options:object = {}):Translator => {
+const createTranslatorFromAlphabet = (
+  alphabet:string,
+  options:Omit<TranslatorOptions, 'alphabet'> = {}
+):Translator => {
   return createTranslatorFromOptions({
     ...options,
     alphabet,
   });
 };
 
-export const createTranslator = (arg?:string|object, options?:object) : Translator => {
+export const createTranslator = (
+  arg?:string|TranslatorOptions,
+  options?:Omit<TranslatorOptions, 'alphabet'>
+) : Translator => {
   return typeof arg === 'string'
     ? createTranslatorFromAlphabet(arg, options)
     : createTranslatorFromOptions(arg);
