@@ -6,9 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### MAJOR CHANGES
 - TypeScript re-write
 - 🛑 Removes the uuid library as a dependency.
-- 🛑 Removes the `new` method in favor of `generate`.
-- 🛑 Removes the `uuid` method on the default export.
-- 🛑 Removes createTranslator as default export.
+- 🛑 Removes the `new` method in favor of existing `generate`.
+- 🛑 Removes the `uuid` method export (from uuid.v4).
 - ⚠️ Node 18 and lower may require passing a `uuid` generator to the translator.
 - 🛑 The default `generate` method assumes crypto.randomUUID is available and may error prior to Node 18.
 - Uses [`crypto.randomUUID`](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID) by default.

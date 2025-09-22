@@ -9,6 +9,17 @@ Generate and translate standard UUIDs into shorter - or just *different* - forma
 ### Quick Start
 
 ```javascript
+// Quick start with flickrBase58 format
+import { generate } from 'short-uuid';
+generate(); // 'tZ2GNANFeoJPciquVRdWWg'
+
+// Default export is createTranslator
+import short from 'short-uuid';
+const translator = short('0123456789abcdef');
+translator.generate(); // '896a47d3c11843c59022f357af899801'
+```
+
+```javascript
 const short = require('short-uuid');
 
 // Quick start with flickrBase58 format
@@ -33,9 +44,8 @@ translator2.generate(); 'ABSWTKE25PPJT2W3E6OF4J375N'
 
 ## Major Changes in v6.0.0
 - 🛑 Removes the uuid library as a dependency.
-- 🛑 Removes the `new` method in favor of `generate`.
-- 🛑 Removes the `uuid` method on the default export.
-- 🛑 Removes createTranslator as default export.
+- 🛑 Removes the `new` method in favor of existing `generate`.
+- 🛑 Removes the `uuid` method export  (from uuid.v4).
 - ⚠️ Node 18 and lower may require passing a `uuid` generator to the translator.
 - 🛑 The default `generate` method assumes crypto.randomUUID is available and may error prior to Node 18.
 
@@ -53,6 +63,7 @@ It can also accept alternative UUID generators, such as [uuidv7](https://www.npm
 Node 14.17.0 and later support `crypto.randomUUID`, but may require passing the UUID generator to the translator.
 
 ```javascript
+// Calling with require does not expose the default export
 const short = require('short-uuid');
 
 // Generate a flickrBase58 short ID from without creating a translator
