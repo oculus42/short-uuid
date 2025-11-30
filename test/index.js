@@ -6,7 +6,7 @@ const test = require('tape');
 // Dropping uuid to maintain Node 14 testing compatibility
 // const uuid = require('uuid');
 const { uuidv7 } = require('uuidv7');
-const { default: short, constants, generate, createTranslator } = require('../dist/index');
+const { constants, generate, createTranslator } = require('../dist/index');
 const { validateUUID } = require('../dist/validate');
 
 // Node 18 workaround?
@@ -16,10 +16,9 @@ if (globalThis.crypto === undefined) {
 
 const uuid25Examples = require('./uuid25examples');
 
-
-const b90 = short(constants.cookieBase90);
-const b58 = short(constants.flickrBase58);
-const b36 = short(constants.uuid25Base36);
+const b90 = createTranslator(constants.cookieBase90);
+const b58 = createTranslator(constants.flickrBase58);
+const b36 = createTranslator(constants.uuid25Base36);
 
 const cycle = (testCallback) => {
   // const uu = uuid.v4();
@@ -32,13 +31,11 @@ const cycle = (testCallback) => {
 };
 
 test('short-uuid setup', (t) => {
-  t.plan(7);
+  t.plan(6);
   let b90test;
 
-  t.ok(typeof short === 'function', 'should be a constructor function');
-
   t.doesNotThrow(() => {
-    b90test = short(constants.cookieBase90);
+    b90test = createTranslator(constants.cookieBase90);
   }, 'Calling does not throw an error');
 
   t.equal(typeof b90test, 'object', 'constructor returns an object');
@@ -46,7 +43,7 @@ test('short-uuid setup', (t) => {
   let b58default;
 
   t.doesNotThrow(() => {
-    b58default = short();
+    b58default = createTranslator();
   }, 'does not throw error with no options');
 
   t.equal(b58default.alphabet, constants.flickrBase58, 'Default provides the flickrBase58 alphabet');
@@ -163,7 +160,7 @@ test('should handle UUID with uppercase letters', (t) => {
 test('should not be able to use an Alphabet containing duplicated values', (t) => {
   t.plan(1);
   // Check if invalid alphabet throws error
-  t.throws(() => short('001234567899aabcdef'), Error);
+  t.throws(() => createTranslator('001234567899aabcdef'), Error);
 });
 
 // Options
@@ -204,7 +201,7 @@ test('should return consistent length shortened ids by default', (t) => {
 test('should return consistent length shortened ids with option', (t) => {
   t.plan(3);
 
-  const paddedTranslator = short(constants.flickrBase58, {
+  const paddedTranslator = createTranslator(constants.flickrBase58, {
     consistentLength: true,
   });
 
@@ -223,7 +220,7 @@ test('should return consistent length shortened ids with option', (t) => {
 test('should return inconsistent length shortened ids when flagged', (t) => {
   t.plan(3);
 
-  const unpaddedTranslator = short(constants.flickrBase58, {
+  const unpaddedTranslator = createTranslator(constants.flickrBase58, {
     consistentLength: false,
   });
 
@@ -244,11 +241,11 @@ test('padded and unpadded values should translate back consistently', (t) => {
   const paddedShort = '12J9PLDMEfCf6da2LyAce5';
   const unpaddedShort = '2J9PLDMEfCf6da2LyAce5';
 
-  const b58Padded = short(constants.flickrBase58, {
+  const b58Padded = createTranslator(constants.flickrBase58, {
     consistentLength: true,
   });
 
-  const b58Vary = short(constants.flickrBase58, {
+  const b58Vary = createTranslator(constants.flickrBase58, {
     consistentLength: false,
   });
 
@@ -284,9 +281,9 @@ test('uuid25 should be compatible with uuid25 examples', (t) => {
 test('Different UUID Generators', (t) => {
   t.plan(4);
 
-  // const b36WithUuid4 = short(constants.uuid25Base36, { uuid: uuid.v4 });
-  const b36WithUuid4 = short(constants.uuid25Base36);
-  const b36WithUuid7 = short(constants.uuid25Base36, { uuid: uuidv7 });
+  // const b36WithUuid4 = createTranslator(constants.uuid25Base36, { uuid: uuid.v4 });
+  const b36WithUuid4 = createTranslator(constants.uuid25Base36);
+  const b36WithUuid7 = createTranslator(constants.uuid25Base36, { uuid: uuidv7 });
 
   const shortFromV4 = b36WithUuid4.generate();
   const shortFromV7 = b36WithUuid7.generate();
@@ -332,9 +329,9 @@ test('Validate', (t) => {
   t.notOk(b90.validate('123'), 'cookie too short');
 
   // Short is valid without consistentLength
-  const s36 = short(constants.uuid25Base36, { consistentLength: false });
-  const s58 = short(constants.flickrBase58, { consistentLength: false });
-  const s90 = short(constants.cookieBase90, { consistentLength: false });
+  const s36 = createTranslator(constants.uuid25Base36, { consistentLength: false });
+  const s58 = createTranslator(constants.flickrBase58, { consistentLength: false });
+  const s90 = createTranslator(constants.cookieBase90, { consistentLength: false });
   t.ok(s36.validate('111'));
   t.ok(s58.validate('111'));
   t.ok(s90.validate('111'));
