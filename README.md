@@ -9,25 +9,13 @@ Generate and translate standard UUIDs into shorter - or just *different* - forma
 ### Quick Start
 
 ```javascript
-// Quick start with flickrBase58 format
-import { generate } from 'short-uuid';
-generate(); // 'tZ2GNANFeoJPciquVRdWWg'
-
-// Default export is createTranslator
-import short from 'short-uuid';
-const translator = short('0123456789abcdef');
-translator.generate(); // '896a47d3c11843c59022f357af899801'
-```
-
-```javascript
 const short = require('short-uuid');
 
 // Generate a short, Base58-encoded UUID immediately:
 short.generate(); // 73WakrfVbNJBaAmhQtEeDv
 
 // Or create a translator and generate using its method:
-
-const translator = short(); // Default is flickrBase58
+const translator = short.createTranslator(); // Default is flickrBase58
 translator.generate(); // mhvXdrZT4jP5T8vBxuvm75
 ```
 
@@ -39,16 +27,16 @@ translator.generate(); // mhvXdrZT4jP5T8vBxuvm75
 ## Major Changes in v6.0.0
 - 🛑 Removes the uuid library as a dependency.
 - 🛑 Removes the `new` method in favor of existing `generate`.
-- 🛑 Removes the `uuid` method on the default export (from uuid v4).
-- 🛑 Removes createTranslator as default export.
-- ⚠️ Node 18 and lower may require passing a `uuid` generator to the translator.
+- 🛑 Removes the `uuid` method on the default export (previously imported from uuid/v4).
+- 🛑 Removes `createTranslator` as default export.
 - 🛑 The default `generate` method assumes crypto.randomUUID is available and may error prior to Node 18.
+- ⚠️ Node 18 and lower may require passing a `uuid` generator to the translator.
 
 ### Usage Details
 
-short-uuid starts with RFC4122 v4-compliant UUIDs and translates them
+`short-uuid` starts with RFC4122 v4-compliant UUIDs and translates them
 into other, usually shorter formats. It also provides translators
-to convert back and forth from RFC compliant UUIDs to the shorter formats,
+to convert back and forth from RFC-compliant UUIDs to the shorter formats,
 and validate the IDs.
 
 By default, shortened values are padded for consistent length. This can be disabled.
@@ -81,7 +69,7 @@ const v7translator = short('0123456789', { uuid: uuidv7 });
 // Create a translator
 const translator = short();
 
-// Generate a short-encoded UUID (aliases: .new() or .generate())
+// Generate a short-encoded UUID
 const shortId = translator.generate(); // mhvXdrZT4jP5T8vBxuvm75
 
 // Convert from short-encoded to standard UUID
