@@ -30,7 +30,7 @@ const createTranslatorFromOptions = (options:TranslatorOptions = {}):Translator 
   const translator = {
     alphabet: config.alphabet,
     fromUUID: (uuid:UUID):SUUID => shortenUUID(config, uuid),
-    generate: ():SUUID => shortenUUID(config, config.uuid()),
+    generate: ():SUUID => shortenUUID(config, config.uuid() as UUID),
     maxLength: config.maxLength,
     toUUID: (shortUuid:SUUID):UUID => restoreUUID(config, shortUuid),
     uuid: config.uuid,

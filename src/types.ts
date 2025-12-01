@@ -14,7 +14,7 @@ export interface Config {
   hexToAlphabet: (uuid:string) => string;
   maxLength: number;
   paddingCharacter: string;
-  uuid: () => UUID;
+  uuid: () => UUID|string;
 }
 
 export interface Translator {

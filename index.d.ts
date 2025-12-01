@@ -1,47 +1,15 @@
-declare module 'short-uuid' {
-  interface Options{
-    consistentLength?: boolean;
-  }
+import type { Translator, TranslatorOptions } from './src/types';
 
-  function shortUUID(alphabet?: string, options?:Options): shortUUID.Translator;
+export const constants: {
+  cookieBase90: string;
+  flickrBase58: string;
+  rfcBase32: string;
+  uuid25Base36: string;
+};
 
-  namespace shortUUID {
-    export const constants: {
-      cookieBase90: string;
-      flickrBase58: string;
-      rfcBase32: string;
-      uuid25Base36: string;
-    };
+export function createTranslator(
+  arg?: string | TranslatorOptions,
+  options?: Omit<TranslatorOptions, 'alphabet'>
+): Translator;
 
-    export type UUID = string & { _guidBrand: 'uuid' };
-    export type SUUID = string & { _guidBrand: 'short-uuid' };
-
-    /** Generate a base 58 short uuid */
-    export function generate(): SUUID;
-
-    export interface Translator {
-      /** The alphabet used for encoding UUIDs. */
-      alphabet: string;
-
-      /** Maximum length in characters of a short ID using this Translator */
-      maxLength: number;
-
-      /** Generate a new short UUID using this translator's alphabet. */
-      generate: () => SUUID;
-
-      /** Generate a new regular UUID. */
-      uuid(): UUID;
-
-      /** short -> long */
-      toUUID(shortId: string | SUUID): UUID;
-
-      /** long -> short */
-      fromUUID(regularUUID: string | UUID): SUUID;
-
-      /** validate short */
-      validate(shortId: string | SUUID, rigorous?: boolean): boolean;
-    }
-  }
-
-  export = shortUUID;
-}
+export function generate(): string; // Adjust return type if needed
