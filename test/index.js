@@ -6,8 +6,12 @@ const test = require('tape');
 // Dropping uuid to maintain Node 14 testing compatibility
 // const uuid = require('uuid');
 const { uuidv7 } = require('uuidv7');
-const { constants, generate, createTranslator } = require('../dist/index');
-const { validateUUID } = require('../dist/validate');
+const { constants: exportedConstants, generate, createTranslator } = require('../dist/index');
+
+// Keep the tests decoupled from internal build artifacts.
+const UUID_REGEX = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/i;
+const validateUUID = (uuid) => typeof uuid === 'string' && UUID_REGEX.test(uuid);
+const constants = exportedConstants.default || exportedConstants;
 
 // Node 18 workaround?
 if (globalThis.crypto === undefined) {
