@@ -2,12 +2,20 @@
   "name": "short-uuid",
   "version": "6.0.3",
   "description": "Create and translate standard UUIDs with shorter formats.",
-  "main": "dist/index.js",
-  "typings": "index.d.ts",
+  "main": "./dist/index.js",
+  "type": "commonjs",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "scripts": {
-    "build": "tsc",
+    "prebuild": "tsc --noEmit",
+    "build": "tsdown",
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
-    "test": "tsc && npx tape test/**/*.js"
+    "test": "npm run build && npx tape test/**/*.js"
   },
   "engines": {
     "node": ">=14.17.0"
@@ -38,8 +46,18 @@
     "nyc": "^15.1.0",
     "oxlint": "^0.16.0",
     "tape": "^5.2.2",
+    "tsdown": "^0.21.5",
     "typescript": "^5.8.2",
     "uuid25": "^0.1.5",
     "uuidv7": "^1.0.2"
+  },
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   }
 }
