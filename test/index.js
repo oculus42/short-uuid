@@ -139,6 +139,20 @@ test('Handle UUIDs with all "f"s', (t) => {
   t.equal(allFs, b36.toUUID(b36.fromUUID(allFs)), 'Supports all "f"s');
 });
 
+test('should reject an id that is out of range for a UUID', (t) => {
+  t.plan(3);
+
+  // 22 flickrBase58 characters can encode a value larger than 2^128-1, which
+  // cannot be a UUID; this id decodes to more than 32 hex characters.
+  const outOfRange = 'ZZZZZZZZZZZZZZZZZZZZZZ';
+
+  t.throws(() => b58.toUUID(outOfRange), /out of range/, 'toUUID throws instead of silently truncating');
+
+  const valid = b58.fromUUID(crypto.randomUUID());
+  t.doesNotThrow(() => b58.toUUID(valid), 'a valid id does not throw');
+  t.equal(b58.fromUUID(b58.toUUID(valid)), valid, 'a valid id still round-trips');
+});
+
 test('should handle UUID with uppercase letters', (t) => {
   t.plan(4);
 
